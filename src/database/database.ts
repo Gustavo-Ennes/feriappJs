@@ -1,13 +1,13 @@
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME ?? "",
-  process.env.DB_USERNAME ?? "",
-  process.env.DB_PASSWORD ?? "",
+  process.env.POSTGRES_NAME ?? "",
+  process.env.POSTGRES_USERNAME ?? "",
+  process.env.POSTGRES_PASSWORD ?? "",
   {
     host: "localhost",
     dialect: "postgres",
-    port: 15432,
+    port: 5432,
   }
 );
 

@@ -1,16 +1,17 @@
 //import resolvers or each model inside source
 
-import { pizzaResolvers } from "./routes/pizza/pizza.resolver";
+import { departmentResolvers } from "./routes/Department/department.resolvers";
 
-const { Query: pizzaQueries, Mutation: pizzaMutations } = pizzaResolvers;
+const { Query: departmentQueries, Mutation: departmentMutations } =
+  departmentResolvers;
 
 const resolvers = {
   Query: {
-    ...pizzaQueries,
+    ...departmentQueries,
   },
   Mutation: {
-    ...pizzaMutations
-  }
+    ...departmentMutations,
+  },
 };
 
 export { resolvers };

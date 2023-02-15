@@ -1,15 +1,15 @@
 // import typedefs like defined in pizza.typedefs
 
-import { pizzaDefinitions } from "./routes/pizza/pizza.typedefs";
+import { departmentDefinitions } from "./routes/Department/department.typedefs";
 const typeDefs = `
   type Query{
-    ${pizzaDefinitions.queries}
+    ${departmentDefinitions.queries}
   }
   type Mutation{
-    ${pizzaDefinitions.mutations}
+    ${departmentDefinitions.mutations}
   }
   
-  ${pizzaDefinitions.types}
+  ${departmentDefinitions.types}
 `;
 
 export { typeDefs };

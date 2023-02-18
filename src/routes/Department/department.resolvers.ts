@@ -1,8 +1,10 @@
-import { departmentResolver } from "./resolvers/query/department";
-import { departmentsResolver } from "./resolvers/query/departments";
-import { createDepartmentResolver } from "./resolvers/mutation/createDepartment";
-import { deleteDepartmentResolver } from "./resolvers/mutation/deleteDepartment";
-import { updateDepartmentResolver } from "./resolvers/mutation/updateDepartment";
+import {
+  departmentResolver,
+  departmentsResolver,
+  createDepartmentResolver,
+  deleteDepartmentResolver,
+  updateDepartmentResolver,
+} from "./resolvers";
 
 const departmentResolvers = {
   Query: { department: departmentResolver, departments: departmentsResolver },

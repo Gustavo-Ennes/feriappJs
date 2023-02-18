@@ -1,17 +1,17 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../database/database";
+import { Worker } from "../Worker";
 import {
   DepartmentAttrsInterface,
   DepartmentInstanceInterface,
 } from "./types/department";
 
-const DepartmentModel = sequelize.define<
+const Department = sequelize.define<
   DepartmentInstanceInterface,
   DepartmentAttrsInterface
 >(
   "department",
   {
-    // Model attributes are defined here
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -22,7 +22,6 @@ const DepartmentModel = sequelize.define<
       unique: true,
       allowNull: false,
     },
-    // after, 1 to many to workers
   },
   {
     tableName: "department",
@@ -30,4 +29,7 @@ const DepartmentModel = sequelize.define<
   }
 );
 
-export { DepartmentModel };
+Department.hasMany(Worker, { as: "workers" });
+Worker.belongsTo(Department)
+
+export { Department };

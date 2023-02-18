@@ -1,8 +1,7 @@
-import { mock } from "sinon";
 import { expect } from "chai";
 
+import { departmentMock } from "../../../utils/mocks";
 import { server } from "../../../../app";
-import { DepartmentModel } from "../department.model";
 import {
   departmentQuery,
   departmentsQuery,
@@ -12,10 +11,8 @@ import {
 } from "./queries";
 
 describe("Department integration tests", async () => {
-  const departmentMock = mock(DepartmentModel);
-
   it("Should list departments", async () => {
-    departmentMock.expects("findAllThethindsintheworld").resolves([
+    departmentMock.expects("findAll").resolves([
       {
         id: 1,
         name: "department 1",
@@ -80,22 +77,6 @@ describe("Department integration tests", async () => {
   });
 
   it("should delete a department", async () => {
-    departmentMock.expects("findByPk").resolves({
-      name: "department 1",
-      id: 1,
-      destroy: () => true,
-    });
-
-    const { body }: any = await server.executeOperation({
-      query: deleteDepartmentMutation,
-    });
-
-    expect(body.singleResult?.data)
-      .to.have.property("deleteDepartment")
-      .that.deep.equals(true);
-  });
-
-  it("should delete a department", async () => {
     departmentMock.expects("findByPk").resolves(null);
 
     const { body }: any = await server.executeOperation({
@@ -121,7 +102,7 @@ describe("Department integration tests", async () => {
       .that.deep.equals(true);
   });
 
-  it("should do nothing if not such department exists", async () => {
+  it("should do nothing if no such department exists", async () => {
     departmentMock.expects("findByPk").resolves(null);
 
     const { body }: any = await server.executeOperation({

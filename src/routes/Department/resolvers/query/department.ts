@@ -1,8 +1,5 @@
-import { Model } from "sequelize";
-
-import { DepartmentModel } from "../../department.model";
+import { Department } from "../../department.model";
 import {
-  DepartmentInstanceInterface,
   DepartmentInstanceOrNull,
 } from "../../types/department";
 
@@ -14,7 +11,7 @@ const departmentResolver = async (
 ): Promise<DepartmentInstanceOrNull> => {
   const { id } = args;
   const departmentInstance: DepartmentInstanceOrNull =
-    await DepartmentModel.findByPk(id);
+    await Department.findByPk(id);
   return departmentInstance;
 };
 

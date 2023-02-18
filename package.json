@@ -1,7 +1,6 @@
 {
-  "name": "pizza",
+  "name": "feriappjs",
   "version": "1.0.0",
-  "description": "",
   "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
@@ -33,5 +32,15 @@
     "sequelize-cli": "^6.6.0",
     "sinon": "^15.0.1",
     "typescript": "^4.9.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gustavo-Ennes/feriappJs.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gustavo-Ennes/feriappJs/issues"
+  },
+  "homepage": "https://github.com/Gustavo-Ennes/feriappJs#readme",
+  "description": ""
 }

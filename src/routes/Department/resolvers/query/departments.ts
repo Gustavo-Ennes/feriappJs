@@ -1,4 +1,4 @@
-import { DepartmentModel } from "../../department.model";
+import { Department } from "../../department.model";
 import { DepartmentInstancesOrEmpty } from "../../types/department";
 
 const departmentsResolver = async (
@@ -7,7 +7,7 @@ const departmentsResolver = async (
   __: any,
   ___: any
 ): Promise<DepartmentInstancesOrEmpty> => {
-  const departmentInstances: DepartmentInstancesOrEmpty = await DepartmentModel.findAll();
+  const departmentInstances: DepartmentInstancesOrEmpty = await Department.findAll();
   return departmentInstances;
 };
 

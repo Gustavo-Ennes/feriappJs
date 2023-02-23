@@ -17,7 +17,7 @@ const createWorkerResolver = async (
   );
 
   if (departmentInstance) {
-    await workerInstance.addDepartment(departmentInstance);
+    await workerInstance.setDepartment(departmentInstance);
     await workerInstance.save();
     return workerInstance;
   } else throw new Error("DepartmentId: inexistent or not given");

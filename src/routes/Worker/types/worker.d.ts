@@ -1,5 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import { DepartmentInstanceInterface } from "../../Department/types/department";
+import {
+  VacationInstanceInterface,
+  VacationInstanceOrEmpty,
+} from "../../Vacation/types/vacation";
 
 export interface WorkerAttrsInterface {
   id?: DataTypes.INTEGER;
@@ -22,7 +26,9 @@ export interface WorkerInterface extends Model<WorkerAttrsInterface> {
 export interface WorkerInstanceInterface
   extends Model<WorkerAttrsInterface>,
     WorkerAttrsInterface {
-  addDepartment(department: DepartmentInstanceInterface): Promise<void>;
+  setDepartment(department: DepartmentInstanceInterface): Promise<void>;
+  addVacation(vacation: VacationInstanceInterface): Promise<void>;
+  getVacations(where: any): Promise<VacationInstanceOrEmpty>;
 }
 
 export type WorkerInstanceOrNull = WorkerInstanceInterface | null;

@@ -1,4 +1,4 @@
-const workerExample = {
+const workerExample: any = {
   id: 1,
   name: "Joseph Climber",
   role: "Paperweight",
@@ -7,8 +7,10 @@ const workerExample = {
   matriculation: "15.263-6",
   admissionDate: new Date(),
   departmentId: 1,
-  addDepartment: async () => undefined,
+  setDepartment: async () => undefined,
   save: async () => undefined,
+  getVacations: async () => [],
+  addVacation: async () => undefined,
 };
 
 export { workerExample };

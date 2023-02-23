@@ -1,6 +1,5 @@
 import { Worker } from "../../worker.model";
 import { WorkerInstanceOrEmpty } from "../../types/worker";
-import { IntegerDataType } from "sequelize";
 
 const workersResolver = async (
   _: any,

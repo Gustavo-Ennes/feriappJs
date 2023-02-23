@@ -1,11 +1,10 @@
 import { DataTypes } from "sequelize";
+
 import { sequelize } from "../../database/database";
+import { Vacation } from "../Vacation/vacation.model";
 import { WorkerAttrsInterface, WorkerInstanceInterface } from "./types/worker";
 
-const Worker = sequelize.define<
-  WorkerInstanceInterface,
-  WorkerAttrsInterface
->(
+const Worker = sequelize.define<WorkerInstanceInterface, WorkerAttrsInterface>(
   "worker",
   {
     id: {
@@ -44,5 +43,7 @@ const Worker = sequelize.define<
   }
 );
 
+Worker.hasMany(Vacation, { as: "vacations" });
+Vacation.belongsTo(Worker);
 
 export { Worker };

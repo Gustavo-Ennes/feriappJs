@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q NODE_ENV=test dist/index.js\"",
     "test": "mocha 'dist/**/*.test.js' -r dotenv/config",
     "test:one": "mocha 'dist/**/*.test.js' -r dotenv/config --grep "
   },

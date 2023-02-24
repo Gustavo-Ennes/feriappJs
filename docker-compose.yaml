@@ -1,3 +1,5 @@
+# https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app?hl=pt-br
+# used kompose to convert docker-compose to kubernets
 version: "3"
 services:
   app:

@@ -17,11 +17,11 @@ const updateWorkerResolver = async (
   );
 
   if (workerInstance) {
-    const inputKeys: WorkerKeys[] = (Object.keys(workerInput) as WorkerKeys[]);
-    inputKeys.forEach((key: WorkerKeys ): void => {
+    const inputKeys: WorkerKeys[] = Object.keys(workerInput) as WorkerKeys[];
+    inputKeys.forEach((key: WorkerKeys): void => {
       workerInstance[key] = workerInput[key];
     });
-
+    workerInstance.save();
     return true;
   }
   return false;

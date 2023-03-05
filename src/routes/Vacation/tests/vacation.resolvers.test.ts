@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { clone, reject } from "ramda";
+import { clone } from "ramda";
 
 import { server } from "../../../../app";
 import { workerMock, vacationMock } from "../../../utils/mocks";
@@ -11,13 +11,12 @@ import {
   updateVacationMutation,
   vacationsFromQuery,
 } from "./queries";
-import { validationPipe } from "../resolvers/mutation/validationPipe";
 import { vacationExample } from "./vacation.example";
 import { workerExample } from "../../Worker/tests/worker.example";
 
 describe("Vacation: integration", () => {
   it("should list the vacations", async () => {
-    vacationMock.expects("findAll").resolves([vacationExample]);
+    vacationMock.expects("find").resolves([vacationExample]);
     const { body }: any = await server.executeOperation({
       query: vacationsQuery,
     });
@@ -27,13 +26,13 @@ describe("Vacation: integration", () => {
       .that.deep.equals([
         {
           workerId: "1",
-          id: "1",
+          _id: "1",
         },
       ]);
   });
 
   it("should list the vacations from a specific worker", async () => {
-    vacationMock.expects("findAll").resolves([vacationExample]);
+    vacationMock.expects("find").resolves([vacationExample]);
     const { body }: any = await server.executeOperation({
       query: vacationsFromQuery,
     });
@@ -43,13 +42,13 @@ describe("Vacation: integration", () => {
       .that.deep.equals([
         {
           workerId: "1",
-          id: "1",
+          _id: "1",
         },
       ]);
   });
 
   it("should list a vacation by id", async () => {
-    vacationMock.expects("findByPk").resolves(vacationExample);
+    vacationMock.expects("findById").resolves(vacationExample);
     const { body }: any = await server.executeOperation({
       query: vacationQuery,
     });
@@ -58,13 +57,14 @@ describe("Vacation: integration", () => {
       .to.have.property("vacation")
       .that.deep.equals({
         workerId: "1",
-        id: "1",
+        _id: "1",
       });
   });
 
   it("should create a vacation", async () => {
     const query = createVacationMutation({});
-    workerMock.expects("findByPk").resolves(workerExample);
+    workerMock.expects("findById").resolves(workerExample);
+    vacationMock.expects("find").resolves([]);
     vacationMock.expects("create").resolves(vacationExample);
 
     const { body }: any = await server.executeOperation({
@@ -74,14 +74,14 @@ describe("Vacation: integration", () => {
     expect(body.singleResult?.data)
       .to.have.property("createVacation")
       .that.deep.equals({
-        id: "1",
+        _id: "1",
         workerId: "1",
       });
   });
 
   it("shouldn't create a vacation if type doesn't exists", async () => {
     const query = createVacationMutation({ type: "foo" });
-    workerMock.expects("findByPk").resolves(workerExample);
+    workerMock.expects("findById").resolves(workerExample);
     vacationMock.expects("create").resolves(vacationExample);
 
     const { body }: any = await server.executeOperation({
@@ -100,7 +100,7 @@ describe("Vacation: integration", () => {
 
   it("shouldn't create a vacation if daysQtd dont't match type", async () => {
     const query = createVacationMutation({ type: "dayOff", daysQtd: 60 });
-    workerMock.expects("findByPk").resolves(workerExample);
+    workerMock.expects("findById").resolves(workerExample);
     vacationMock.expects("create").resolves(vacationExample);
 
     const { body }: any = await server.executeOperation({
@@ -118,8 +118,8 @@ describe("Vacation: integration", () => {
   it("shouldn't create a vacation if there's another worker's vacation in given period", async () => {
     const query = createVacationMutation({});
     const workerExampleClone = clone(workerExample);
-    workerExampleClone.getVacations = () => [{ id: 1 }];
-    workerMock.expects("findByPk").resolves(workerExampleClone);
+    vacationMock.expects("find").resolves([{ _id: "1" }, { _id: "2" }]);
+    workerMock.expects("findById").resolves(workerExampleClone);
 
     const { body }: any = await server.executeOperation({
       query,
@@ -136,10 +136,12 @@ describe("Vacation: integration", () => {
   });
 
   it("should update a vacation", async () => {
-    vacationMock.expects("findByPk").resolves(vacationExample);
-    workerMock.expects("findByPk").resolves(workerExample);
-    const query = updateVacationMutation({ id: 1, daysQtd: 30 });
+    vacationMock.expects("findById").resolves(vacationExample);
+    workerMock.expects("findById").resolves(workerExample);
+    vacationMock.expects("find").resolves([{ _id: "1" }]);
+    vacationMock.expects("updateOne").resolves(undefined);
 
+    const query = updateVacationMutation({ ...vacationExample, daysQtd: 30 });
     const { body }: any = await server.executeOperation({
       query,
     });
@@ -150,8 +152,8 @@ describe("Vacation: integration", () => {
   });
 
   it("shouldn't update a vacation if it doesn't exists", async () => {
-    vacationMock.expects("findByPk").resolves(null);
-    const query = updateVacationMutation({ id: 1, daysQtd: 30 });
+    vacationMock.expects("findById").resolves(null);
+    const query = updateVacationMutation({ ...vacationExample, daysQtd: 30 });
 
     const { body }: any = await server.executeOperation({
       query,
@@ -166,9 +168,9 @@ describe("Vacation: integration", () => {
   });
 
   it("shouldn't update a vacation if it's type doesn't exists", async () => {
-    vacationMock.expects("findByPk").resolves(vacationExample);
-    workerMock.expects("findByPk").resolves(workerExample);
-    const query = updateVacationMutation({ id: 1, type: "bar" });
+    vacationMock.expects("findById").resolves(vacationExample);
+    workerMock.expects("findById").resolves(workerExample);
+    const query = updateVacationMutation({ ...vacationExample, type: "bar" });
 
     const { body }: any = await server.executeOperation({
       query,
@@ -185,10 +187,10 @@ describe("Vacation: integration", () => {
   });
 
   it("shouldn't update a vacation if it's daysQtd don't match it's type", async () => {
-    vacationMock.expects("findByPk").resolves(vacationExample);
-    workerMock.expects("findByPk").resolves(workerExample);
+    vacationMock.expects("findById").resolves(vacationExample);
+    workerMock.expects("findById").resolves(workerExample);
     const query = updateVacationMutation({
-      id: 1,
+      ...vacationExample,
       type: "license",
       daysQtd: 1,
     });
@@ -207,10 +209,10 @@ describe("Vacation: integration", () => {
 
   it("shouldn't update a vacation if there's another vacation in the given time period", async () => {
     const workerExampleClone = clone(workerExample);
-    workerExampleClone.getVacations = () => [{ id: 1 }];
-    vacationMock.expects("findByPk").resolves(vacationExample);
-    workerMock.expects("findByPk").resolves(workerExampleClone);
-    const query = updateVacationMutation({ id: 1 });
+    vacationMock.expects("find").resolves([{ _id: "1" }, { _id: "2" }]);
+    vacationMock.expects("findById").resolves(vacationExample);
+    workerMock.expects("findById").resolves(workerExampleClone);
+    const query = updateVacationMutation({ ...vacationExample, daysQtd: 15 });
 
     const { body }: any = await server.executeOperation({
       query,
@@ -227,7 +229,8 @@ describe("Vacation: integration", () => {
   });
 
   it("should delete a vacation", async () => {
-    vacationMock.expects("findByPk").resolves(vacationExample);
+    vacationMock.expects("findById").resolves(vacationExample);
+    vacationMock.expects("deleteOne").resolves(undefined);
     const query = deleteVacationMutation;
 
     const { body }: any = await server.executeOperation({
@@ -240,7 +243,7 @@ describe("Vacation: integration", () => {
   });
 
   it("should do nothing if delete and id doesn't exists", async () => {
-    vacationMock.expects("findByPk").resolves(null);
+    vacationMock.expects("findById").resolves(null);
     const query = deleteVacationMutation;
 
     const { body }: any = await server.executeOperation({

@@ -1,49 +1,58 @@
-import { DataTypes } from "sequelize";
+import { Schema, Types, model } from "mongoose";
 
-import { sequelize } from "../../database/database";
-import { Vacation } from "../Vacation/vacation.model";
-import { WorkerAttrsInterface, WorkerInstanceInterface } from "./types/worker";
+// import { Vacation } from "../Vacation/vacation.model";
+import { WorkerInterface } from "./types/worker";
 
-const Worker = sequelize.define<WorkerInstanceInterface, WorkerAttrsInterface>(
-  "worker",
+const WorkerSchema = new Schema<WorkerInterface>(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
     },
     status: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
     },
     registry: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      unique: true,
+      required: true,
     },
     matriculation: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      unique: true,
+      required: true,
     },
     admissionDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
+      type: Date,
+      required: true,
+    },
+    departmentId: {
+      type: Types.ObjectId,
+      required: true,
     },
   },
   {
-    tableName: "worker",
+    // virtuals:{
+    //   vacations:{
+    //     get(){
+
+    //     }
+    //   }
+    //   department:{
+    //     get(){
+
+    //     }
+    //   }
+    // },
     timestamps: true,
   }
 );
 
-Worker.hasMany(Vacation, { as: "vacations" });
-Vacation.belongsTo(Worker);
+const Worker = model<WorkerInterface>("Worker", WorkerSchema);
 
 export { Worker };

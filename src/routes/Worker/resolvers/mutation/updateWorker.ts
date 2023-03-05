@@ -1,9 +1,5 @@
 import { Worker } from "../../worker.model";
-import {
-  WorkerAttrsInterface,
-  WorkerInstanceOrNull,
-  WorkerKeys,
-} from "../../types/worker.d";
+import { WorkerInterface } from "../../types/worker.d";
 
 const updateWorkerResolver = async (
   _: any,
@@ -11,17 +7,13 @@ const updateWorkerResolver = async (
   __: any,
   ___: any
 ): Promise<Boolean> => {
-  const { workerInput }: { workerInput: WorkerAttrsInterface } = args;
-  const workerInstance: WorkerInstanceOrNull = await Worker.findByPk(
-    workerInput.id
+  const { workerInput }: { workerInput: WorkerInterface } = args;
+  const workerInstance: WorkerInterface | null = await Worker.findById(
+    workerInput._id
   );
 
   if (workerInstance) {
-    const inputKeys: WorkerKeys[] = Object.keys(workerInput) as WorkerKeys[];
-    inputKeys.forEach((key: WorkerKeys): void => {
-      workerInstance[key] = workerInput[key];
-    });
-    workerInstance.save();
+    await Worker.updateOne({ _id: workerInput._id }, workerInput);
     return true;
   }
   return false;

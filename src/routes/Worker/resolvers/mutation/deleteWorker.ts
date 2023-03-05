@@ -1,6 +1,5 @@
-
 import { Worker } from "../../worker.model";
-import { WorkerInstanceOrNull } from "../../types/worker";
+import { WorkerInterface } from "../../types/worker";
 
 const deleteWorkerResolver = async (
   _: any,
@@ -8,11 +7,10 @@ const deleteWorkerResolver = async (
   __: any,
   ___: any
 ): Promise<Boolean> => {
-  const { id } = args;
-  const workerInstance: WorkerInstanceOrNull =
-    await Worker.findByPk(id);
+  const { _id } = args;
+  const workerInstance: WorkerInterface | null = await Worker.findById(_id);
   if (workerInstance) {
-    await workerInstance.destroy();
+    await Worker.deleteOne({ _id });
     return true;
   }
   return false;

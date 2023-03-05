@@ -1,40 +1,24 @@
-import { DataTypes, Model } from "sequelize";
-import { WorkerInstanceInterface } from "../../Worker/types/worker";
+import { Schema, type Model } from "mongoose";
+import { WorkerInterface } from "../../Worker/types/worker";
 
-export interface VacationAttrsInterface {
-  id?: DataTypes.INTEGER;
-  daysQtd: DataTypes.INTEGER<PremiumLicenseQtdPossibilities>;
-  startDate: DataTypes.DATE;
-  endDate?: DataTypes.DATE;
-  workerId: DataTypes.INTEGER;
-  deferred?: DataTypes.BOOLEAN;
-  observation?: DataTypes.STRING;
-  type: DataTypes.String;
-  enjoyed?: DataTypes.BOOLEAN;
+export interface VacationInterface {
+  daysQtd: number;
+  startDate: date;
+  endDate?: date;
+  workerId: Schema.ObjectId;
+  deferred?: boolean;
+  observation?: string;
+  type: string;
+  enjoyed?: boolean;
+  _id?: string;
 }
 
-export interface VacationInterface extends Model<VacationAttrsInterface> {
-  create(
-    vacationInput: VacationAttrsInterface
-  ): Promise<VacationInstanceInterface>;
-  findAll(): Promise<WorkerInstanceInterface[] | []>;
-  findByPk(id: number): Promise<VacationInstanceInterface | null>;
-  save(options?: any): Promise<this>;
-}
-
-export interface VacationInstanceInterface
-  extends Model<VacationAttrsInterface>,
-    VacationAttrsInterface {
-  setWorker(worker: WorkerInstanceInterface): Promise<void>;
-}
 export interface PipeContent {
-  payload: VacationAttrsInterface;
+  payload: VacationInterface;
   errorMessage: string;
-  worker: WorkerInstanceOrNull;
+  worker: WorkerInterface | null;
 }
 
-export type VacationInstanceOrNull = VacationInstanceInterface | null;
-export type VacationInstanceOrEmpty = VacationInstanceInterface[] | [];
 export type VacationDaysQtdPossibilities = 15 | 30;
 export type PremiumLicenseQtdPossibilities =
   | VacationDaysQtdPossibilities

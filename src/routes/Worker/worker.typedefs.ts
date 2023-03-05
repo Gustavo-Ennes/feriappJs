@@ -1,7 +1,7 @@
 const workerDefinitions = {
   types: `
     type Worker{
-      id: ID
+      _id: ID
       name: String
       role: String
       matriculation: String
@@ -11,7 +11,8 @@ const workerDefinitions = {
       departmentId: ID
     }
 
-    input WorkerCreateInput{
+    input WorkerInput{
+      _id: ID
       name: String!
       role: String!
       matriculation: String!
@@ -21,27 +22,16 @@ const workerDefinitions = {
       departmentId: ID!
     }
 
-    input WorkerUpdateInput{
-      id: ID!
-      name: String
-      role: String
-      matriculation: String
-      registry: String
-      status: String
-      admissionDate: Date
-      departmentId: ID
-    }
-
     scalar Date
   `,
   queries: `
-    worker(id: ID!): Worker
+    worker(_id: ID!): Worker
     workers(fromDepartment: ID): [Worker]
   `,
   mutations: `
-    createWorker(workerInput: WorkerCreateInput): Worker
-    deleteWorker(id: ID!): Boolean
-    updateWorker(workerInput: WorkerUpdateInput): Boolean
+    createWorker(workerInput: WorkerInput): Worker
+    deleteWorker(_id: ID!): Boolean
+    updateWorker(workerInput: WorkerInput): Boolean
   `,
 };
 

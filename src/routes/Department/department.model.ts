@@ -1,35 +1,34 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../../database/database";
-import { Worker } from "../Worker";
-import {
-  DepartmentAttrsInterface,
-  DepartmentInstanceInterface,
-} from "./types/department";
+import { Schema, model } from "mongoose";
+import { DepartmentInterface } from "./types/department";
 
-const Department = sequelize.define<
-  DepartmentInstanceInterface,
-  DepartmentAttrsInterface
->(
-  "department",
+const DepartmentSchema = new Schema<DepartmentInterface>(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     name: {
-      type: DataTypes.STRING,
+      type: String,
       unique: true,
-      allowNull: false,
+      required: true,
     },
   },
   {
-    tableName: "department",
+    //   virtuals:{
+    //     vacations:{
+    //       get(){
+    //
+    //       }
+    //     },
+    //     workers:{
+    //       get(){
+    //
+    //       }
+    //     }
+    //   },
     timestamps: true,
   }
 );
 
-Department.hasMany(Worker, { as: "workers" });
-Worker.belongsTo(Department)
+const Department = model<DepartmentInterface>(
+  "Department",
+  DepartmentSchema
+);
 
 export { Department };

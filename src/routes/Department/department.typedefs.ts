@@ -1,22 +1,22 @@
 const departmentDefinitions = {
   types: `
     type Department{
-      id: ID!
-      name: String!
+      _id: ID
+      name: String
     }
 
     input DepartmentInput{
-      id: ID
+      _id: ID
       name: String!
     }
   `,
   queries: `
-    department(id: ID!): Department
+    department(_id: ID!): Department
     departments: [Department]
   `,
   mutations: `
     createDepartment(departmentInput: DepartmentInput): Department
-    deleteDepartment(id: ID!): Boolean
+    deleteDepartment(_id: ID!): Boolean
     updateDepartment(departmentInput: DepartmentInput): Boolean
   `,
 };

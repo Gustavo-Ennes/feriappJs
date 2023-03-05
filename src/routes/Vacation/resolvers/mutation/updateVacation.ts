@@ -1,31 +1,28 @@
+import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
-import { VacationAttrsInterface, VacationKeys } from "../../types/vacation";
 import { validationPipe } from "./validationPipe";
 
 const updateVacationResolver = async (
   _: any,
-  args: { vacationUpdateInput: VacationAttrsInterface },
+  args: { vacationInput: VacationInterface },
   __: any,
   ___: any
 ): Promise<boolean> => {
-  const { vacationUpdateInput } = args;
-  const vacationToUpdate = await Vacation.findByPk(vacationUpdateInput.id);
+  const { vacationInput } = args;
+  const vacationToUpdate = await Vacation.findById(vacationInput._id);
 
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");
 
   const { payload, errorMessage, worker } = await validationPipe({
     ...vacationToUpdate,
-    ...vacationUpdateInput,
+    ...vacationInput,
   });
 
   if (!errorMessage && worker && payload) {
-    const inputKeys: VacationKeys[] = Object.keys(
-      vacationUpdateInput
-    ) as VacationKeys[];
-    inputKeys.forEach((key: VacationKeys): void => {
-      vacationToUpdate[key] = vacationUpdateInput[key];
-    });
-    await vacationToUpdate?.save();
+    await Vacation.updateOne(
+      { _id: vacationInput._id },
+      vacationInput
+    );
     return true;
   } else throw new Error(errorMessage);
 };

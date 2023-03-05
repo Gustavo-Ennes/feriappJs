@@ -1,27 +1,24 @@
+import { Model } from "mongoose";
+
+import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
-import {
-  VacationAttrsInterface,
-  VacationInstanceInterface,
-} from "../../types/vacation";
 import { validationPipe } from "./validationPipe";
 
 const createVacationResolver = async (
   _: any,
-  args: { vacationCreateInput: VacationAttrsInterface },
+  args: { vacationInput: VacationInterface },
   __: any,
   ___: any
-): Promise<VacationInstanceInterface> => {
-  const { vacationCreateInput } = args;
+): Promise<VacationInterface> => {
+  const { vacationInput } = args;
   const { payload, errorMessage, worker } = await validationPipe(
-    vacationCreateInput
+    vacationInput
   );
 
   if (!errorMessage && worker && payload) {
-    const vacationInstance: VacationInstanceInterface = await Vacation.create(
-      vacationCreateInput
+    const vacationInstance: VacationInterface = await Vacation.create(
+      vacationInput
     );
-    await worker?.addVacation(vacationInstance);
-    await worker?.save();
     return vacationInstance;
   } else throw new Error(errorMessage);
 };

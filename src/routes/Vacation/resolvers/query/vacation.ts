@@ -1,14 +1,16 @@
+import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
-import { VacationInstanceOrNull } from "../../types/vacation";
 
 const vacationResolver = async (
   _: any,
-  args: { id: number },
+  args: { _id: string },
   __: any,
   ___: any
-): Promise<VacationInstanceOrNull> => {
-  const { id } = args;
-  const vacationInstance: VacationInstanceOrNull = await Vacation.findByPk(id);
+): Promise<VacationInterface | null> => {
+  const { _id } = args;
+  const vacationInstance: VacationInterface | null = await Vacation.findById(
+    _id
+  );
   return vacationInstance;
 };
 

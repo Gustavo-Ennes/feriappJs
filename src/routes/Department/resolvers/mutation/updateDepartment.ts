@@ -1,21 +1,18 @@
 import { Department } from "../../department.model";
-import {
-  DepartmentInstanceOrNull,
-} from "../../types/department.d";
+import { DepartmentInterface } from "../../types/department.d";
 
 const updateDepartmentResolver = async (
   _: any,
-  args: any,
+  args: { departmentInput: DepartmentInterface },
   __: any,
   ___: any
 ): Promise<Boolean> => {
   const { departmentInput } = args;
-  const departmentInstance: DepartmentInstanceOrNull =
-    await Department.findByPk(departmentInput.id);
+  const departmentInstance: DepartmentInterface | null =
+    await Department.findById(departmentInput._id);
 
   if (departmentInstance) {
-    departmentInstance.name = departmentInput.name;
-    await departmentInstance.save();
+    await Department.updateOne({ _id: departmentInput._id }, departmentInput);
     return true;
   }
   return false;

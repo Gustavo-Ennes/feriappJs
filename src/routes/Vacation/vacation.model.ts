@@ -1,65 +1,57 @@
-import { DataTypes } from "sequelize";
-import { add } from "date-fns";
+// import { add } from "date-fns";
+import { Schema, Types, model } from "mongoose";
 
-import { sequelize } from "../../database/database";
 import {
-  VacationAttrsInterface,
-  VacationInstanceInterface,
+  VacationInterface,
 } from "./types/vacation";
 
-const Vacation = sequelize.define<
-  VacationInstanceInterface,
-  VacationAttrsInterface
->(
-  "vacation",
+const VacationSchema = new Schema<VacationInterface>(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     daysQtd: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      type: Number,
+      required: true,
     },
     startDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    endDate: {
-      type: DataTypes.VIRTUAL,
-      allowNull: true,
-      get() {
-        return add(new Date(this.startDate), { days: this.daysQtd });
-      },
-      set(value) {
-        throw new Error("Do not try to set the `endDate` value!");
-      },
+      type: Date,
+      required: true,
     },
     workerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
+      type: Types.ObjectId,
+      required: true,
     },
     deferred: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      type: Boolean,
+      default: true,
     },
     observation: {
-      type: DataTypes.STRING,
+      type: String,
     },
     type: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: String,
+      required: true,
     },
     enjoyed: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      type: Boolean,
+      default: false,
     },
   },
   {
-    tableName: "vacation",
+    // virtuals:{
+    //   endData:{
+    //     get(){
+// 
+    //     }
+    //   },
+    //   worker:{
+    //     get(){
+// 
+    //     }
+    //   },
+    // },
     timestamps: true,
   }
 );
+
+const Vacation = model<VacationInterface>("Vacation", VacationSchema);
 
 export { Vacation };

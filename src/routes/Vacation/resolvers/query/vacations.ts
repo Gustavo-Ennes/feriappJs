@@ -1,20 +1,16 @@
 import { Vacation } from "../../vacation.model";
-import { VacationInstanceOrEmpty } from "../../types/vacation";
+import { VacationInterface } from "../../types/vacation";
 
 const vacationsResolver = async (
   _: any,
   args: any,
   __: any,
   ___: any
-): Promise<VacationInstanceOrEmpty> => {
+): Promise<VacationInterface[]> => {
   const { fromWorker }: { fromWorker: number | undefined } = args;
 
-  const vacationInstance: VacationInstanceOrEmpty = await Vacation.findAll(
-    fromWorker
-      ? {
-          where: { workerId: fromWorker },
-        }
-      : undefined
+  const vacationInstance: VacationInterface[] = await Vacation.find(
+    !!fromWorker ? { workerId: fromWorker } : {}
   );
   return vacationInstance;
 };

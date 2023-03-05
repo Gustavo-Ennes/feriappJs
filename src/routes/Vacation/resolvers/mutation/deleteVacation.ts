@@ -1,5 +1,5 @@
+import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
-import { VacationInstanceOrNull } from "../../types/vacation";
 
 const deleteVacationResolver = async (
   _: any,
@@ -7,10 +7,12 @@ const deleteVacationResolver = async (
   __: any,
   ___: any
 ): Promise<Boolean> => {
-  const { id } = args;
-  const vacationInstance: VacationInstanceOrNull = await Vacation.findByPk(id);
+  const { _id } = args;
+  const vacationInstance: VacationInterface | null = await Vacation.findById(
+    _id
+  );
   if (vacationInstance) {
-    await vacationInstance.destroy();
+    await Vacation.deleteOne({ _id });
     return true;
   } else throw new Error("Vacation doesn't exists.");
 };

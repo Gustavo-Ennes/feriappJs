@@ -13,7 +13,7 @@ import { workerExample } from "./worker.example";
 
 describe("Workers integration tests", () => {
   it("Should list workers", async () => {
-    workerMock.expects("findAll").resolves([workerExample]);
+    workerMock.expects("find").resolves([workerExample]);
 
     const { body }: any = await server.executeOperation({
       query: workersQuery,
@@ -29,7 +29,7 @@ describe("Workers integration tests", () => {
   });
 
   it("Should return empty array when no workers", async () => {
-    workerMock.expects("findAll").resolves([]);
+    workerMock.expects("find").resolves([]);
 
     const { body }: any = await server.executeOperation({
       query: workersQuery,
@@ -41,7 +41,7 @@ describe("Workers integration tests", () => {
   });
 
   it("Should return worker by id", async () => {
-    workerMock.expects("findByPk").resolves(workerExample);
+    workerMock.expects("findById").resolves(workerExample);
 
     const { body }: any = await server.executeOperation({
       query: workerQuery,
@@ -53,7 +53,7 @@ describe("Workers integration tests", () => {
   });
 
   it("Should return null if worker doesn't exists", async () => {
-    workerMock.expects("findByPk").resolves(null);
+    workerMock.expects("findById").resolves(null);
 
     const { body }: any = await server.executeOperation({
       query: workerQuery,
@@ -65,7 +65,9 @@ describe("Workers integration tests", () => {
   });
 
   it("should create a worker", async () => {
-    departmentMock.expects("findByPk").resolves({ id: 1, name: "Healthcare" });
+    departmentMock
+      .expects("findById")
+      .resolves({ _id: "1", name: "Healthcare" });
     workerMock.expects("create").resolves(workerExample);
 
     const { body }: any = await server.executeOperation({
@@ -76,12 +78,12 @@ describe("Workers integration tests", () => {
       .to.have.property("createWorker")
       .that.deep.equals({
         name: "Joseph Climber",
-        id: "1",
+        _id: "1",
       });
   });
 
   it("shouldn't create a worker if it's deparment doesn't exists", async () => {
-    departmentMock.expects("findByPk").resolves(null);
+    departmentMock.expects("findById").resolves(null);
     workerMock.expects("create").resolves(workerExample);
 
     const { body }: any = await server.executeOperation({
@@ -95,7 +97,7 @@ describe("Workers integration tests", () => {
   });
 
   it("should delete a worker", async () => {
-    workerMock.expects("findByPk").resolves(null);
+    workerMock.expects("findById").resolves(null);
 
     const { body }: any = await server.executeOperation({
       query: deleteWorkerMutation,
@@ -107,7 +109,8 @@ describe("Workers integration tests", () => {
   });
 
   it("should update a worker", async () => {
-    workerMock.expects("findByPk").resolves(workerExample);
+    workerMock.expects("findById").resolves(workerExample);
+    workerMock.expects("updateOne").resolves(undefined);
 
     const { body }: any = await server.executeOperation({
       query: updateWorkerMutation,
@@ -119,7 +122,7 @@ describe("Workers integration tests", () => {
   });
 
   it("should do nothing if no such worker exists", async () => {
-    workerMock.expects("findByPk").resolves(null);
+    workerMock.expects("findById").resolves(null);
 
     const { body }: any = await server.executeOperation({
       query: updateWorkerMutation,

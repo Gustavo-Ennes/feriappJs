@@ -1,6 +1,5 @@
 import { Worker } from "../../worker.model";
-import { WorkerInstanceInterface } from "../../types/worker";
-import { DepartmentInstanceOrNull } from "../../../Department/types/department";
+import { WorkerInterface } from "../../types/worker";
 import { Department } from "../../../Department";
 
 const createWorkerResolver = async (
@@ -8,17 +7,14 @@ const createWorkerResolver = async (
   args: any,
   __: any,
   ___: any
-): Promise<WorkerInstanceInterface> => {
+): Promise<WorkerInterface> => {
   const { workerInput } = args;
-  const departmentInstance: DepartmentInstanceOrNull =
-    await Department.findByPk(workerInput.departmentId);
-  const workerInstance: WorkerInstanceInterface = await Worker.create(
-    workerInput
+  const departmentInstance: WorkerInterface | null = await Department.findById(
+    workerInput.departmentId
   );
 
   if (departmentInstance) {
-    await workerInstance.setDepartment(departmentInstance);
-    await workerInstance.save();
+    const workerInstance: WorkerInterface = await Worker.create(workerInput);
     return workerInstance;
   } else throw new Error("DepartmentId: inexistent or not given");
 };

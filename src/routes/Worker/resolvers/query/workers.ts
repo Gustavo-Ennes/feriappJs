@@ -1,20 +1,16 @@
 import { Worker } from "../../worker.model";
-import { WorkerInstanceOrEmpty } from "../../types/worker";
+import { WorkerInterface } from "../../types/worker";
 
 const workersResolver = async (
   _: any,
   args: any,
   __: any,
   ___: any
-): Promise<WorkerInstanceOrEmpty> => {
+): Promise<WorkerInterface[]> => {
   const { fromDepartment }: { fromDepartment: number | undefined } = args;
 
-  const departmentInstances: WorkerInstanceOrEmpty = await Worker.findAll(
-    fromDepartment
-      ? {
-          where: { departmentId: fromDepartment },
-        }
-      : {}
+  const departmentInstances: WorkerInterface[] = await Worker.find(
+    fromDepartment ? { departmentId: fromDepartment } : {}
   );
   return departmentInstances;
 };

@@ -1,7 +1,5 @@
-import { Model } from "sequelize";
-
 import { Department } from "../../department.model";
-import { DepartmentInstanceOrNull } from "../../types/department";
+import { DepartmentInterface } from "../../types/department";
 
 const deleteDepartmentResolver = async (
   _: any,
@@ -9,11 +7,11 @@ const deleteDepartmentResolver = async (
   __: any,
   ___: any
 ): Promise<Boolean> => {
-  const { id } = args;
-  const departmentIntance: DepartmentInstanceOrNull =
-    await Department.findByPk(id);
+  const { _id } = args;
+  const departmentIntance: DepartmentInterface | null =
+    await Department.findById(_id);
   if (departmentIntance) {
-    await departmentIntance.destroy();
+    await Department.deleteOne({ _id });
     return true;
   }
   return false;

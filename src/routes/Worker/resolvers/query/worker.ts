@@ -1,17 +1,14 @@
 import { Worker } from "../../worker.model";
-import {
-  WorkerInstanceOrNull,
-} from "../../types/worker";
+import { WorkerInterface } from "../../types/worker";
 
 const workerResolver = async (
   _: any,
   args: any,
   __: any,
   ___: any
-): Promise<WorkerInstanceOrNull> => {
-  const { id } = args;
-  const workerInstance: WorkerInstanceOrNull =
-    await Worker.findByPk(id);
+): Promise<WorkerInterface | null> => {
+  const { _id } = args;
+  const workerInstance: WorkerInterface | null = await Worker.findById(_id);
   return workerInstance;
 };
 

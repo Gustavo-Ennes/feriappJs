@@ -1,17 +1,15 @@
 import { Department } from "../../department.model";
-import {
-  DepartmentInstanceOrNull,
-} from "../../types/department";
+import { DepartmentInterface } from "../../types/department";
 
 const departmentResolver = async (
   _: any,
-  args: any,
+  args: { _id: string },
   __: any,
   ___: any
-): Promise<DepartmentInstanceOrNull> => {
-  const { id } = args;
-  const departmentInstance: DepartmentInstanceOrNull =
-    await Department.findByPk(id);
+): Promise<DepartmentInterface | null> => {
+  const { _id } = args;
+  const departmentInstance: DepartmentInterface | null =
+    await Department.findById(_id);
   return departmentInstance;
 };
 

@@ -1,7 +1,7 @@
 const vacationDefinitions = {
   types: `
     type Vacation{
-      id: ID
+      _id: ID
       daysQtd: Int
       startDate: Date
       endDate: Date
@@ -12,7 +12,8 @@ const vacationDefinitions = {
       enjoyed: Boolean
     }
 
-    input VacationCreateInput{
+    input VacationInput{
+      _id: ID
       daysQtd: Int!
       startDate: Date!
       workerId: ID!
@@ -20,26 +21,15 @@ const vacationDefinitions = {
       type: String!
       enjoyed: Boolean
     }
-
-    input VacationUpdateInput{
-      id: ID!
-      daysQtd: Int
-      startDate: Date
-      workerId: ID
-      deferred: Boolean
-      observation: String
-      type: String
-      enjoyed: Boolean
-    }
   `,
   queries: `
-    vacation(id: ID!): Vacation
+    vacation(_id: ID!): Vacation
     vacations(fromWorker: ID): [Vacation]
   `,
   mutations: `
-    createVacation(vacationCreateInput: VacationCreateInput): Vacation
-    deleteVacation(id: ID!): Boolean
-    updateVacation(vacationUpdateInput: VacationUpdateInput): Boolean
+    createVacation(vacationInput: VacationInput): Vacation
+    deleteVacation(_id: ID!): Boolean
+    updateVacation(vacationInput: VacationInput): Boolean
   `,
 };
 

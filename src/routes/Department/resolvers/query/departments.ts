@@ -1,13 +1,14 @@
 import { Department } from "../../department.model";
-import { DepartmentInstancesOrEmpty } from "../../types/department";
+import { DepartmentInterface } from "../../types/department";
 
 const departmentsResolver = async (
   _: any,
-  args: any,
   __: any,
-  ___: any
-): Promise<DepartmentInstancesOrEmpty> => {
-  const departmentInstances: DepartmentInstancesOrEmpty = await Department.findAll();
+  ___: any,
+  ____: any
+): Promise<DepartmentInterface[]> => {
+  const departmentInstances: DepartmentInterface[] =
+    await Department.find({});
   return departmentInstances;
 };
 

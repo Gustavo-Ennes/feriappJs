@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 const workersQuery = `
 query{
   workers{
@@ -22,7 +24,7 @@ mutation{
     registry: "0152636"
     matriculation: "15.263-6",
     admissionDate: "${new Date().toISOString()}"
-    departmentId: "1"
+    departmentId: "${new Types.ObjectId()}"
   }){
     name
     _id

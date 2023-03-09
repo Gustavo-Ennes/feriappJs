@@ -69,6 +69,7 @@ describe("Workers integration tests", () => {
       .expects("findById")
       .resolves({ _id: "1", name: "Healthcare" });
     workerMock.expects("create").resolves(workerExample);
+    workerMock.expects("find").twice().resolves([]);
 
     const { body }: any = await server.executeOperation({
       query: createWorkerMutation,
@@ -80,6 +81,44 @@ describe("Workers integration tests", () => {
         name: "Joseph Climber",
         _id: "1",
       });
+  });
+
+  it("shouldn't create a worker if there's another worker with same matriculation number", async () => {
+    departmentMock
+      .expects("findById")
+      .resolves({ _id: "1", name: "Healthcare" });
+    workerMock.expects("create").resolves(workerExample);
+    workerMock.expects("find").resolves([{}]);
+
+    const { body }: any = await server.executeOperation({
+      query: createWorkerMutation,
+    });
+
+    expect(body.singleResult).to.have.property("errors");
+    expect(body.singleResult?.errors?.[0]).to.have.property(
+      "message",
+      "validation error: Conflict: matriculation exists"
+    );
+  });
+
+  it("shouldn't create a worker if there's another worker with same registry number", async () => {
+    departmentMock
+      .expects("findById")
+      .resolves({ _id: "1", name: "Healthcare" });
+    workerMock.expects("create").resolves(workerExample);
+    workerMock.expects("find").resolves([]);
+    // mocking pipe finding worker by registry
+    workerMock.expects("find").resolves([{}]);
+
+    const { body }: any = await server.executeOperation({
+      query: createWorkerMutation,
+    });
+
+    expect(body.singleResult).to.have.property("errors");
+    expect(body.singleResult?.errors?.[0]).to.have.property(
+      "message",
+      "validation error: Conflict: registry exists"
+    );
   });
 
   it("shouldn't create a worker if it's deparment doesn't exists", async () => {
@@ -111,6 +150,7 @@ describe("Workers integration tests", () => {
   it("should update a worker", async () => {
     workerMock.expects("findById").resolves(workerExample);
     workerMock.expects("updateOne").resolves(undefined);
+    workerMock.expects("find").twice().resolves([]);
 
     const { body }: any = await server.executeOperation({
       query: updateWorkerMutation,
@@ -121,6 +161,39 @@ describe("Workers integration tests", () => {
       .that.deep.equals(true);
   });
 
+  it("shouldn't update a worker if there's another worker with same matriculation number", async () => {
+    workerMock.expects("findById").resolves(workerExample);
+    workerMock.expects("updateOne").resolves(undefined);
+    workerMock.expects("find").resolves([{}]);
+
+    const { body }: any = await server.executeOperation({
+      query: updateWorkerMutation,
+    });
+
+    expect(body.singleResult).to.have.property("errors");
+    expect(body.singleResult?.errors?.[0]).to.have.property(
+      "message",
+      "validation error: Conflict: matriculation exists"
+    );
+  });
+
+  it("shouldn't update a worker if there's another worker with same registry number", async () => {
+    workerMock.expects("findById").resolves(workerExample);
+    workerMock.expects("updateOne").resolves(undefined);
+    workerMock.expects("find").resolves([]);
+    workerMock.expects("find").resolves([{}]);
+
+    const { body }: any = await server.executeOperation({
+      query: updateWorkerMutation,
+    });
+
+    expect(body.singleResult).to.have.property("errors");
+    expect(body.singleResult?.errors?.[0]).to.have.property(
+      "message",
+      "validation error: Conflict: registry exists"
+    );
+  });
+
   it("should do nothing if no such worker exists", async () => {
     workerMock.expects("findById").resolves(null);
 
@@ -128,8 +201,10 @@ describe("Workers integration tests", () => {
       query: updateWorkerMutation,
     });
 
-    expect(body.singleResult?.data)
-      .to.have.property("updateWorker")
-      .that.deep.equals(false);
+    expect(body.singleResult).to.have.property("errors");
+    expect(body.singleResult?.errors?.[0]).to.have.property(
+      "message",
+      "not found: workerId not found"
+    );
   });
 });

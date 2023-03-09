@@ -5,7 +5,7 @@ export interface WorkerInterface {
   name: string;
   role: string;
   admissionDate: date;
-  status: string;
+  status?: string;
   registry: string;
   matriculation: string;
   departmentId?: Schema.ObjectId;

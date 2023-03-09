@@ -17,7 +17,7 @@ const workerDefinitions = {
       role: String!
       matriculation: String!
       registry: String!
-      status: String!
+      status: String
       admissionDate: Date!
       departmentId: ID!
     }

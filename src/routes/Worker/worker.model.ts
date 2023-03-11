@@ -15,7 +15,7 @@ const WorkerSchema = new Schema<WorkerInterface>(
     },
     status: {
       type: String,
-      required: true,
+      default: "active",
     },
     registry: {
       type: String,
@@ -31,27 +31,21 @@ const WorkerSchema = new Schema<WorkerInterface>(
       type: Date,
       required: true,
     },
-    departmentId: {
+    department: {
       type: Types.ObjectId,
       required: true,
+      ref: "Department",
     },
   },
   {
-    // virtuals:{
-    //   vacations:{
-    //     get(){
-
-    //     }
-    //   }
-    //   department:{
-    //     get(){
-
-    //     }
-    //   }
-    // },
     timestamps: true,
   }
 );
+// pre is before model call
+WorkerSchema.pre(/^find/, function (next) {
+  this.populate("department");
+  next();
+});
 
 const Worker = model<WorkerInterface>("Worker", WorkerSchema);
 

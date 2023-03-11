@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
 import { server } from "../../../../app";
-import { workerMock, departmentMock } from "../../../utils/mocks";
+import { workerMock, departmentMock, vacationMock } from "../../../utils/mocks";
 import {
   workerQuery,
   workersQuery,
@@ -135,18 +135,6 @@ describe("Workers integration tests", () => {
     expect(body.singleResult).to.have.property("errors");
   });
 
-  it("should delete a worker", async () => {
-    workerMock.expects("findById").resolves(null);
-
-    const { body }: any = await server.executeOperation({
-      query: deleteWorkerMutation,
-    });
-
-    expect(body.singleResult?.data)
-      .to.have.property("deleteWorker")
-      .that.deep.equals(false);
-  });
-
   it("should update a worker", async () => {
     workerMock.expects("findById").resolves(workerExample);
     workerMock.expects("updateOne").resolves(undefined);
@@ -204,7 +192,39 @@ describe("Workers integration tests", () => {
     expect(body.singleResult).to.have.property("errors");
     expect(body.singleResult?.errors?.[0]).to.have.property(
       "message",
-      "not found: workerId not found"
+      "Worker doesn't exists."
     );
+  });
+
+  it("should delete a worker", async () => {
+    workerMock.expects("findById").resolves(workerExample);
+    workerMock.expects("deleteOne").resolves(undefined);
+    vacationMock.expects("deleteMany").resolves(undefined);
+
+    const query = deleteWorkerMutation;
+
+    const { body }: any = await server.executeOperation({
+      query,
+    });
+
+    expect(body.singleResult?.data)
+      .to.have.property("deleteWorker")
+      .that.deep.equals(true);
+  });
+
+  it("should do nothing if delete and id doesn't exists", async () => {
+    workerMock.expects("findById").resolves(null);
+    const query = deleteWorkerMutation;
+
+    const { body }: any = await server.executeOperation({
+      query,
+    });
+
+    expect(body.singleResult?.data)
+      .to.have.property("deleteWorker")
+      .that.deep.equals(null);
+    expect(body.singleResult?.errors?.[0])
+      .to.have.property("message")
+      .that.deep.equals("Worker doesn't exists.");
   });
 });

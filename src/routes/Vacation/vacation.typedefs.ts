@@ -5,7 +5,7 @@ const vacationDefinitions = {
       daysQtd: Int
       startDate: Date
       endDate: Date
-      workerId: ID
+      worker: Worker
       deferred: Boolean
       observation: String
       type: String
@@ -16,7 +16,7 @@ const vacationDefinitions = {
       _id: ID
       daysQtd: Int!
       startDate: Date!
-      workerId: ID!
+      worker: ID!
       observation: String
       type: String!
       enjoyed: Boolean

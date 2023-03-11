@@ -3,14 +3,14 @@ import { VacationInterface } from "../../types/vacation";
 
 const vacationsResolver = async (
   _: any,
-  args: any,
+  args: { fromWorker: number | undefined },
   __: any,
   ___: any
 ): Promise<VacationInterface[]> => {
-  const { fromWorker }: { fromWorker: number | undefined } = args;
+  const { fromWorker } = args;
 
   const vacationInstance: VacationInterface[] = await Vacation.find(
-    !!fromWorker ? { workerId: fromWorker } : {}
+    !!fromWorker ? { worker: fromWorker } : {}
   );
   return vacationInstance;
 };

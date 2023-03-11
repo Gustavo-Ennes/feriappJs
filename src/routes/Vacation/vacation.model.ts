@@ -1,9 +1,7 @@
 // import { add } from "date-fns";
 import { Schema, Types, model } from "mongoose";
 
-import {
-  VacationInterface,
-} from "./types/vacation";
+import { VacationInterface } from "./types/vacation";
 
 const VacationSchema = new Schema<VacationInterface>(
   {
@@ -15,9 +13,10 @@ const VacationSchema = new Schema<VacationInterface>(
       type: Date,
       required: true,
     },
-    workerId: {
+    worker: {
       type: Types.ObjectId,
       required: true,
+      ref: "Worker",
     },
     deferred: {
       type: Boolean,
@@ -36,22 +35,18 @@ const VacationSchema = new Schema<VacationInterface>(
     },
   },
   {
-    // virtuals:{
-    //   endData:{
-    //     get(){
-// 
-    //     }
-    //   },
-    //   worker:{
-    //     get(){
-// 
-    //     }
-    //   },
-    // },
     timestamps: true,
   }
 );
 
+// pre is before model call
+VacationSchema.pre(/^find/, function (next) {
+  this.populate("worker");
+  next();
+});
+
 const Vacation = model<VacationInterface>("Vacation", VacationSchema);
 
 export { Vacation };
+
+// TODO fix tests now

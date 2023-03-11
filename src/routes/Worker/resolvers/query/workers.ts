@@ -3,16 +3,16 @@ import { WorkerInterface } from "../../types/worker";
 
 const workersResolver = async (
   _: any,
-  args: any,
+  args: { fromDepartment: number | undefined },
   __: any,
   ___: any
 ): Promise<WorkerInterface[]> => {
-  const { fromDepartment }: { fromDepartment: number | undefined } = args;
+  const { fromDepartment } = args;
 
-  const departmentInstances: WorkerInterface[] = await Worker.find(
-    fromDepartment ? { departmentId: fromDepartment } : {}
+  const workerInstances: WorkerInterface[] = await Worker.find(
+    fromDepartment ? { department: fromDepartment } : {}
   );
-  return departmentInstances;
+  return workerInstances;
 };
 
 export { workersResolver };

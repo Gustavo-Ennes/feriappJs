@@ -25,7 +25,9 @@ describe("Vacation: integration", () => {
       .to.have.property("vacations")
       .that.deep.equals([
         {
-          workerId: "1",
+          worker: {
+            name: "Elias Maluco",
+          },
           _id: "1",
         },
       ]);
@@ -41,7 +43,9 @@ describe("Vacation: integration", () => {
       .to.have.property("vacations")
       .that.deep.equals([
         {
-          workerId: "1",
+          worker: {
+            name: "Elias Maluco",
+          },
           _id: "1",
         },
       ]);
@@ -56,7 +60,9 @@ describe("Vacation: integration", () => {
     expect(body.singleResult?.data)
       .to.have.property("vacation")
       .that.deep.equals({
-        workerId: "1",
+        worker: {
+          name: "Elias Maluco",
+        },
         _id: "1",
       });
   });
@@ -75,7 +81,9 @@ describe("Vacation: integration", () => {
       .to.have.property("createVacation")
       .that.deep.equals({
         _id: "1",
-        workerId: "1",
+        worker: {
+          name: "Elias Maluco",
+        },
       });
   });
 
@@ -226,35 +234,35 @@ describe("Vacation: integration", () => {
       .that.deep.equals(
         "There are another vacation(s) within the given vacation payload period."
       );
-  });
-
-  it("should delete a vacation", async () => {
-    vacationMock.expects("findById").resolves(vacationExample);
-    vacationMock.expects("deleteOne").resolves(undefined);
-    const query = deleteVacationMutation;
-
-    const { body }: any = await server.executeOperation({
-      query,
     });
 
-    expect(body.singleResult?.data)
-      .to.have.property("deleteVacation")
-      .that.deep.equals(true);
-  });
+    it("should delete a vacation", async () => {
+      vacationMock.expects("findById").resolves(vacationExample);
+      vacationMock.expects("deleteOne").resolves(undefined);
+      const query = deleteVacationMutation;
 
-  it("should do nothing if delete and id doesn't exists", async () => {
-    vacationMock.expects("findById").resolves(null);
-    const query = deleteVacationMutation;
+      const { body }: any = await server.executeOperation({
+        query,
+      });
 
-    const { body }: any = await server.executeOperation({
-      query,
+      expect(body.singleResult?.data)
+        .to.have.property("deleteVacation")
+        .that.deep.equals(true);
     });
 
-    expect(body.singleResult?.data)
-      .to.have.property("deleteVacation")
-      .that.deep.equals(null);
-    expect(body.singleResult?.errors?.[0])
-      .to.have.property("message")
-      .that.deep.equals("Vacation doesn't exists.");
-  });
+    it("should do nothing if delete and id doesn't exists", async () => {
+      vacationMock.expects("findById").resolves(null);
+      const query = deleteVacationMutation;
+
+      const { body }: any = await server.executeOperation({
+        query,
+      });
+
+      expect(body.singleResult?.data)
+        .to.have.property("deleteVacation")
+        .that.deep.equals(null);
+      expect(body.singleResult?.errors?.[0])
+        .to.have.property("message")
+        .that.deep.equals("Vacation doesn't exists.");
+    });
 });

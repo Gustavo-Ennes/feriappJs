@@ -1,7 +1,9 @@
 const vacationsQuery: string = `
 query{
   vacations{
-    workerId
+    worker{
+      name
+    }
     _id
   }
 } 
@@ -9,7 +11,9 @@ query{
 const vacationsFromQuery: string = `
 query{
   vacations(fromWorker: "1"){
-    workerId
+    worker{
+      name
+    }
     _id
   }
 } 
@@ -18,27 +22,31 @@ query{
 const vacationQuery: string = `
 query{
   vacation(_id: "1"){
-    workerId
+    worker{
+      name
+    }
     _id
   }
 }
 `;
 const createVacationMutation = ({
-  workerId = "1",
+  worker = "1",
   daysQtd = 15,
   startDate = "2023-02-23T17:35:31.308Z",
   type = "vacation",
 }): string => `
 mutation{
   createVacation(vacationInput: {
-      workerId: "${workerId}"
+      worker: "${worker}"
       daysQtd: ${daysQtd}
       startDate: "${startDate}"
       type: "${type}"
     }
   ){
     _id
-    workerId
+    worker{
+      name
+    }
   }
 }
 `;
@@ -57,7 +65,7 @@ const updateVacationMutation = ({
   deferred,
   observation,
   enjoyed = false,
-  workerId,
+  worker,
 }: any): string => `
 mutation{
   updateVacation(vacationInput: { 
@@ -68,7 +76,7 @@ mutation{
     ${deferred ? `deferred: ${deferred}` : ""}
     ${observation ? `observation: "${observation}"` : ""}
     ${enjoyed ? `enjoyed: "${enjoyed}"` : ""}
-    ${workerId ? `workerId: "${workerId}"` : ""}
+    ${worker ? `worker: "${worker}"` : ""}
   })
 }
 `;

@@ -11,10 +11,10 @@ const deleteVacationResolver = async (
   const vacationInstance: VacationInterface | null = await Vacation.findById(
     _id
   );
-  if (vacationInstance) {
-    await Vacation.deleteOne({ _id });
-    return true;
-  } else throw new Error("Vacation doesn't exists.");
-};
 
+  if (!vacationInstance) throw new Error("Vacation doesn't exists.");
+
+  await Vacation.deleteOne({ _id });
+  return true;
+};
 export { deleteVacationResolver };

@@ -3,7 +3,7 @@ import { WorkerInterface } from "../../types/worker";
 
 const workerResolver = async (
   _: any,
-  args: any,
+  args: { _id: string },
   __: any,
   ___: any
 ): Promise<WorkerInterface | null> => {

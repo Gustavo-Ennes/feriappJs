@@ -2,17 +2,17 @@ import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker";
 import { Department } from "../../../Department";
 import { validateMatriculationNumbers } from "./validation/matriculation";
+import { DepartmentInterface } from "../../../Department/types/department";
 
 const createWorkerResolver = async (
   _: any,
-  args: any,
+  args: { workerInput: WorkerInterface },
   __: any,
   ___: any
 ): Promise<WorkerInterface> => {
   const { workerInput } = args;
-  workerInput.status = "active";
-  const departmentInstance: WorkerInterface | null = await Department.findById(
-    workerInput.departmentId
+  const departmentInstance: DepartmentInterface | null = await Department.findById(
+    workerInput.department
   );
   if (!departmentInstance) throw new Error("not found: departmentId not found");
 

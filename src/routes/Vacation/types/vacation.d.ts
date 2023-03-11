@@ -5,7 +5,7 @@ export interface VacationInterface {
   daysQtd: number;
   startDate: date;
   endDate?: date;
-  workerId: Schema.ObjectId;
+  worker?: WorkerInterface | Types.ObjectId;
   deferred?: boolean;
   observation?: string;
   type: string;
@@ -16,7 +16,7 @@ export interface VacationInterface {
 export interface PipeContent {
   payload: VacationInterface;
   errorMessage: string;
-  worker: WorkerInterface | null;
+  worker?: WorkerInterface;
 }
 
 export type VacationDaysQtdPossibilities = 15 | 30;

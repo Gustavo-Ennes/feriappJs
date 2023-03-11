@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose";
+import { Vacation } from "../Vacation";
+import { VacationInterface } from "../Vacation/types/vacation";
 import { DepartmentInterface } from "./types/department";
 
 const DepartmentSchema = new Schema<DepartmentInterface>(
@@ -10,25 +12,10 @@ const DepartmentSchema = new Schema<DepartmentInterface>(
     },
   },
   {
-    //   virtuals:{
-    //     vacations:{
-    //       get(){
-    //
-    //       }
-    //     },
-    //     workers:{
-    //       get(){
-    //
-    //       }
-    //     }
-    //   },
     timestamps: true,
   }
 );
 
-const Department = model<DepartmentInterface>(
-  "Department",
-  DepartmentSchema
-);
+const Department = model<DepartmentInterface>("Department", DepartmentSchema);
 
 export { Department };

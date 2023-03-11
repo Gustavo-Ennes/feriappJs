@@ -10,7 +10,7 @@ const workerInput = {
   role: "Auxiliar",
   registry: "123121-1",
   matriculation: "212322",
-  departmentId: new Types.ObjectId(),
+  department: new Types.ObjectId(),
 };
 
 describe("Matriculation and registry validations", () => {

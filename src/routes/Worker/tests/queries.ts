@@ -24,7 +24,7 @@ mutation{
     registry: "0152636"
     matriculation: "15.263-6",
     admissionDate: "${new Date().toISOString()}"
-    departmentId: "${new Types.ObjectId()}"
+    department: "${new Types.ObjectId()}"
   }){
     name
     _id
@@ -47,7 +47,7 @@ mutation{
     registry: "0152636"
     matriculation: "15.263-6",
     admissionDate: "${new Date().toISOString()}"
-    departmentId: "1"
+    department: "1"
     _id: "1"
   })
 }

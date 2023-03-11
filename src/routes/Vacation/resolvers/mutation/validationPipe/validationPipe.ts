@@ -2,6 +2,7 @@ import { add } from "date-fns";
 import { andThen, pipe } from "ramda";
 
 import { Worker } from "../../../../Worker";
+import { WorkerInterface } from "../../../../Worker/types/worker";
 import { VacationInterface, PipeContent } from "../../../types/vacation";
 import { Vacation } from "../../../vacation.model";
 import { checkDaysQtd, checkType } from "./check";
@@ -9,7 +10,9 @@ import { checkDaysQtd, checkType } from "./check";
 const validateWorker = async (
   pipePayload: PipeContent
 ): Promise<PipeContent> => {
-  const worker = await Worker.findById(pipePayload.payload.workerId);
+  const worker: WorkerInterface | null = await Worker.findById(
+    pipePayload.payload.worker
+  );
   if (!worker) pipePayload.errorMessage = "Worker ID not found";
   else pipePayload.worker = worker;
   return pipePayload;
@@ -48,7 +51,7 @@ const validateNoConflict = async (
         }),
       },
     });
-    
+
     // because it'll always return itself
     if (vacations?.length > 1) {
       pipePayload.errorMessage =
@@ -66,6 +69,6 @@ const validationPipe = async (
     andThen(validateType),
     andThen(validateDaysQtd),
     andThen(validateNoConflict)
-  )({ payload: vacationPayload, errorMessage: "", worker: null });
+  )({ payload: vacationPayload, errorMessage: "" });
 
 export { validationPipe };

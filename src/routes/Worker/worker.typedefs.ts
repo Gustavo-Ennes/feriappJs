@@ -8,7 +8,7 @@ const workerDefinitions = {
       registry: String
       status: String
       admissionDate: Date
-      departmentId: ID
+      department: Department
     }
 
     input WorkerInput{
@@ -19,7 +19,7 @@ const workerDefinitions = {
       registry: String!
       status: String
       admissionDate: Date!
-      departmentId: ID!
+      department: ID!
     }
 
     scalar Date

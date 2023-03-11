@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import { DepartmentInterface } from "../../Department/types/department";
 
 export interface WorkerInterface {
   _id?: string;
@@ -8,7 +9,7 @@ export interface WorkerInterface {
   status?: string;
   registry: string;
   matriculation: string;
-  departmentId?: Schema.ObjectId;
+  department?: DepartmentInterface | Types.ObjectId;
 }
 
 export type WorkerKeys =

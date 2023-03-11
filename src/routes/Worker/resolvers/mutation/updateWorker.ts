@@ -4,7 +4,7 @@ import { validateMatriculationNumbers } from "./validation/matriculation";
 
 const updateWorkerResolver = async (
   _: any,
-  args: any,
+  args: { workerInput: WorkerInterface },
   __: any,
   ___: any
 ): Promise<Boolean> => {
@@ -13,7 +13,7 @@ const updateWorkerResolver = async (
   const workerInstance: WorkerInterface | null = await Worker.findById(
     workerInput._id
   );
-  if (!workerInstance) throw new Error("not found: workerId not found");
+  if (!workerInstance) throw new Error("Worker doesn't exists.");
 
   const { error, success } = await validateMatriculationNumbers(workerInput);
   if (!success) throw new Error(`validation error: ${error}`);

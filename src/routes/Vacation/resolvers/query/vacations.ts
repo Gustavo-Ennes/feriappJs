@@ -1,17 +1,20 @@
 import { Vacation } from "../../vacation.model";
-import { VacationInterface } from "../../types/vacation";
+import {
+  VacationInterface,
+  VacationsResolverArgsInterface,
+} from "../../types/vacation";
+import { buildOptions } from "./utils";
 
 const vacationsResolver = async (
   _: any,
-  args: { fromWorker: number | undefined },
+  args: VacationsResolverArgsInterface,
   __: any,
   ___: any
 ): Promise<VacationInterface[]> => {
-  const { fromWorker } = args;
+  const options = buildOptions(args);
+  console.log("🚀 ~ file: vacations.ts:15 ~ options:", options)
 
-  const vacationInstance: VacationInterface[] = await Vacation.find(
-    !!fromWorker ? { worker: fromWorker } : {}
-  );
+  const vacationInstance: VacationInterface[] = await Vacation.find(options);
   return vacationInstance;
 };
 

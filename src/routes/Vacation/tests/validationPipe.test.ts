@@ -77,6 +77,20 @@ describe("Vacation: Validation pipe", () => {
     expect(errorMessage).to.be.empty;
   });
 
+  it("should allow a half-day day dayOff", async () => {
+    const vacationExampleClone = clone(vacationExample);
+    vacationExampleClone.type = "dayOff";
+    vacationExampleClone.daysQtd = 0.5;
+    workerMock.expects("findById").resolves(workerExample);
+    vacationMock.expects("find").resolves([{}]);
+
+    const { payload, errorMessage } = await validationPipe(
+      vacationExampleClone
+    );
+    expect(payload).not.to.be.empty;
+    expect(errorMessage).to.be.empty;
+  });
+
   it("shouldn't allow a 15 day dayOff", async () => {
     const vacationExampleClone = clone(vacationExample);
     vacationExampleClone.type = "dayOff";

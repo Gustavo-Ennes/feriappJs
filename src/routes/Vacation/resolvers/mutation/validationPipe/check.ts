@@ -8,7 +8,7 @@ const checkDaysQtd = ({
   daysQtd: number;
   type: string;
 }): boolean => {
-  if (type === "dayOff") return daysQtd === 1;
+  if (type === "dayOff") return daysQtd === 1 || daysQtd === 0.5;
   else if (type === "vacation") return daysQtd === 15 || daysQtd === 30;
   else if (type === "license")
     return (

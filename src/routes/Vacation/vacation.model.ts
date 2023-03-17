@@ -41,7 +41,10 @@ const VacationSchema = new Schema<VacationInterface>(
 );
 
 VacationSchema.virtual("endDate").get(function () {
-  return add(new Date(this.startDate), { days: this.daysQtd }).toISOString();
+  return add(new Date(this.startDate), {
+    days: this.daysQtd,
+    seconds: -1,
+  }).toISOString();
 });
 VacationSchema.virtual("subType").get(function () {
   return this.type === "dayOff"

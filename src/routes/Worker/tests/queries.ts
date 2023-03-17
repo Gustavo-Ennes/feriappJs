@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { workerDefaultObjectId } from "../../Vacation/tests/queries";
 
 const workersQuery = `
 query{
@@ -10,7 +11,7 @@ query{
 
 const workerQuery = `
 query{
-  worker(_id: "1"){
+  worker(_id: "${workerDefaultObjectId}"){
     name
   }
 }
@@ -34,7 +35,7 @@ mutation{
 
 const deleteWorkerMutation = `
 mutation{
-  deleteWorker(_id: "1")
+  deleteWorker(_id: "${workerDefaultObjectId}")
 }
 `;
 
@@ -47,8 +48,8 @@ mutation{
     registry: "0152636"
     matriculation: "15.263-6",
     admissionDate: "${new Date().toISOString()}"
-    department: "1"
-    _id: "1"
+    department: "${workerDefaultObjectId}"
+    _id: "${workerDefaultObjectId}"
   })
 }
 `;

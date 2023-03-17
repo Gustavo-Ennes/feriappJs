@@ -1,5 +1,5 @@
-import { add } from "date-fns";
-import { andThen, pipe } from "ramda";
+import { add, parse, sub } from "date-fns";
+import { andThen, pipe, concat } from "ramda";
 
 import { Worker } from "../../../../Worker";
 import { WorkerInterface } from "../../../../Worker/types/worker";
@@ -42,18 +42,32 @@ const validateNoConflict = async (
   pipePayload: PipeContent
 ): Promise<PipeContent> => {
   if (!pipePayload.errorMessage && pipePayload.worker) {
-    const vacations = await Vacation.find({
+    const vacationsStartingInRange = await Vacation.find({
       deferred: true,
+      worker: pipePayload.worker._id,
+      _id: { $ne: pipePayload.payload._id },
       startDate: {
-        $gte: new Date(pipePayload.payload.startDate),
+        $gt: new Date(pipePayload.payload.startDate),
         $lte: add(new Date(pipePayload.payload.startDate), {
+          days: pipePayload.payload.daysQtd,
+          seconds: -1,
+        }),
+      },
+    });
+    const vacationsEndingInRange = await Vacation.find({
+      deferred: true,
+      worker: pipePayload.worker._id,
+      _id: { $ne: pipePayload.payload._id },
+      startDate: {
+        $lt: [new Date(pipePayload.payload.startDate)],
+        $gte: sub(new Date(pipePayload.payload.startDate), {
           days: pipePayload.payload.daysQtd,
         }),
       },
     });
-
-    // because it'll always return itself
-    if (vacations?.length > 1) {
+    const vacations = [...vacationsEndingInRange, ...vacationsStartingInRange];
+    console.log("🚀 ~ file: validationPipe.ts:73 ~ vacations:", vacations);
+    if (vacations.length) {
       pipePayload.errorMessage =
         "There are another vacation(s) within the given vacation payload period.";
     }
@@ -62,13 +76,13 @@ const validateNoConflict = async (
 };
 
 const validationPipe = async (
-  vacationPayload: VacationInterface
+  payload: VacationInterface
 ): Promise<PipeContent> =>
   pipe(
     validateWorker,
     andThen(validateType),
     andThen(validateDaysQtd),
     andThen(validateNoConflict)
-  )({ payload: vacationPayload, errorMessage: "" });
+  )({ payload });
 
 export { validationPipe };

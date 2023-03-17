@@ -1,5 +1,4 @@
-import { expect } from "chai";
-
+import { describe, it, expect } from "vitest";
 import { buildOptions } from "../resolvers/query/utils";
 import { todayEndDate, todayStartDate } from "../vacation.utils";
 
@@ -32,7 +31,7 @@ describe("Query utils tests", () => {
     const response = buildOptions({ period: "present" });
     expect(response).to.deep.equals({
       endDate: { $gte: todayEndDate },
-      startDate: { $lte: todayEndDate },  
+      startDate: { $lte: todayEndDate },
     });
   });
 });

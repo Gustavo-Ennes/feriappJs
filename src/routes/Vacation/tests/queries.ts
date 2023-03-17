@@ -1,3 +1,5 @@
+const vacationDefaultObjectId: string = "6414697eb7d80144bcc86170";
+const workerDefaultObjectId: string = "6414697eb7d80144bcc86171";
 const vacationsQuery: string = `
 query{
   vacations{
@@ -10,7 +12,7 @@ query{
 `;
 const vacationsFromQuery: string = `
 query{
-  vacations(fromWorker: "1"){
+  vacations(fromWorker: "${vacationDefaultObjectId}"){
     worker{
       name
     }
@@ -21,7 +23,7 @@ query{
 
 const vacationQuery: string = `
 query{
-  vacation(_id: "1"){
+  vacation(_id: "${vacationDefaultObjectId}"){
     worker{
       name
     }
@@ -30,7 +32,7 @@ query{
 }
 `;
 const createVacationMutation = ({
-  worker = "1",
+  worker = workerDefaultObjectId,
   daysQtd = 15,
   startDate = "2023-02-23T17:35:31.308Z",
   type = "vacation",
@@ -53,7 +55,7 @@ mutation{
 
 const deleteVacationMutation: string = `
 mutation{
-  deleteVacation(_id: "1")
+  deleteVacation(_id: "${vacationDefaultObjectId}")
 }
 `;
 
@@ -88,4 +90,6 @@ export {
   deleteVacationMutation,
   updateVacationMutation,
   vacationsFromQuery,
+  workerDefaultObjectId,
+  vacationDefaultObjectId,
 };

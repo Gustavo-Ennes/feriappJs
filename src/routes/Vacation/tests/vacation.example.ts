@@ -1,7 +1,7 @@
-import { Types } from "mongoose";
+import { vacationDefaultObjectId, workerDefaultObjectId } from "./queries";
 
 const vacationExample = {
-  _id: "1",
+  _id: vacationDefaultObjectId,
   worker: {
     name: "Elias Maluco",
     role: "Curador de AIDS",
@@ -14,4 +14,9 @@ const vacationExample = {
   type: "vacation",
 };
 
-export { vacationExample };
+const vacationExamplePayload = {
+  ...vacationExample,
+  worker: workerDefaultObjectId
+}
+
+export { vacationExample, vacationExamplePayload };

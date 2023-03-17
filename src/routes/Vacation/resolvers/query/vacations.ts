@@ -12,7 +12,6 @@ const vacationsResolver = async (
   ___: any
 ): Promise<VacationInterface[]> => {
   const options = buildOptions(args);
-  console.log("🚀 ~ file: vacations.ts:15 ~ options:", options)
 
   const vacationInstance: VacationInterface[] = await Vacation.find(options);
   return vacationInstance;

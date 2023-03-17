@@ -13,16 +13,10 @@ const updateVacationResolver = async (
 
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");
 
-  const { payload, errorMessage, worker } = await validationPipe({
-    ...vacationToUpdate,
-    ...vacationInput,
-  });
+  const { payload, errorMessage, worker } = await validationPipe(vacationInput);
 
   if (!errorMessage && worker && payload) {
-    await Vacation.updateOne(
-      { _id: vacationInput._id },
-      vacationInput
-    );
+    await Vacation.updateOne({ _id: vacationInput._id }, vacationInput);
     return true;
   } else throw new Error(errorMessage);
 };

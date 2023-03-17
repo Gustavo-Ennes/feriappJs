@@ -1,46 +1,35 @@
-import { expect } from "chai";
-import { Types } from "mongoose";
+import { describe, it, expect, afterEach, beforeAll, vi } from "vitest";
 
-import { workerMock } from "../../../../../utils/mocks";
+import { workerMock } from "../../../../../utils/mockApplication";
 import { workerExample } from "../../../tests/worker.example";
 import { validateMatriculationNumbers } from "./matriculation";
 
-const workerInput = {
-  name: "Gustavo",
-  role: "Auxiliar",
-  registry: "123121-1",
-  matriculation: "212322",
-  department: new Types.ObjectId(),
-};
-
 describe("Matriculation and registry validations", () => {
-  it("should validate if matriculation or registry is unique", async (): Promise<void> => {
-    workerMock.expects("find").twice().resolves([]);
-    const response = await validateMatriculationNumbers(workerExample);
+  beforeAll(() => {
+    vi.clearAllMocks();
+  });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
-    expect(response).to.have.property("success", true);
-    expect(response).to.have.property("error", undefined);
+  it("should validate if matriculation or registry is unique", async (): Promise<void> => {
+    workerMock.mockReturnValueOnce([]).mockReturnValueOnce([]);
+    const response = await validateMatriculationNumbers(workerExample);
+    expect(response).toHaveProperty("success", true);
+    expect(response).toHaveProperty("error", undefined);
   });
 
   it("shouldn't validate if the matriculation number already exists", async (): Promise<void> => {
-    // find call by matriculation
-    workerMock.expects("find").resolves([{}]);
+    workerMock.mockReturnValueOnce([{}]);
     const response = await validateMatriculationNumbers(workerExample);
-
-    expect(response).to.have.property("success", false);
-    expect(response).to.have.property(
-      "error",
-      "Conflict: matriculation exists"
-    );
+    expect(response).toHaveProperty("success", false);
+    expect(response).toHaveProperty("error", "Conflict: matriculation exists");
   });
 
-  it("shouldn't validate if the registry number already exists", async (): Promise<void> => {
-    workerMock.expects("find").resolves([]);
-    // find call by registry
-    workerMock.expects("find").resolves([{}]);
+  it("shouldn't validate if the matriculation number already exists", async (): Promise<void> => {
+    workerMock.mockReturnValueOnce([]).mockReturnValueOnce([{}]);
     const response = await validateMatriculationNumbers(workerExample);
-
-    expect(response).to.have.property("success", false);
-    expect(response).to.have.property("error", "Conflict: registry exists");
+    expect(response).toHaveProperty("success", false);
+    expect(response).toHaveProperty("error", "Conflict: registry exists");
   });
 });

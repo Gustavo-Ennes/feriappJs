@@ -1,22 +1,22 @@
-import { Schema, type Model } from "mongoose";
+import { Schema, type Model, Types } from "mongoose";
 import { WorkerInterface } from "../../Worker/types/worker";
 
 export interface VacationInterface {
   daysQtd: number;
   startDate: date;
   endDate?: date;
-  worker?: WorkerInterface | Types.ObjectId;
+  worker?: WorkerInterface | string;
   deferred?: boolean;
   observation?: string;
   type: string;
   enjoyed?: boolean;
-  _id?: string;
+  _id?: string | Types.ObjectId;
 }
 
 export interface PipeContent {
   payload: VacationInterface;
-  errorMessage: string;
-  worker?: WorkerInterface;
+  errorMessage?: string;
+  worker?: WorkerInterface | null;
 }
 
 export interface VacationsResolverArgsInterface {

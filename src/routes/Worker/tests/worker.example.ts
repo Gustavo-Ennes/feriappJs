@@ -1,5 +1,7 @@
+import { workerDefaultObjectId } from "../../Vacation/tests/queries";
+
 const workerExample: any = {
-  _id: "1",
+  _id: workerDefaultObjectId,
   name: "Joseph Climber",
   role: "Paperweight",
   status: "active",
@@ -7,7 +9,7 @@ const workerExample: any = {
   matriculation: "15.263-6",
   admissionDate: new Date(),
   department: {
-    name: "Saúde"
+    name: "Saúde",
   },
 };
 

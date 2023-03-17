@@ -17,6 +17,9 @@ const validateMatriculation = async (
 ): Promise<PipePayload> => {
   const workerWithSameMatriculation = await Worker.find({
     matriculation: pipePayload.workerInput.matriculation,
+    _id: {
+      $ne: pipePayload.workerInput._id,
+    },
   });
 
   return {
@@ -34,6 +37,9 @@ const validateRegistry = async (
   if (pipePayload.validationSuccess) {
     const workerWithSameRegistry = await Worker.find({
       registry: pipePayload.workerInput.registry,
+      _id: {
+        $ne: pipePayload.workerInput._id,
+      },
     });
 
     return {

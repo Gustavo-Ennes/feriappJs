@@ -1,6 +1,5 @@
-import { expect } from "chai";
-
-import { departmentMock } from "../../../utils/mocks";
+import { describe, it, expect, afterEach, vi, beforeAll } from "vitest";
+import { departmentMock } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import {
   departmentQuery,
@@ -11,8 +10,15 @@ import {
 } from "./queries";
 
 describe("Department integration tests", async () => {
+  beforeAll(() => {
+    vi.clearAllMocks();
+  });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("Should list departments", async () => {
-    departmentMock.expects("find").resolves([
+    departmentMock.mockResolvedValueOnce([
       {
         _id: "1",
         name: "department 1",
@@ -22,7 +28,6 @@ describe("Department integration tests", async () => {
     const { body }: any = await server.executeOperation({
       query: departmentsQuery,
     });
-
     expect(body.singleResult?.data)
       .to.have.property("departments")
       .that.deep.equals([
@@ -33,7 +38,7 @@ describe("Department integration tests", async () => {
   });
 
   it("Should get a department by id", async () => {
-    departmentMock.expects("findById").resolves({
+    departmentMock.mockResolvedValueOnce({
       _id: "1",
       name: "department 1",
     });
@@ -50,7 +55,7 @@ describe("Department integration tests", async () => {
   });
 
   it("Should return null if don't find a department by pk", async () => {
-    departmentMock.expects("findById").resolves(null);
+    departmentMock.mockResolvedValueOnce(null);
 
     const { body }: any = await server.executeOperation({
       query: departmentQuery,
@@ -62,9 +67,10 @@ describe("Department integration tests", async () => {
   });
 
   it("should create a department", async () => {
-    departmentMock
-      .expects("create")
-      .resolves({ name: "department 1", _id: "1" });
+    departmentMock.mockResolvedValueOnce({
+      _id: "1",
+      name: "department 1",
+    });
 
     const { body }: any = await server.executeOperation({
       query: createDepartmentMutation,
@@ -79,7 +85,7 @@ describe("Department integration tests", async () => {
   });
 
   it("should delete a department", async () => {
-    departmentMock.expects("findById").resolves(null);
+    departmentMock.mockResolvedValueOnce(null);
 
     const { body }: any = await server.executeOperation({
       query: deleteDepartmentMutation,
@@ -92,9 +98,14 @@ describe("Department integration tests", async () => {
 
   it("should update a department", async () => {
     departmentMock
-      .expects("findById")
-      .resolves({ name: "department 1", _id: "1", save: () => true });
-    departmentMock.expects("updateOne").resolves(undefined);
+      .mockResolvedValueOnce([
+        {
+          _id: "1",
+          name: "department 1",
+          save: () => true,
+        },
+      ])
+      .mockResolvedValueOnce(undefined);
 
     const { body }: any = await server.executeOperation({
       query: updateDepartmentMutation,
@@ -106,7 +117,7 @@ describe("Department integration tests", async () => {
   });
 
   it("should do nothing if no such department exists", async () => {
-    departmentMock.expects("findById").resolves(null);
+    departmentMock.mockResolvedValueOnce(null);
 
     const { body }: any = await server.executeOperation({
       query: updateDepartmentMutation,
@@ -117,5 +128,3 @@ describe("Department integration tests", async () => {
       .that.deep.equals(false);
   });
 });
-
-//TODO fix tests

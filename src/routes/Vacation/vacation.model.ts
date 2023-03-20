@@ -42,7 +42,7 @@ const VacationSchema = new Schema<VacationInterface>(
 
 VacationSchema.virtual("endDate").get(function () {
   return add(new Date(this.startDate), {
-    days: this.daysQtd,
+    days: this.daysQtd < 1 ? 1 : this.daysQtd,
     seconds: -1,
   }).toISOString();
 });

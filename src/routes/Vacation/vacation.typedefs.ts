@@ -11,6 +11,8 @@ const vacationDefinitions = {
       observation: String
       type: String
       enjoyed: Boolean
+      createdAt: Date
+      updatedAt: Date
     }
 
     input VacationInput{

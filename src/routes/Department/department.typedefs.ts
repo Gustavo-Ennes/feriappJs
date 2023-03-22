@@ -3,6 +3,8 @@ const departmentDefinitions = {
     type Department{
       _id: ID
       name: String
+      createdAt: Date
+      updatedAt: Date
     }
 
     input DepartmentInput{

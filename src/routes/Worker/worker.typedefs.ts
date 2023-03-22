@@ -9,6 +9,8 @@ const workerDefinitions = {
       status: String
       admissionDate: Date
       department: Department
+      createdAt: Date
+      updatedAt: Date
     }
 
     input WorkerInput{

@@ -12,7 +12,6 @@ const buildOptions = ({
   period,
   type,
   deferred,
-  enjoyed,
 }: VacationsResolverArgsInterface) => {
   const worker = fromWorker || undefined;
   const options: VacationsQueryOptionsInterface = {};
@@ -27,7 +26,6 @@ const buildOptions = ({
 
   // because it don't work if a prop is declared but undefined
   if (deferred !== undefined) options.deferred = deferred;
-  if (enjoyed !== undefined) options.enjoyed = enjoyed;
   if (worker) options.worker = worker;
   if (type) options.type = type;
   if (period) return mergeAll([options, periods[period]]);

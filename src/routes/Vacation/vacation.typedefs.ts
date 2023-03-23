@@ -32,7 +32,6 @@ const vacationDefinitions = {
       fromWorker: ID, 
       period: String, 
       type: String, 
-      enjoyed: Boolean, 
       deferred: Boolean
     ): [Vacation]
   `,

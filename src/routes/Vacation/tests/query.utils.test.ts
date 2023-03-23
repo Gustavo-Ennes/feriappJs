@@ -15,10 +15,6 @@ describe("Query utils tests", () => {
     const response = buildOptions({ deferred: false });
     expect(response).to.deep.equals({ deferred: false });
   });
-  it("should return a object with enjoyed prop", () => {
-    const response = buildOptions({ enjoyed: true });
-    expect(response).to.deep.equals({ enjoyed: true });
-  });
   it("should return startDate in past when period prop equals 'past'", () => {
     const response = buildOptions({ period: "past" });
     expect(response).to.deep.equals({ startDate: { $lt: todayStartDate } });

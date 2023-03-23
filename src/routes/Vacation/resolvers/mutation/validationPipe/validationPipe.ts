@@ -66,7 +66,6 @@ const validateNoConflict = async (
       },
     });
     const vacations = [...vacationsEndingInRange, ...vacationsStartingInRange];
-    console.log("🚀 ~ file: validationPipe.ts:73 ~ vacations:", vacations);
     if (vacations.length) {
       pipePayload.errorMessage =
         "There are another vacation(s) within the given vacation payload period.";

@@ -1,3 +1,4 @@
+import { verifyToken } from "../../../../firebase/firebase";
 import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker.d";
 import { validateMatriculationNumbers } from "./validation/matriculation";
@@ -5,9 +6,11 @@ import { validateMatriculationNumbers } from "./validation/matriculation";
 const updateWorkerResolver = async (
   _: any,
   args: { workerInput: WorkerInterface },
-  __: any,
+  context: { token?: string },
   ___: any
 ): Promise<Boolean> => {
+  await verifyToken(context.token || "");
+
   const { workerInput }: { workerInput: WorkerInterface } = args;
 
   const workerInstance: WorkerInterface | null = await Worker.findById(

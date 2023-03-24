@@ -1,3 +1,4 @@
+import { verifyToken } from "../../../../firebase/firebase";
 import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker";
 import { Vacation } from "../../../Vacation";
@@ -5,9 +6,11 @@ import { Vacation } from "../../../Vacation";
 const deleteWorkerResolver = async (
   _: any,
   args: { _id: string },
-  __: any,
+  context: { token?: string },
   ___: any
 ): Promise<Boolean | undefined> => {
+  await verifyToken(context.token || "");
+
   const { _id } = args;
   const workerInstance: WorkerInterface | null = await Worker.findById(_id);
 

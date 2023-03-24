@@ -1,14 +1,16 @@
+import { verifyToken } from "../../../../firebase/firebase";
 import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department";
 
 const departmentsResolver = async (
   _: any,
   __: any,
-  ___: any,
+  context: { token?: string },
   ____: any
 ): Promise<DepartmentInterface[]> => {
-  const departmentInstances: DepartmentInterface[] =
-    await Department.find({});
+  await verifyToken(context.token || "");
+  
+  const departmentInstances: DepartmentInterface[] = await Department.find({});
   return departmentInstances;
 };
 

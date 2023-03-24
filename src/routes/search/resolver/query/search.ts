@@ -1,3 +1,5 @@
+
+import { verifyToken } from "../../../../firebase/firebase";
 import { Vacation } from "../../../Vacation";
 import { VacationInterface } from "../../../Vacation/types/vacation";
 import { Worker } from "../../../Worker";
@@ -8,9 +10,11 @@ import { WorkerInterface } from "../../../Worker/types/worker";
 const searchResolver = async (
   _: any,
   args: { searchTerm: string },
-  __: any,
+  context: { token?: string },
   ___: any
 ): Promise<SearchResult> => {
+  await verifyToken(context.token || "");
+
   const { searchTerm } = args;
   const results: SearchResult = {};
   results.departments = await Department.find({

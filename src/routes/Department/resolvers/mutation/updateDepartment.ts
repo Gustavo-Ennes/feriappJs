@@ -1,12 +1,15 @@
+import { verifyToken } from "../../../../firebase/firebase";
 import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department.d";
 
 const updateDepartmentResolver = async (
   _: any,
   args: { departmentInput: DepartmentInterface },
-  __: any,
+  context: { token?: string },
   ___: any
 ): Promise<Boolean> => {
+  await verifyToken(context.token || "");
+
   const { departmentInput } = args;
   const departmentInstance: DepartmentInterface | null =
     await Department.findById(departmentInput._id);
@@ -19,3 +22,4 @@ const updateDepartmentResolver = async (
 };
 
 export { updateDepartmentResolver };
+

@@ -1,3 +1,4 @@
+import { verifyToken } from "../../../../firebase/firebase";
 import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
 import { validationPipe } from "./validationPipe";
@@ -5,9 +6,11 @@ import { validationPipe } from "./validationPipe";
 const updateVacationResolver = async (
   _: any,
   args: { vacationInput: VacationInterface },
-  __: any,
+  context: { token?: string },
   ___: any
 ): Promise<boolean> => {
+  await verifyToken(context.token || "");
+
   const { vacationInput } = args;
   const vacationToUpdate = await Vacation.findById(vacationInput._id);
 

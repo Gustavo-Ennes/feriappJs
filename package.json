@@ -41,5 +41,8 @@
     "url": "https://github.com/Gustavo-Ennes/feriappJs/issues"
   },
   "homepage": "https://github.com/Gustavo-Ennes/feriappJs#readme",
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "18.x"
+  }
 }

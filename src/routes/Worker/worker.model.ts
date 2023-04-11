@@ -2,6 +2,8 @@ import { Schema, Types, model } from "mongoose";
 
 // import { Vacation } from "../Vacation/vacation.model";
 import { WorkerInterface } from "./types/worker";
+import { Vacation } from "../Vacation";
+import { isFuture, isPast } from "date-fns";
 
 const WorkerSchema = new Schema<WorkerInterface>(
   {
@@ -12,10 +14,6 @@ const WorkerSchema = new Schema<WorkerInterface>(
     role: {
       type: String,
       required: true,
-    },
-    status: {
-      type: String,
-      default: "active",
     },
     registry: {
       type: String,
@@ -45,6 +43,23 @@ const WorkerSchema = new Schema<WorkerInterface>(
 WorkerSchema.pre(/^find/, function (next) {
   this.populate("department");
   next();
+});
+
+WorkerSchema.virtual("status").get(async function () {
+  const workerVacations = await Vacation.find({
+    deferred: true,
+    worker: this._id,
+  });
+  const result = { status: "active" };
+  workerVacations.forEach((vacation) => {
+    if (
+      isPast(new Date(vacation.startDate)) &&
+      isFuture(new Date(vacation.endDate))
+    ) {
+      result.status = vacation.type;
+    }
+  });
+  return result.status;
 });
 
 const Worker = model<WorkerInterface>("Worker", WorkerSchema);

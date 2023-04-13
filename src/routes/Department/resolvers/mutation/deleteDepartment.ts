@@ -16,7 +16,6 @@ const deleteDepartmentResolver = async (
     await Department.findById(_id);
   if (departmentIntance) {
     await Department.deleteOne({ _id });
-    await Worker.deleteMany({ department: _id });
     return true;
   }
   return false;

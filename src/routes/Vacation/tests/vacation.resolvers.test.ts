@@ -11,6 +11,7 @@ import {
   updateVacationMutation,
   vacationsFromQuery,
   vacationDefaultObjectId,
+  getVacationPdfQuery,
 } from "./queries";
 import { vacationExample } from "./vacation.example";
 import { workerExample } from "../../Worker/tests/worker.example";
@@ -48,6 +49,24 @@ describe("Vacation: integration", () => {
         _id: vacationExample._id,
       },
     ]);
+  });
+
+  it("should return a requested pdf", async () => {
+    vacationMock.mockReturnValueOnce(vacationExample);
+    const { body }: any = await server.executeOperation({
+      query: getVacationPdfQuery(),
+    });
+    expect(body.singleResult?.data).toHaveProperty("vacationPdf");
+    expect(body.singleResult?.data.vacationPdf).to.be.a.string;
+  });
+
+  it("should return throw an error if pdf wasn't built successfully", async () => {
+    vacationMock.mockReturnValueOnce(null);
+    const { body }: any = await server.executeOperation({
+      query: getVacationPdfQuery("123"),
+    });
+    expect(body.singleResult?.data).toHaveProperty("vacationPdf");
+    expect(body.singleResult?.data.vacationPdf).to.be.null;
   });
 
   it("should list a vacation by id", async () => {

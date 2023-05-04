@@ -83,6 +83,12 @@ mutation{
 }
 `;
 
+const getVacationPdfQuery = (_id: string = vacationDefaultObjectId): string => `
+  query{
+    vacationPdf(_id: "${_id}", type: "vacation")
+  }
+`;
+
 export {
   vacationsQuery,
   vacationQuery,
@@ -92,4 +98,5 @@ export {
   vacationsFromQuery,
   workerDefaultObjectId,
   vacationDefaultObjectId,
+  getVacationPdfQuery,
 };

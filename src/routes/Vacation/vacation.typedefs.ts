@@ -28,6 +28,7 @@ const vacationDefinitions = {
   `,
   queries: `
     vacation(_id: ID!): Vacation
+    vacationPdf(_id: ID!, type: String!): String
     vacations(
       fromWorker: ID, 
       period: String, 

@@ -6,11 +6,14 @@ export interface VacationInterface {
   startDate: date;
   endDate?: date;
   worker?: WorkerInterface | string;
+  subType?: string;
   deferred?: boolean;
   observation?: string;
   type: string;
   enjoyed?: boolean;
   _id?: string | Types.ObjectId;
+  createdAt?: date;
+  updatedAt?: date;
 }
 
 export interface PipeContent {
@@ -24,6 +27,11 @@ export interface VacationsResolverArgsInterface {
   period?: PeriodOptionsType;
   type?: string;
   deferred?: boolean;
+}
+
+export interface VacationPdfResolverArgsInterface {
+  _id: string;
+  type: 'vacation' | 'justification'
 }
 export interface VacationsQueryOptionsInterface {
   worker?: string;

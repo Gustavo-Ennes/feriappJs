@@ -1,5 +1,4 @@
 import { verifyToken } from "../../../../firebase/firebase";
-import { Worker } from "../../../Worker";
 import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department";
 

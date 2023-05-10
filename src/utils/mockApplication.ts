@@ -13,6 +13,7 @@ const vacationMock = vi.fn();
 const workerMock = vi.fn();
 const departmentMock = vi.fn();
 const verifyTokenMock = vi.fn();
+const extraHoursTableMock = vi.fn();
 
 vi.doMock("../routes/Vacation/vacation.model", () => ({
   Vacation: getModelMethods(vacationMock),
@@ -23,9 +24,18 @@ vi.doMock("../routes/Worker/worker.model", () => ({
 vi.doMock("../routes/Department/department.model", () => ({
   Department: getModelMethods(departmentMock),
 }));
+vi.doMock("../routes/ExtraHoursTable/extraHoursTable.model", () => ({
+  ExtraHoursTableModel: getModelMethods(extraHoursTableMock),
+}));
 vi.doMock("../firebase/firebase", () => ({
   firebaseApp: vi.fn(),
   verifyToken: verifyTokenMock,
 }));
 
-export { vacationMock, workerMock, departmentMock, verifyTokenMock };
+export {
+  vacationMock,
+  workerMock,
+  departmentMock,
+  verifyTokenMock,
+  extraHoursTableMock,
+};

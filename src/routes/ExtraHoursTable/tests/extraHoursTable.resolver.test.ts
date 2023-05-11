@@ -10,84 +10,94 @@ import {
   extraHoursTableQuery,
   extraHourTablesQuery,
 } from "./queries";
-import { extraHoursTableFixture } from "./extraHoursTable.fixture";
+import {
+  getExtraHoursTableFixture,
+  idWorkers,
+  populatedWorkers,
+} from "./extraHoursTable.fixture";
 
-describe("Update ExtraHoursTable model pipe tests", async () => {
+describe("Update ExtraHoursTable model tests", async () => {
   beforeAll(() => {
     vi.clearAllMocks();
   });
   afterEach(() => {
     vi.clearAllMocks();
   });
+
   it("should get the table", async () => {
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+    const fixture = getExtraHoursTableFixture("populated");
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: extraHoursTableQuery,
       variables: { _id: "1" },
     });
+    console.log(
+      "🚀 ~ file: extraHoursTable.resolver.test.ts:35 ~ it ~ body:",
+      JSON.stringify(body, null, 2)
+    );
     expect(body.singleResult?.data)
       .to.have.property("extraHoursTable")
-      .that.deep.equals(dissoc("save", extraHoursTableFixture));
+      .that.deep.equals(dissoc("save", fixture));
   });
 
   it("should get the table", async () => {
-    extraHoursTableMock.mockResolvedValueOnce([extraHoursTableFixture]);
+    const fixture = getExtraHoursTableFixture("populated");
+    extraHoursTableMock.mockResolvedValueOnce([fixture]);
 
     const { body }: any = await server.executeOperation({
       query: extraHourTablesQuery,
     });
     expect(body.singleResult?.data)
       .to.have.property("extraHoursTables")
-      .that.deep.equals([dissoc("save", extraHoursTableFixture)]);
+      .that.deep.equals([dissoc("save", fixture)]);
   });
 
   it("should create a table without days", async () => {
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    input.days = [];
+    fixture.days = [];
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
-    const tableWithoutIdAndDays = pick(
-      ["reference", "days", "save"],
-      extraHoursTableFixture
-    );
-    tableWithoutIdAndDays.days = [];
     const { body }: any = await server.executeOperation({
       query: createExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithoutIdAndDays),
+        extraHoursTableInput: input,
       },
     });
     expect(body.singleResult?.data)
       .to.have.property("createExtraHoursTable")
-      .that.deep.equals(dissoc("save", extraHoursTableFixture));
+      .that.deep.equals(input);
   });
 
   it("should create a table with days", async () => {
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
-    const tableWithDays = pick(
-      ["reference", "days", "save"],
-      extraHoursTableFixture
-    );
     const { body }: any = await server.executeOperation({
       query: createExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithDays),
+        extraHoursTableInput: input,
       },
     });
     expect(body.singleResult?.data)
       .to.have.property("createExtraHoursTable")
-      .that.deep.equals(dissoc("save", extraHoursTableFixture));
+      .that.deep.equals(dissoc("save", fixture));
   });
 
-  it("should should update a referece in a extraHoursTable", async () => {
-    const tableWithAnotherReference = clone(extraHoursTableFixture);
-    tableWithAnotherReference.reference = "05-2023";
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+  it("should should update a referece in an extraHoursTable", async () => {
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    fixture.reference = "05-2025";
+    input.reference = "05-2025";
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: updateExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithAnotherReference),
+        extraHoursTableInput: input,
       },
     });
     expect(body.singleResult?.data)
@@ -95,31 +105,17 @@ describe("Update ExtraHoursTable model pipe tests", async () => {
       .that.deep.equals(true);
   });
 
-  it("should should update a day in a extraHoursTable", async () => {
-    const tableWithDifferentDay = clone(extraHoursTableFixture);
-    tableWithDifferentDay.days = [
-      {
-        number: 19,
-        hours: [
-          { workerId: "2", number: 1.2 },
-          { workerId: "22", number: 2.3 },
-        ],
-      },
-      {
-        number: 20,
-        hours: [{ workerId: "12", number: 0.3 }],
-      },
-      {
-        number: 22,
-        hours: [{ workerId: "22", number: 2.2 }],
-      },
-    ];
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+  it("should should update a day in an extraHoursTable", async () => {
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    fixture.days[0] = { number: 2, hours: [populatedWorkers[2]] };
+    input.days[0] = { number: 2, hours: [idWorkers[2]] };
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: updateExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithDifferentDay),
+        extraHoursTableInput: dissoc("save", input),
       },
     });
     expect(body.singleResult?.data)
@@ -127,31 +123,17 @@ describe("Update ExtraHoursTable model pipe tests", async () => {
       .that.deep.equals(true);
   });
 
-  it("should should update an hour in a day in a extraHoursTable", async () => {
-    const tableWithDifferentHour = clone(extraHoursTableFixture);
-    tableWithDifferentHour.days = [
-      {
-        number: 19,
-        hours: [
-          { workerId: "2", number: 12.2 },
-          { workerId: "22", number: 2.3 },
-        ],
-      },
-      {
-        number: 20,
-        hours: [{ workerId: "12", number: 0.3 }],
-      },
-      {
-        number: 22,
-        hours: [],
-      },
-    ];
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+  it("should should update an hour in a day in an extraHoursTable", async () => {
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    fixture.days[0].hours[0] = populatedWorkers[2];
+    input.days[0].hours[0] = idWorkers[2];
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: updateExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithDifferentHour),
+        extraHoursTableInput: dissoc("save", input),
       },
     });
     expect(body.singleResult?.data)
@@ -159,28 +141,17 @@ describe("Update ExtraHoursTable model pipe tests", async () => {
       .that.deep.equals(true);
   });
 
-  it("should should remove an hour in a day in a extraHoursTable", async () => {
-    const tableWithRemovedHour = clone(extraHoursTableFixture);
-    tableWithRemovedHour.days = [
-      {
-        number: 19,
-        hours: [{ workerId: "2", number: 1.2 }],
-      },
-      {
-        number: 20,
-        hours: [{ workerId: "12", number: 0.3 }],
-      },
-      {
-        number: 22,
-        hours: [],
-      },
-    ];
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+  it("should should remove an hour in a day in an extraHoursTable", async () => {
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    fixture.days[0].hours.pop();
+    input.days[0].hours.pop();
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: updateExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithRemovedHour),
+        extraHoursTableInput: dissoc("save", input),
       },
     });
     expect(body.singleResult?.data)
@@ -189,19 +160,16 @@ describe("Update ExtraHoursTable model pipe tests", async () => {
   });
 
   it("should should remove a day in a extraHoursTable", async () => {
-    const tableWithRemovedDay = clone(extraHoursTableFixture);
-    tableWithRemovedDay.days = [
-      {
-        number: 19,
-        hours: [{ workerId: "2", number: 1.2 }],
-      },
-    ];
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+    const fixture = getExtraHoursTableFixture("populated");
+    const input = getExtraHoursTableFixture("id");
+    fixture.days.pop();
+    input.days.pop();
+    extraHoursTableMock.mockResolvedValueOnce(fixture);
 
     const { body }: any = await server.executeOperation({
       query: updateExtraHourTableMutation,
       variables: {
-        extraHoursTableInput: dissoc("save", tableWithRemovedDay),
+        extraHoursTableInput: dissoc("save", input),
       },
     });
     expect(body.singleResult?.data)
@@ -209,8 +177,10 @@ describe("Update ExtraHoursTable model pipe tests", async () => {
       .that.deep.equals(true);
   });
 
-  it("should should remove a extraHoursTable", async () => {
-    extraHoursTableMock.mockResolvedValueOnce(extraHoursTableFixture);
+  it("should should remove an extraHoursTable", async () => {
+    extraHoursTableMock.mockResolvedValueOnce(
+      getExtraHoursTableFixture("populated")
+    );
     const { body }: any = await server.executeOperation({
       query: deleteExtrahourTableMutation,
       variables: {

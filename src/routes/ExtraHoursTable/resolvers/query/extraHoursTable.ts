@@ -4,7 +4,7 @@ import { ExtraHoursTableInterface } from "../../types/extraHoursTable";
 
 const extraHoursTableResolver = async (
   _: any,
-  args: { _id: string },
+  args: { _id?: string; reference?: string },
   context: { token?: string },
   ___: any
 ): Promise<ExtraHoursTableInterface | null> => {
@@ -12,7 +12,7 @@ const extraHoursTableResolver = async (
 
   const { _id } = args;
   const extraHoursTableInstance: ExtraHoursTableInterface | null =
-    await ExtraHoursTableModel.findById(_id);
+    await ExtraHoursTableModel.findOne(args).exec();
   return extraHoursTableInstance;
 };
 

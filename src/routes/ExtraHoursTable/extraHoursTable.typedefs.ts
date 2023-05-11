@@ -10,7 +10,7 @@ const extraHoursTableDefinitions = {
 
     input ExtraHoursTableInput{
       _id: ID
-      reference: String!
+      reference: String
       days: [DayInput!]
     }
     input DayInput{
@@ -18,7 +18,7 @@ const extraHoursTableDefinitions = {
       hours: [HourInput!]
     }
     input HourInput{
-      workerId: String!
+      worker: String!
       number: Float!
     }
   
@@ -27,12 +27,12 @@ const extraHoursTableDefinitions = {
       hours: [Hour!]!
     }    
     type Hour {
-      workerId: ID!
+      worker: Worker!
       number: Float!
     }
   `,
   queries: `
-    extraHoursTable(_id: ID!): ExtraHoursTable
+    extraHoursTable(_id: ID, reference: String): ExtraHoursTable
     extraHoursTables: [ExtraHoursTable]!
   `,
   mutations: `

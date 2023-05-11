@@ -10,13 +10,23 @@ const updateExtraHoursTableResolver = async (
 ): Promise<Boolean> => {
   await verifyToken(context.token || "");
 
+  const changes = {occurs: false}
   const { extraHoursTableInput } = args;
   const extraHoursTableInstance: ExtraHoursTableInterface | null =
     await ExtraHoursTableModel.findById(extraHoursTableInput._id);
 
-  if (extraHoursTableInstance) {
+  if(!extraHoursTableInstance) return false;
+
+  if (extraHoursTableInput.reference) {
     extraHoursTableInstance.reference = extraHoursTableInput.reference
+    changes.occurs = true
+  }
+  if(extraHoursTableInput.days){
     extraHoursTableInstance.days = extraHoursTableInput.days
+    changes.occurs = true
+  }
+
+  if(changes.occurs){
     await extraHoursTableInstance.save()
     return true;
   }

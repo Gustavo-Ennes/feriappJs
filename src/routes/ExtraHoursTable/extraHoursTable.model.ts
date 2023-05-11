@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { ExtraHoursTableInterface } from "./types/extraHoursTable";
 
 const tableSchema = new Schema({
@@ -14,9 +14,10 @@ const tableSchema = new Schema({
         required: true,
       },
       hours: [{
-        workerId: {
-          type: String,
+        worker: {
+          type: Types.ObjectId,
           required: true,
+          ref: "Worker"
         },
         number: {
           type: Number,
@@ -26,6 +27,13 @@ const tableSchema = new Schema({
     }
   ],
 });
+
+// pre is before model call
+tableSchema.pre(/^find/, function (next) {
+  this.populate("days.hours.worker");
+  next();
+});
+
 
 const ExtraHoursTableModel = model<ExtraHoursTableInterface>(
   "Table",

@@ -6,7 +6,10 @@ query ExtraHourById($_id: ID!){
     days{
       number
       hours{
-        workerId
+        worker{
+          _id
+          name
+        }
         number
       }
     }
@@ -22,7 +25,10 @@ query{
     days{
       number
       hours{
-        workerId
+        worker{
+          _id
+          name
+        }
         number
       }
     }
@@ -37,7 +43,10 @@ mutation CreateExtraHoursTable($extraHoursTableInput: ExtraHoursTableInput!){
     days{
       number
       hours{
-        workerId
+        worker{
+          _id
+          name
+        }
         number
       }
     }

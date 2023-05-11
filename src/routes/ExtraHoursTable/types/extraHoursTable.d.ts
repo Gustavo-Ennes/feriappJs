@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import type { Worker } from "../../Worker/types/worker";
 
 interface ExtraHoursTableInterface extends Document {
   reference: String;
@@ -6,20 +7,13 @@ interface ExtraHoursTableInterface extends Document {
 }
 
 interface ExtraHoursTableInput {
-  _id: ID;
-  reference: String!;
-  days: Day[];
-}
-
-interface ExtraHoursCellInput {
-  tableId: ID!;
-  workerId: ID!;
-  day: number!;
-  hour: number;
+  _id?: ID;
+  reference?: String!;
+  days?: Day[];
 }
 
 interface Hour {
-  workerId: ID!;
+  worker: ID! | Worker;
   number: Float!;
 }
 
@@ -28,22 +22,10 @@ interface Day {
   hours: Hour[];
 }
 
-interface ExtractDayFunctionParams {
-  tableDay: number;
-  days: Day[];
-}
-
-interface ExtractHoursFunctionParams {
-  workerId: string;
-  hours: Hour[];
-}
-
 export type {
   ExtraHoursTableInterface,
   ExtraHoursTableInput,
   ExtraHoursCellInput,
   Day,
-  ExtractHoursFunctionParams,
   Hour,
-  ExtractDayFunctionParams,
 };

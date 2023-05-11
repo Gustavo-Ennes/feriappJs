@@ -3,6 +3,9 @@ import { vi } from "vitest";
 const getModelMethods = (expectedFn: () => any) => ({
   find: expectedFn,
   findById: expectedFn,
+  findOne: (condition: any) => ({
+    exec: () => expectedFn(),
+  }),
   create: expectedFn,
   updateOne: expectedFn,
   deleteOne: expectedFn,

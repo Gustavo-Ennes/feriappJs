@@ -4,7 +4,7 @@ import { departmentResolvers } from "../routes/Department";
 import { workerResolvers } from "../routes/Worker";
 import { vacationResolvers } from "../routes/Vacation/";
 import { searchResolvers } from "../routes/search";
-import { extraHoursTableResolvers } from "./ExtraHoursTable";
+import { extraHourResolvers } from "./ExtraHour";
 
 const { Query: departmentQueries, Mutation: departmentMutations } =
   departmentResolvers;
@@ -12,8 +12,8 @@ const { Query: workerQueries, Mutation: workerMutations } = workerResolvers;
 const { Query: vacationQueries, Mutation: vacationMutations } =
   vacationResolvers;
 const { Query: searchQuery } = searchResolvers;
-const { Query: extraHoursTableQueries, Mutation: extraHoursTableMutations } =
-  extraHoursTableResolvers;
+const { Query: extraHourQueries, Mutation: extraHourMutations } =
+  extraHourResolvers;
 
 const resolvers = {
   Query: {
@@ -21,13 +21,13 @@ const resolvers = {
     ...workerQueries,
     ...vacationQueries,
     ...searchQuery,
-    ...extraHoursTableQueries,
+    ...extraHourQueries,
   },
   Mutation: {
     ...departmentMutations,
     ...workerMutations,
     ...vacationMutations,
-    ...extraHoursTableMutations,
+    ...extraHourMutations,
   },
 };
 

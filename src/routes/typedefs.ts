@@ -4,7 +4,7 @@ import { departmentDefinitions } from "./Department";
 import { workerDefinitions } from "./Worker";
 import { vacationDefinitions } from "./Vacation";
 import { searchDefinitions } from "./search";
-import { extraHoursTableDefinitions } from "./ExtraHoursTable";
+import { extraHourDefinitions } from "./ExtraHour";
 
 const typeDefs = `
   type Query{
@@ -12,20 +12,20 @@ const typeDefs = `
     ${workerDefinitions.queries}
     ${vacationDefinitions.queries}
     ${searchDefinitions.queries}
-    ${extraHoursTableDefinitions.queries}
+    ${extraHourDefinitions.queries}
   }
   type Mutation{
     ${departmentDefinitions.mutations}
     ${workerDefinitions.mutations}
     ${vacationDefinitions.mutations}
-    ${extraHoursTableDefinitions.mutations}
+    ${extraHourDefinitions.mutations}
   }
   
   ${departmentDefinitions.types}
   ${workerDefinitions.types}
   ${vacationDefinitions.types}
   ${searchDefinitions.types}
-  ${extraHoursTableDefinitions.types}
+  ${extraHourDefinitions.types}
 `;
 
 export { typeDefs };

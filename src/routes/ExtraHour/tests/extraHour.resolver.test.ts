@@ -129,6 +129,25 @@ describe("Update ExtraHoursTable model tests", async () => {
       .that.deep.equals(false);
   });
 
+  it("should delete an ExtraHour if update it with amount of 0", async () => {
+    const extraHourInput = {
+      ...extraHourFixtures[0],
+      worker: extraHourFixtures[0].worker._id,
+      amount: 0,
+    };
+    extraHourMock
+      .mockResolvedValueOnce(extraHourFixtures[0])
+      .mockResolvedValueOnce(true);
+
+    const { body }: any = await server.executeOperation({
+      query: updateExtraHourMutation,
+      variables: { extraHourInput },
+    });
+    expect(body.singleResult?.data)
+      .to.have.property("updateExtraHour")
+      .that.deep.equals(true);
+  });
+
   it("shouldn't delete an ExtraHour without a valid id", async () => {
     extraHourMock.mockResolvedValueOnce(null);
 

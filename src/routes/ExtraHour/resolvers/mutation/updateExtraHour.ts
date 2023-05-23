@@ -11,12 +11,16 @@ const updateExtraHourResolver = async (
   await verifyToken(context.token || "");
 
   const { extraHourInput } = args;
-  const extraHoursTableInstance: ExtraHourInterface | null =
+  const extraHourInstance: ExtraHourInterface | null =
     await ExtraHourModel.findById(extraHourInput._id);
 
-  if(!extraHoursTableInstance) return false;
-
-  await ExtraHourModel.updateOne({_id: extraHourInput}, extraHourInput)
+  if (!extraHourInstance) {
+    return false;
+  } else if (extraHourInput.amount === 0 ) {
+    await ExtraHourModel.deleteOne({_id: extraHourInput._id})
+  } else {
+    await ExtraHourModel.updateOne({ _id: extraHourInput._id }, extraHourInput);
+  }
   return true;
 };
 

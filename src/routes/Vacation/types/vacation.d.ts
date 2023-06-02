@@ -28,11 +28,6 @@ export interface VacationsResolverArgsInterface {
   type?: string;
   deferred?: boolean;
 }
-
-export interface VacationPdfResolverArgsInterface {
-  _id: string;
-  type: 'vacation' | 'justification'
-}
 export interface VacationsQueryOptionsInterface {
   worker?: string;
   startDate?: {

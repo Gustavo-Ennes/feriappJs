@@ -1,6 +1,5 @@
 import {
   vacationResolver,
-  vacationPdfResolver,
   vacationsResolver,
   createVacationResolver,
   deleteVacationResolver,
@@ -8,7 +7,7 @@ import {
 } from "./resolvers";
 
 const vacationResolvers = {
-  Query: { vacation: vacationResolver, vacations: vacationsResolver, vacationPdf: vacationPdfResolver },
+  Query: { vacation: vacationResolver, vacations: vacationsResolver },
   Mutation: {
     createVacation: createVacationResolver,
     deleteVacation: deleteVacationResolver,

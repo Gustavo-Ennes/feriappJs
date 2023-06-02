@@ -1,9 +1,7 @@
-import { toDate } from "date-fns";
 import { verifyToken } from "../../../../firebase/firebase";
 import { ExtraHourModel } from "../../extraHour.model";
 import { ExtraHourInput, ExtraHourInterface } from "../../types/extraHour";
 import { isEmpty } from "ramda";
-import { assertNullableType } from "graphql";
 
 const extraHoursResolver = async (
   _: any,

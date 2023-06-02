@@ -5,6 +5,7 @@ import { workerResolvers } from "../routes/Worker";
 import { vacationResolvers } from "../routes/Vacation/";
 import { searchResolvers } from "../routes/search";
 import { extraHourResolvers } from "./ExtraHour";
+import { pdfResolvers } from "./Pdf";
 
 const { Query: departmentQueries, Mutation: departmentMutations } =
   departmentResolvers;
@@ -14,6 +15,7 @@ const { Query: vacationQueries, Mutation: vacationMutations } =
 const { Query: searchQuery } = searchResolvers;
 const { Query: extraHourQueries, Mutation: extraHourMutations } =
   extraHourResolvers;
+const { Query: pdfQueries } = pdfResolvers;
 
 const resolvers = {
   Query: {
@@ -22,6 +24,7 @@ const resolvers = {
     ...vacationQueries,
     ...searchQuery,
     ...extraHourQueries,
+    ...pdfQueries,
   },
   Mutation: {
     ...departmentMutations,

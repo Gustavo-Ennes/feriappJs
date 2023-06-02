@@ -5,6 +5,7 @@ import { workerDefinitions } from "./Worker";
 import { vacationDefinitions } from "./Vacation";
 import { searchDefinitions } from "./search";
 import { extraHourDefinitions } from "./ExtraHour";
+import { pdfDefinitions } from "./Pdf";
 
 const typeDefs = `
   type Query{
@@ -13,6 +14,7 @@ const typeDefs = `
     ${vacationDefinitions.queries}
     ${searchDefinitions.queries}
     ${extraHourDefinitions.queries}
+    ${pdfDefinitions.queries}
   }
   type Mutation{
     ${departmentDefinitions.mutations}

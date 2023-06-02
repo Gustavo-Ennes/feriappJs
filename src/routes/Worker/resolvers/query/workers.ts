@@ -14,7 +14,7 @@ const workersResolver = async (
 
   const workerInstances: WorkerInterface[] = await Worker.find(
     fromDepartment ? { department: fromDepartment } : {}
-  );
+  ).sort("name");
   return workerInstances;
 };
 

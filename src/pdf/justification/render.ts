@@ -1,22 +1,13 @@
 import type { PdfFnParam } from "../types";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { drawJustificationBlock } from "./block";
+import { getHeightObject } from "../utils";
 
 const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
   if (document) {
     const page = document.addPage();
-    const height = {
-      actual: page.getHeight() - 80,
-      stepLine() {
-        this.actual -= 20;
-      },
-      stepSmallLine() {
-        this.actual -= 12;
-      },
-      stepHugeLine() {
-        this.actual -= 28;
-      },
-    };
+    const height = getHeightObject(page);
+    
     await drawJustificationBlock({
       document,
       height,

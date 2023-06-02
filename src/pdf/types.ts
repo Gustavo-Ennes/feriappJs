@@ -1,6 +1,8 @@
+import { DepartmentInterface } from "../routes/Department/types/department";
+import { ExtraHourInterface } from "../routes/ExtraHour/types/extraHour";
 import type { VacationInterface } from "../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../routes/Worker/types/worker";
-import type { PDFDocument } from "pdf-lib";
+import type { PDFDocument, PDFNumber, PDFPage } from "pdf-lib";
 
 type Height = {
   actual: number;
@@ -11,7 +13,17 @@ type Height = {
 
 type PdfFnParam = {
   document?: PDFDocument;
-  instance: VacationInterface | WorkerInterface | null;
+  instance: VacationInterface | WorkerInterface | DepartmentInterface | null;
+  reference?: Date;
+  justification?: string;
+  extraHours?: ExtraHourInterface[]
+};
+
+type DrawCellFnParams = {
+  height: Height;
+  document: PDFDocument;
+  text: string;
+  page: PDFPage;
 };
 
 type CreatePdfParams = {
@@ -24,8 +36,8 @@ type CreateTitleParams = {
   title: string;
   document: PDFDocument;
   height: Height;
-  type?: string;
   size?: number;
+  offset?: number
 };
 
 type CreateParagraphParams = {
@@ -52,6 +64,16 @@ type DrawHalfPageParams = {
   vacation: VacationInterface;
 };
 
+type TableParams = {
+  data: string[];
+  document: PDFDocument;
+  height: Height;
+  page: PDFPage;
+  startLineX: number;
+  endLineX: number;
+  startY: number;
+};
+
 export type {
   PdfFnParam,
   CreatePdfParams,
@@ -60,4 +82,6 @@ export type {
   CreateSignParams,
   Height,
   DrawHalfPageParams,
+  TableParams,
+  DrawCellFnParams,
 };

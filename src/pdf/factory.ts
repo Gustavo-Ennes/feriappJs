@@ -1,4 +1,5 @@
 import { translateVacationSubtype } from "./vacation/utils";
+import { StandardFonts } from "pdf-lib";
 import type { PDFDocument } from "pdf-lib";
 
 import type {
@@ -6,6 +7,8 @@ import type {
   CreateParagraphParams,
   CreateTitleParams,
   Height,
+  TableParams,
+  DrawCellFnParams,
 } from "./types";
 
 const createHeader = async (document: PDFDocument): Promise<void> => {
@@ -43,17 +46,22 @@ const createFooter = async (document: PDFDocument): Promise<void> => {
 };
 
 const createTitle = async ({
-  type,
   title,
   document,
   height,
   size = 24,
+  offset,
 }: CreateTitleParams): Promise<void> => {
+  const font = await document.embedFont(StandardFonts.CourierBold);
+  const textWidth = font.widthOfTextAtSize(title, size);
   const page = document.getPage(0);
+  const { width } = page.getSize();
+  const xCoordinate = width / 2 - textWidth / 2 - 15 + (offset ?? 0);
+
   // title
   page.drawText(title.toUpperCase(), {
     y: height.actual,
-    x: type === "license" ? 65 : 145,
+    x: xCoordinate,
     size,
   });
 };
@@ -67,11 +75,14 @@ const createParagraph = async ({
   y = height.actual,
 }: CreateParagraphParams): Promise<void> => {
   const page = document.getPage(0);
+  const font = await document.embedFont(StandardFonts.Helvetica);
   page.drawText(text, {
     y,
     x,
     size: fontSize,
     maxWidth: page.getWidth() - 100,
+    font,
+    lineHeight: 15,
   });
 };
 
@@ -135,6 +146,53 @@ const createDaysQtd = async ({
   });
 };
 
+const drawCell = async ({ height, document, page, text }: DrawCellFnParams) => {
+  const startLineX = 50;
+  const endLineX = page.getWidth() - 50;
+  const size = text.split("\n").length;
+  page.drawLine({
+    start: { x: startLineX, y: height.actual },
+    end: { x: endLineX, y: height.actual },
+  });
+  height.stepLine();
+  await createParagraph({
+    document,
+    text,
+    height,
+    fontSize: 12,
+    x: 55,
+  });
+  for (let i = 0; i < size; i++) {
+    height.actual -= 15;
+  }
+};
+
+const createTable = async ({
+  document,
+  height,
+  data,
+  startLineX,
+  endLineX,
+  startY,
+  page,
+}: TableParams): Promise<void> => {
+  for (let i = 0; i < data.length; i++) {
+    await drawCell({ height, document, page, text: data[i] });
+    page.drawLine({
+      start: { x: startLineX, y: height.actual },
+      end: { x: endLineX, y: height.actual },
+    });
+    page.drawLine({
+      start: { x: startLineX, y: startY },
+      end: { x: startLineX, y: height.actual },
+    });
+    page.drawLine({
+      start: { x: endLineX, y: startY },
+      end: { x: endLineX, y: height.actual },
+    });
+  }
+};
+
 export {
   createHeader,
   createFooter,
@@ -142,4 +200,5 @@ export {
   createParagraph,
   createSign,
   createDaysQtd,
+  createTable,
 };

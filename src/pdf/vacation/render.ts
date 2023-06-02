@@ -8,10 +8,11 @@ import {
 } from "../factory";
 import type { PdfFnParam } from "../types";
 import type { DrawHalfPageParams } from "../types";
-import type { VacationInterface } from '../../routes/Vacation/types/vacation'
+import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { getParagraph, translateMonth, translateVacation } from "./utils";
 import { capitalizeName } from "../../utils/capitalize";
+import { getHeightObject } from "../utils";
 
 const drawHalfPage = async ({
   document,
@@ -33,7 +34,7 @@ const drawHalfPage = async ({
     title: `Requerimento de ${translateVacation(vacation.type)}`,
     document,
     height,
-    type: vacation.type,
+    size: 19,
   });
 
   height.stepHugeLine();
@@ -69,7 +70,8 @@ const drawHalfPage = async ({
     document,
     height,
     name: capitalizeName((vacation.worker as unknown as WorkerInterface).name),
-    matriculation: (vacation.worker as unknown as WorkerInterface).matriculation,
+    matriculation: (vacation.worker as unknown as WorkerInterface)
+      .matriculation,
     role: capitalizeName((vacation.worker as unknown as WorkerInterface).role),
   });
 
@@ -85,21 +87,20 @@ const drawHalfPage = async ({
 const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
   if (document) {
     const page = document.addPage();
-    const height = {
-      actual: page.getHeight() - 80,
-      stepLine() {
-        this.actual -= 15;
-      },
-      stepSmallLine() {
-        this.actual -= 12;
-      },
-      stepHugeLine() {
-        this.actual -= 45;
-      },
-    };
-    await drawHalfPage({ document, height, vacation: instance as VacationInterface });
+    const height = getHeightObject(page);
+
+    await drawHalfPage({
+      document,
+      height,
+      vacation: instance as VacationInterface,
+    });
+    
     height.stepHugeLine();
-    await drawHalfPage({ document, height, vacation: instance as VacationInterface });
+    await drawHalfPage({
+      document,
+      height,
+      vacation: instance as VacationInterface,
+    });
   }
 };
 

@@ -19,7 +19,7 @@ const drawHalfPage = async ({
   height,
   vacation,
 }: DrawHalfPageParams): Promise<void> => {
-  const page = document.getPage(0);
+  const page = document.addPage();
   const paragraph = getParagraph(vacation);
 
   await createHeader(document);
@@ -36,7 +36,6 @@ const drawHalfPage = async ({
     height,
     size: 19,
   });
-
   height.stepHugeLine();
   await createParagraph({
     document,
@@ -85,21 +84,22 @@ const drawHalfPage = async ({
 };
 
 const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
-  if (document) {
+  if (document && instance) {
     const page = document.addPage();
     const height = getHeightObject(page);
+    const vacation = instance as VacationInterface;
 
     await drawHalfPage({
       document,
       height,
-      vacation: instance as VacationInterface,
+      vacation,
     });
-    
+
     height.stepHugeLine();
     await drawHalfPage({
       document,
       height,
-      vacation: instance as VacationInterface,
+      vacation,
     });
   }
 };

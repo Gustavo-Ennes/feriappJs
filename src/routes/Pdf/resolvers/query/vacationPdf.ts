@@ -17,6 +17,7 @@ const vacationPdfResolver = async (
     const pdfDoc = await PDFDocument.create();
     const instance = await Vacation.findById(vacationId);
 
+    if (!instance) throw new Error("Vacation not found");
     await vacationRender({ document: pdfDoc, instance });
     const pdfBytes = await pdfDoc.save();
 

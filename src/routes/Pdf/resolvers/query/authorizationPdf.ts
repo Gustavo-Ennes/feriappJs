@@ -17,6 +17,7 @@ const authorizationPdfResolver = async (
     const pdfDoc = await PDFDocument.create();
     const instance = await Worker.findById(workerId);
 
+    if (!instance) throw new Error("Worker not found");
     await authorizationRender({
       document: pdfDoc,
       instance,

@@ -5,6 +5,7 @@ interface ExtraHourInterface extends Document {
   reference: Date;
   worker: Worker;
   amount: number;
+  nightlyAmount: number;
 }
 
 interface ExtraHourInput {
@@ -12,18 +13,9 @@ interface ExtraHourInput {
   reference?: Date;
   worker?: string;
   amount?: number;
+  nightlyAmount?: number;
   from?: string;
   to?: string;
 }
 
-interface Hour {
-  worker: ID! | Worker;
-  number: Float!;
-}
-
-interface Day {
-  number: number!;
-  hours: Hour[];
-}
-
-export type { ExtraHourInterface, ExtraHourInput, Day, Hour };
+export type { ExtraHourInterface, ExtraHourInput };

@@ -5,6 +5,7 @@ const extraHourDefinitions = {
       reference: Date!
       worker: Worker!
       amount: Float!
+      nightlyAmount: Float
       createdAt: Date
       updatedAt: Date
     }
@@ -14,6 +15,7 @@ const extraHourDefinitions = {
       reference: Date
       worker: String
       amount: Float
+      nightlyAmount: Float
       from: String
       to: String
     }

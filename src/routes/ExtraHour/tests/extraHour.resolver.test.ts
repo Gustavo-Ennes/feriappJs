@@ -80,6 +80,33 @@ describe("Update ExtraHoursTable model tests", async () => {
       });
   });
 
+  it("should create an extraHour with nightly hours", async () => {
+    const clonedInput = {
+      ...dissoc("_id", extraHourFixtures[0]),
+      worker: "1",
+      nightlyAmount: 2,
+    };
+    extraHourMock.mockResolvedValueOnce({
+      ...extraHourFixtures[0],
+      nightlyAmount: 2,
+    });
+
+    const { body }: any = await server.executeOperation({
+      query: createExtraHourMutation,
+      variables: { extraHourInput: clonedInput },
+    });
+    expect(body.singleResult?.data)
+      .to.have.property("createExtraHour")
+      .that.deep.equals({
+        ...extraHourFixtures[0],
+        worker: {
+          _id: "1",
+          name: "Afonso",
+        },
+        nightlyAmount: 2,
+      });
+  });
+
   it("shouldn't create an ExtraHour with a required props", async () => {
     const clonedInput = dissoc("_id", extraHourFixtures[1]);
     const inputWithoutWorkerId = dissoc("worker", clonedInput);
@@ -102,6 +129,27 @@ describe("Update ExtraHoursTable model tests", async () => {
     extraHourMock.mockResolvedValueOnce({
       ...extraHourFixtures[0],
       worker: { _id: "2", name: "Julio" },
+    });
+
+    const { body }: any = await server.executeOperation({
+      query: updateExtraHourMutation,
+      variables: { extraHourInput: updatePayload },
+    });
+    expect(body.singleResult?.data)
+      .to.have.property("updateExtraHour")
+      .that.deep.equals(true);
+  });
+
+  it("should update an ExtraHour with nightly hours", async () => {
+    const updatePayload = {
+      ...extraHourFixtures[0],
+      worker: "2",
+      nightlyAmount: 3,
+    };
+    extraHourMock.mockResolvedValueOnce({
+      ...extraHourFixtures[0],
+      worker: { _id: "2", name: "Julio" },
+      nightlyAmount: 1,
     });
 
     const { body }: any = await server.executeOperation({

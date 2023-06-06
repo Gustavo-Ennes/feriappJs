@@ -14,6 +14,10 @@ const ExtraHourSchema = new Schema({
   amount: {
     type:Number,
     required: true
+  },
+  nightlyAmount: {
+    type: Number,
+    default: 0
   }
 });
 

@@ -8,6 +8,7 @@ query ExtraHourById($extraHourInput: ExtraHourInput!){
       name
     }
     amount
+    nightlyAmount
   }
 }
 `;
@@ -22,6 +23,7 @@ query ExtraHoursWithRange($extraHourInput: ExtraHourInput){
       name
     }
     amount
+    nightlyAmount
   }
 }
 `;
@@ -35,6 +37,7 @@ mutation CreateExtraHour($extraHourInput: ExtraHourInput!){
       name
     }
     amount
+    nightlyAmount
   }
 }
 `;

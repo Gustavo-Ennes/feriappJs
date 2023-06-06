@@ -9,6 +9,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 2.5,
+    nightlyAmount: 0
   },
   {
     _id: "2",
@@ -18,6 +19,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 1.5,
+    nightlyAmount: 0
   },
   {
     _id: "3",
@@ -27,6 +29,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 0.5,
+    nightlyAmount: 0
   },
   {
     _id: "4",
@@ -36,6 +39,7 @@ const extraHourFixtures = [
       name: "Julio",
     },
     amount: 2.5,
+    nightlyAmount: 0
   },
 ];
 

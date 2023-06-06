@@ -10,6 +10,7 @@ import {
   DrawCellParams,
   GetMaxWidthArrayParams,
   MakeLinesParams,
+  ParseDataFnParams,
 } from "./types";
 
 const calculateDepartmentTotal = (extraHours: ExtraHourInterface[]) =>
@@ -26,10 +27,25 @@ const calculateWorkerTotal = (
   return sum(pluck("amount", workerExtraHours));
 };
 
-const parseData = (
-  extraHours: ExtraHourInterface[],
-  total: number = 0
-): string[][] => {
+const calculateTotalNightlyHours = (extraHours: ExtraHourInterface[]): number =>
+  sum(pluck("nightlyAmount", extraHours));
+
+const calculateWorkerTotalNightlyHours = (
+  worker: WorkerInterface,
+  extraHours: ExtraHourInterface[]
+): number => {
+  const workerExtraHours: ExtraHourInterface[] = extraHours.filter(
+    ({ worker: extraHourWorker }: ExtraHourInterface) =>
+      extraHourWorker._id === worker._id
+  );
+  return sum(pluck("nightlyAmount", workerExtraHours));
+};
+
+const parseData = ({
+  extraHours,
+  total,
+  nightlyTotal,
+}: ParseDataFnParams): string[][] => {
   const workers: WorkerInterface[] = uniq(pluck("worker", extraHours));
   const data: string[][] = [];
   const columns = [
@@ -43,18 +59,22 @@ const parseData = (
   data.push(columns);
   workers.map((worker) => {
     const workerTotal = calculateWorkerTotal(worker, extraHours);
+    const workerNightlyTotal = calculateWorkerTotalNightlyHours(
+      worker,
+      extraHours
+    );
     if (workerTotal > 0) {
       data.push([
         capitalizeName(worker.name),
         worker.registry,
         worker.matriculation,
         workerTotal.toFixed(1),
-        "0",
+        workerNightlyTotal.toFixed(1),
         "0",
       ]);
     }
   });
-  data.push(["TOTAL", "", "", total.toFixed(1), "0", "0"]);
+  data.push(["TOTAL", "", "", total.toFixed(1), nightlyTotal.toFixed(1), "0"]);
   return data;
 };
 
@@ -172,7 +192,8 @@ const createReportTable = async ({
 }: CreateReportTableParams) => {
   const page = document.getPage(0);
   const total = calculateDepartmentTotal(extraHours);
-  const parsedData = parseData(extraHours, total);
+  const nightlyTotal = calculateTotalNightlyHours(extraHours);
+  const parsedData = parseData({ extraHours, total, nightlyTotal });
   const maxWidths = await getMaxWidthArray({ parsedData, document });
 
   await makeLines({

@@ -31,9 +31,16 @@ type MakeLinesParams = {
   page: PDFPage;
 };
 
+type ParseDataFnParams = {
+  extraHours: ExtraHourInterface[];
+  total: number;
+  nightlyTotal: number;
+};
+
 export {
   DrawCellParams,
   CreateReportTableParams,
   GetMaxWidthArrayParams,
   MakeLinesParams,
+  ParseDataFnParams,
 };

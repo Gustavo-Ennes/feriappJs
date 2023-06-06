@@ -9,6 +9,7 @@ export interface WorkerInterface {
   status?: string;
   registry: string;
   matriculation: string;
+  justification: string;
   department?: DepartmentInterface | Types.ObjectId;
 }
 
@@ -18,4 +19,5 @@ export type WorkerKeys =
   | "admissionDate"
   | "status"
   | "registry"
+  | "justification"
   | "matriculation";

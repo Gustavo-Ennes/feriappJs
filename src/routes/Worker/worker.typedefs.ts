@@ -9,6 +9,7 @@ const workerDefinitions = {
       status: String
       admissionDate: Date
       department: Department
+      justification: String
       createdAt: Date
       updatedAt: Date
     }
@@ -20,6 +21,7 @@ const workerDefinitions = {
       matriculation: String!
       registry: String!
       status: String
+      justification: String
       admissionDate: Date!
       department: ID!
     }

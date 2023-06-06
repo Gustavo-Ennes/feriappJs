@@ -2,7 +2,7 @@ import { DepartmentInterface } from "../routes/Department/types/department";
 import { ExtraHourInterface } from "../routes/ExtraHour/types/extraHour";
 import type { VacationInterface } from "../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../routes/Worker/types/worker";
-import type { PDFDocument, PDFNumber, PDFPage } from "pdf-lib";
+import type { PDFDocument, PDFPage } from "pdf-lib";
 
 type Height = {
   actual: number;
@@ -15,7 +15,6 @@ type PdfFnParam = {
   document?: PDFDocument;
   instance: VacationInterface | WorkerInterface | DepartmentInterface | null;
   reference?: Date;
-  justification?: string;
   extraHours?: ExtraHourInterface[]
 };
 

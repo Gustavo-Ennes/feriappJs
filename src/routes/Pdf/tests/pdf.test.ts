@@ -77,7 +77,6 @@ describe("Pdf route tests", async () => {
     const pdfInput = {
       workerId: "1",
       reference: new Date(),
-      justification: "Work",
     };
     const { body }: any = await server.executeOperation({
       query: authorizationPdfQuery,
@@ -92,7 +91,6 @@ describe("Pdf route tests", async () => {
     const pdfInput = {
       workerId: undefined,
       reference: new Date(),
-      justifiacation: "",
     };
     const { body }: any = await server.executeOperation({
       query: authorizationPdfQuery,

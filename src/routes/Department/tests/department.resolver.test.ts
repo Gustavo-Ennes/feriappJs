@@ -59,10 +59,6 @@ describe("Department integration tests", async () => {
     const { body }: any = await server.executeOperation({
       query: createDepartmentMutation,
     });
-    console.log(
-      "🚀 ~ file: department.resolver.test.ts:68 ~ it ~ body:",
-      JSON.stringify(body)
-    );
 
     expect(body.singleResult?.data)
       .to.have.property("createDepartment")

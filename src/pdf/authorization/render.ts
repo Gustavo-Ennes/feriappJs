@@ -17,14 +17,12 @@ const render = async ({
   document,
   instance,
   reference,
-  justification,
 }: PdfFnParam): Promise<void> => {
   const worker = instance as WorkerInterface;
-  if (document && reference && justification && worker) {
+  if (document && reference && worker) {
     const tableData = await createTableData({
       worker,
       reference,
-      justification,
     });
     const page = document.addPage();
     const height = getHeightObject(page);

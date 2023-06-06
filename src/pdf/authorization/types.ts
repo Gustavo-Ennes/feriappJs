@@ -11,7 +11,6 @@ type JustificationPdfFnParam = {
 type CreateTableDataParams = {
   worker: WorkerInterface;
   reference: Date;
-  justification: String;
 };
 
 type calculateExtraHoursParams = {

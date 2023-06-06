@@ -38,7 +38,6 @@ const calculateExtraHours = async ({
 const createTableData = async ({
   worker,
   reference,
-  justification,
 }: CreateTableDataParams): Promise<string[]> => {
   const data: string[] = [];
   const firstDayReferenceMonth = format(
@@ -67,7 +66,7 @@ const createTableData = async ({
       2
     )} horas`
   );
-  data.push(`Justificativa:\n-> ${justification}`);
+  data.push(`Justificativa:\n-> ${worker.justification}`);
   data.push(`Autorização:
     ${authorizationText}
    `);

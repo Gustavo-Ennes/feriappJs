@@ -7,7 +7,7 @@ import { render as authorizationRender } from "../../../../pdf/authorization/ren
 
 const authorizationPdfResolver = async (
   _: any,
-  { workerId, reference, justification }: PdfResolverArgsInterface,
+  { workerId, reference }: PdfResolverArgsInterface,
   context: { token?: string },
   ___: any
 ): Promise<string | void> => {
@@ -22,7 +22,6 @@ const authorizationPdfResolver = async (
       document: pdfDoc,
       instance,
       reference: new Date(reference as string),
-      justification,
     });
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes).toString("base64");

@@ -34,6 +34,10 @@ const WorkerSchema = new Schema<WorkerInterface>(
       required: true,
       ref: "Department",
     },
+    justification: {
+      type: String,
+      default: "Prestação de serviços ao setor de Transporte."
+    }
   },
   {
     timestamps: true,

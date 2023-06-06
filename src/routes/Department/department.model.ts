@@ -1,6 +1,4 @@
 import { Schema, model } from "mongoose";
-import { Vacation } from "../Vacation";
-import { VacationInterface } from "../Vacation/types/vacation";
 import { DepartmentInterface } from "./types/department";
 
 const DepartmentSchema = new Schema<DepartmentInterface>(
@@ -10,6 +8,10 @@ const DepartmentSchema = new Schema<DepartmentInterface>(
       unique: true,
       required: true,
     },
+    responsible: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: true,

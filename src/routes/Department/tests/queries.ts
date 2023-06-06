@@ -1,7 +1,9 @@
 const departmentsQuery = `
 query{
   departments{
+    _id
     name
+    responsible
   }
 } 
 `;
@@ -9,14 +11,17 @@ query{
 const departmentQuery = `
 query{
   department(_id: "1"){
+    _id
     name
+    responsible
   }
 }
 `;
 const createDepartmentMutation = `
 mutation{
-  createDepartment(departmentInput:{name: "department 1"}){
+  createDepartment(departmentInput:{name: "department 1", responsible: "owner"}){
     name
+    responsible
     _id
   }
 }
@@ -30,7 +35,7 @@ mutation{
 
 const updateDepartmentMutation = `
 mutation{
-  updateDepartment(departmentInput: { name: "new name to department", _id: "1"})
+  updateDepartment(departmentInput: { name: "new name to department", _id: "1", responsible: "new Owner"})
 }
 `;
 

@@ -3,6 +3,7 @@ const departmentDefinitions = {
     type Department{
       _id: ID
       name: String
+      responsible: String
       createdAt: Date
       updatedAt: Date
     }
@@ -10,6 +11,7 @@ const departmentDefinitions = {
     input DepartmentInput{
       _id: ID
       name: String!
+      responsible: String!
     }
   `,
   queries: `

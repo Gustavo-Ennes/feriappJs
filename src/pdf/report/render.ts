@@ -68,7 +68,7 @@ const render = async ({
     height.stepHugeLine();
 
     await createSign({
-      name: `Secretário(a) Municipal`,
+      name: capitalizeName(department.responsible),
       role: `Secretaria de ${capitalizeName(department.name)}`,
       document,
       height,

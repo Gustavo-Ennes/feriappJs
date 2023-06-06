@@ -8,6 +8,7 @@ import {
   deleteDepartmentMutation,
   updateDepartmentMutation,
 } from "./queries";
+import { departmentFixture } from "./department.fixture";
 
 describe("Department integration tests", async () => {
   beforeAll(() => {
@@ -18,30 +19,18 @@ describe("Department integration tests", async () => {
   });
 
   it("Should list departments", async () => {
-    departmentMock.mockResolvedValueOnce([
-      {
-        _id: "1",
-        name: "department 1",
-      },
-    ]);
+    departmentMock.mockResolvedValueOnce([departmentFixture]);
 
     const { body }: any = await server.executeOperation({
       query: departmentsQuery,
     });
     expect(body.singleResult?.data)
       .to.have.property("departments")
-      .that.deep.equals([
-        {
-          name: "department 1",
-        },
-      ]);
+      .that.deep.equals([departmentFixture]);
   });
 
   it("Should get a department by id", async () => {
-    departmentMock.mockResolvedValueOnce({
-      _id: "1",
-      name: "department 1",
-    });
+    departmentMock.mockResolvedValueOnce(departmentFixture);
 
     const { body }: any = await server.executeOperation({
       query: departmentQuery,
@@ -49,9 +38,7 @@ describe("Department integration tests", async () => {
 
     expect(body.singleResult?.data)
       .to.have.property("department")
-      .that.deep.equals({
-        name: "department 1",
-      });
+      .that.deep.equals(departmentFixture);
   });
 
   it("Should return null if don't find a department by pk", async () => {
@@ -67,21 +54,19 @@ describe("Department integration tests", async () => {
   });
 
   it("should create a department", async () => {
-    departmentMock.mockResolvedValueOnce({
-      _id: "1",
-      name: "department 1",
-    });
+    departmentMock.mockResolvedValueOnce(departmentFixture);
 
     const { body }: any = await server.executeOperation({
       query: createDepartmentMutation,
     });
+    console.log(
+      "🚀 ~ file: department.resolver.test.ts:68 ~ it ~ body:",
+      JSON.stringify(body)
+    );
 
     expect(body.singleResult?.data)
       .to.have.property("createDepartment")
-      .that.deep.equals({
-        name: "department 1",
-        _id: "1",
-      });
+      .that.deep.equals(departmentFixture);
   });
 
   it("should delete a department", async () => {
@@ -98,13 +83,7 @@ describe("Department integration tests", async () => {
 
   it("should update a department", async () => {
     departmentMock
-      .mockResolvedValueOnce([
-        {
-          _id: "1",
-          name: "department 1",
-          save: () => true,
-        },
-      ])
+      .mockResolvedValueOnce([departmentFixture])
       .mockResolvedValueOnce(undefined);
 
     const { body }: any = await server.executeOperation({

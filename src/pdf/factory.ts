@@ -159,7 +159,7 @@ const drawCell = async ({ height, document, page, text }: DrawCellFnParams) => {
     document,
     text,
     height,
-    fontSize: 12,
+    fontSize: 11,
     x: 55,
   });
   for (let i = 0; i < size; i++) {
@@ -178,19 +178,19 @@ const createTable = async ({
 }: TableParams): Promise<void> => {
   for (let i = 0; i < data.length; i++) {
     await drawCell({ height, document, page, text: data[i] });
-    page.drawLine({
-      start: { x: startLineX, y: height.actual },
-      end: { x: endLineX, y: height.actual },
-    });
-    page.drawLine({
-      start: { x: startLineX, y: startY },
-      end: { x: startLineX, y: height.actual },
-    });
-    page.drawLine({
-      start: { x: endLineX, y: startY },
-      end: { x: endLineX, y: height.actual },
-    });
   }
+  page.drawLine({
+    start: { x: startLineX, y: height.actual },
+    end: { x: endLineX, y: height.actual },
+  });
+  page.drawLine({
+    start: { x: startLineX, y: startY },
+    end: { x: startLineX, y: height.actual },
+  });
+  page.drawLine({
+    start: { x: endLineX, y: startY },
+    end: { x: endLineX, y: height.actual },
+  });
 };
 
 export {

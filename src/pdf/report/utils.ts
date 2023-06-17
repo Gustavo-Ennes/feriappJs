@@ -52,8 +52,8 @@ const parseData = ({
     "NOME",
     "REGISTRO",
     "MATRÍCULA",
-    "HORAS EXTRAS",
-    "ADC. NOTURNO",
+    "H. EXTRAS",
+    "A. NOTURNO",
     "FALTAS",
   ];
   data.push(columns);
@@ -152,8 +152,10 @@ const makeLines = async ({
   document,
   page,
 }: MakeLinesParams): Promise<void> => {
+  const tableWidth = sum(maxWidths);
+  const actualWidthValue = page.getWidth() / 2 - tableWidth / 2;
   const widthObject = {
-    actual: 20,
+    actual: actualWidthValue,
     step(number: number) {
       this.actual += number;
     },
@@ -166,7 +168,7 @@ const makeLines = async ({
         ? StandardFonts.HelveticaBold
         : StandardFonts.Helvetica
     );
-    const fontHeight = font.heightAtSize(12);
+    const fontHeight = font.heightAtSize(11);
     for (let i = 0; i < maxWidths.length; i++) {
       await drawCell({
         page,
@@ -181,7 +183,7 @@ const makeLines = async ({
       height.actual = oldHeight;
     }
     height.actual -= fontHeight * 2;
-    widthObject.actual = 20;
+    widthObject.actual = actualWidthValue;
   }
 };
 

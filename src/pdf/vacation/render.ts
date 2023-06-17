@@ -19,7 +19,7 @@ const drawHalfPage = async ({
   height,
   vacation,
 }: DrawHalfPageParams): Promise<void> => {
-  const page = document.addPage();
+  const page = document.getPage(0);
   const paragraph = getParagraph(vacation);
 
   await createHeader(document);
@@ -46,7 +46,7 @@ const drawHalfPage = async ({
 
   height.stepHugeLine();
   height.stepHugeLine();
-  height.stepSmallLine();
+  height.stepHugeLine();
 
   const dateString = `Ilha solteira, ${new Date(
     vacation.updatedAt
@@ -64,7 +64,7 @@ const drawHalfPage = async ({
   });
 
   height.stepHugeLine();
-  height.stepSmallLine();
+  height.stepHugeLine();
   await createSign({
     document,
     height,
@@ -96,6 +96,10 @@ const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
     });
 
     height.stepHugeLine();
+    height.stepHugeLine();
+    height.stepHugeLine();
+    height.stepHugeLine();
+
     await drawHalfPage({
       document,
       height,

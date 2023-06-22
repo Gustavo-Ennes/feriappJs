@@ -49,7 +49,10 @@ const reportPdfResolver = async (
         worker: {
           department: { _id },
         },
-      }) => _id.toString() == instance._id?.toString()
+        department,
+      }) =>
+        department?._id?.toString() === instance._id?.toString() ||
+        _id.toString() == instance._id?.toString()
     );
 
     await reportRender({

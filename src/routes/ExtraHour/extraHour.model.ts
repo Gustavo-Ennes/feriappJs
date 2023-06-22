@@ -18,12 +18,18 @@ const ExtraHourSchema = new Schema({
   nightlyAmount: {
     type: Number,
     default: 0
+  },
+  department: {
+    type: Types.ObjectId,
+    required:true,
+    ref: 'Department'
   }
 });
 
 // pre is before model call
 ExtraHourSchema.pre(/^find/, function (next) {
   this.populate("worker");
+  this.populate("department");
   next();
 });
 

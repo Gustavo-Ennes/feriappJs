@@ -1,9 +1,6 @@
 import { verifyToken } from "../../../../firebase/firebase";
 import { ExtraHourModel } from "../../extraHour.model";
-import {
-  ExtraHourInput,
-  ExtraHourInterface,
-} from "../../types/extraHour";
+import { ExtraHourInput, ExtraHourInterface } from "../../types/extraHour";
 
 const createExtraHourResolver = async (
   _: any,

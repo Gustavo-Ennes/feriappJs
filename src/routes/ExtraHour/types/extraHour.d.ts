@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 import type { Worker } from "../../Worker/types/worker";
 import type { DepartmentInterface } from "../../Department/types/department";
 
@@ -13,12 +13,18 @@ interface ExtraHourInterface extends Document {
 interface ExtraHourInput {
   _id?: ID;
   reference?: Date;
-  worker?: string;
+  worker?: string | Worker;
   amount?: number;
   nightlyAmount?: number;
-  department: string;
+  department: string | DepartmentInterface;
   from?: string;
   to?: string;
 }
 
-export type { ExtraHourInterface, ExtraHourInput };
+interface ProcessExtraHourReturn {
+  created: number;
+  updated: number;
+  deleted: number;
+}
+
+export type { ExtraHourInterface, ExtraHourInput, ProcessExtraHourReturn };

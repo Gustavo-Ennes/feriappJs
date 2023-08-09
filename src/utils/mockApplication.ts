@@ -10,6 +10,9 @@ const getModelMethods = (expectedFn: () => any) => ({
   updateOne: expectedFn,
   deleteOne: expectedFn,
   deleteMany: expectedFn,
+  insertMany: expectedFn,
+  updateMany: expectedFn,
+  replaceOne: expectedFn
 });
 
 const vacationMock = vi.fn();

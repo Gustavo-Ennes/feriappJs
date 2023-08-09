@@ -1,17 +1,13 @@
 import {
   extraHourResolver,
   extraHoursResolver,
-  createExtraHourResolver,
-  deleteExtraHourResolver,
-  updateExtraHourResolver,
+  processExtraHoursResolver,
 } from "./resolvers";
 
 const extraHourResolvers = {
   Query: { extraHour: extraHourResolver, extraHours: extraHoursResolver },
   Mutation: {
-    createExtraHour: createExtraHourResolver,
-    deleteExtraHour: deleteExtraHourResolver,
-    updateExtraHour: updateExtraHourResolver,
+    processExtraHours: processExtraHoursResolver,
   },
 };
 

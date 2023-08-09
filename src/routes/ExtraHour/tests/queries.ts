@@ -27,23 +27,13 @@ query ExtraHoursWithRange($extraHourInput: ExtraHourInput){
   }
 }
 `;
-const createExtraHourMutation = `
-mutation CreateExtraHour($extraHourInput: ExtraHourInput!){
-  createExtraHour(extraHourInput: $extraHourInput){
-    _id
-    reference
-    worker{
-      _id
-      name
-    }
-    amount
-    nightlyAmount
+const processExtraHourMutation = `
+mutation ProcessExtraHour($extraHourInput: [ExtraHourInput]!){
+  processExtraHours(extraHourInput: $extraHourInput){
+    created
+    updated
+    deleted
   }
-}
-`;
-const updateExtraHourMutation = `
-mutation UpdateExtraHour($extraHourInput: ExtraHourInput!){
-  updateExtraHour(extraHourInput: $extraHourInput)
 }
 `;
 
@@ -56,7 +46,6 @@ mutation DeleteExtraHour($_id: ID!){
 export {
   extraHourQuery,
   extraHoursQuery,
-  createExtraHourMutation,
-  updateExtraHourMutation,
+  processExtraHourMutation,
   deleteExtraHourMutation,
 };

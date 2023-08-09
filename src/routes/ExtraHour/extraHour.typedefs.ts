@@ -21,15 +21,19 @@ const extraHourDefinitions = {
       from: String
       to: String
     }
+
+    type ProcessExtraHoursReturnType {
+      created: Int
+      updated: Int
+      deleted: Int
+    }
   `,
   queries: `
     extraHour(extraHourInput: ExtraHourInput!): ExtraHour
     extraHours(extraHourInput: ExtraHourInput): [ExtraHour]!
   `,
   mutations: `
-    createExtraHour(extraHourInput: ExtraHourInput!): ExtraHour
-    deleteExtraHour(_id: ID!): Boolean
-    updateExtraHour(extraHourInput: ExtraHourInput!): Boolean
+    processExtraHours(extraHourInput: [ExtraHourInput]!): ProcessExtraHoursReturnType
   `,
 };
 

@@ -1,4 +1,5 @@
 import { parse } from "date-fns";
+import { assoc } from "ramda";
 
 const extraHourFixtures = [
   {
@@ -9,7 +10,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 2.5,
-    nightlyAmount: 0
+    nightlyAmount: 0,
   },
   {
     _id: "2",
@@ -19,7 +20,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 1.5,
-    nightlyAmount: 0
+    nightlyAmount: 0,
   },
   {
     _id: "3",
@@ -29,7 +30,7 @@ const extraHourFixtures = [
       name: "Afonso",
     },
     amount: 0.5,
-    nightlyAmount: 0
+    nightlyAmount: 0,
   },
   {
     _id: "4",
@@ -39,8 +40,12 @@ const extraHourFixtures = [
       name: "Julio",
     },
     amount: 2.5,
-    nightlyAmount: 0
+    nightlyAmount: 0,
   },
 ];
 
-export { extraHourFixtures };
+const extraHourInputFixture = extraHourFixtures.map((extraHourFixture) =>
+  assoc("worker", extraHourFixture.worker._id, extraHourFixture)
+);
+
+export { extraHourFixtures, extraHourInputFixture };

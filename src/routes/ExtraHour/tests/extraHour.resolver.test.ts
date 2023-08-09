@@ -1,17 +1,16 @@
 import { describe, it, expect, afterEach, vi, beforeAll } from "vitest";
+import { parse } from "date-fns";
+import { assoc, clone, dissoc, pipe } from "ramda";
 
 import { extraHourMock } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import {
-  createExtraHourMutation,
-  updateExtraHourMutation,
-  deleteExtraHourMutation,
+  processExtraHourMutation,
   extraHourQuery,
   extraHoursQuery,
 } from "./queries";
-import { extraHourFixtures } from "./extraHour.fixture";
-import { parse } from "date-fns";
-import { dissoc } from "ramda";
+import { extraHourFixtures, extraHourInputFixture } from "./extraHour.fixture";
+import { ExtraHourInput } from "../types/extraHour";
 
 describe("Update ExtraHoursTable model tests", async () => {
   beforeAll(() => {
@@ -61,164 +60,132 @@ describe("Update ExtraHoursTable model tests", async () => {
       .that.deep.equals([extraHourFixtures[0], extraHourFixtures[1]]);
   });
 
-  it("should create an extraHour", async () => {
-    const clonedInput = { ...dissoc("_id", extraHourFixtures[0]), worker: "1" };
-    extraHourMock.mockResolvedValueOnce(extraHourFixtures[0]);
+  it("should process new extraHours", async () => {
+    const clonedInput = extraHourInputFixture.map((extraHour) =>
+      dissoc("_id" as never, extraHour)
+    );
+    extraHourMock.mockResolvedValueOnce(true);
+
+    const {
+      body: {
+        singleResult: { data },
+      },
+    }: any = await server.executeOperation({
+      query: processExtraHourMutation,
+      variables: { extraHourInput: clonedInput },
+    });
+    expect(data).to.have.property("processExtraHours").that.deep.equals({
+      created: clonedInput.length,
+      deleted: 0,
+      updated: 0,
+    });
+  });
+
+  it("should create process new ExtraHours with nightly extra hours", async () => {
+    const clonedInput = extraHourInputFixture.map((extraHourFixture) =>
+      pipe(
+        dissoc("_id"),
+        assoc("nightlyAmount", Math.ceil(Math.random() * 5))
+      )(extraHourFixture)
+    );
+    extraHourMock.mockResolvedValueOnce(true);
 
     const { body }: any = await server.executeOperation({
-      query: createExtraHourMutation,
+      query: processExtraHourMutation,
       variables: { extraHourInput: clonedInput },
     });
     expect(body.singleResult?.data)
-      .to.have.property("createExtraHour")
+      .to.have.property("processExtraHours")
       .that.deep.equals({
-        ...extraHourFixtures[0],
-        worker: {
-          _id: "1",
-          name: "Afonso",
-        },
+        created: clonedInput.length,
+        deleted: 0,
+        updated: 0,
       });
   });
 
-  it("should create an extraHour with nightly hours", async () => {
-    const clonedInput = {
-      ...dissoc("_id", extraHourFixtures[0]),
-      worker: "1",
-      nightlyAmount: 2,
-    };
-    extraHourMock.mockResolvedValueOnce({
-      ...extraHourFixtures[0],
-      nightlyAmount: 2,
-    });
+  it("should process extraHours to update", async () => {
+    const clonedInput = extraHourInputFixture.map((extraHourFixture) =>
+      assoc("nightlyAmount", Math.ceil(Math.random() * 5), extraHourFixture)
+    );
+    extraHourMock.mockResolvedValueOnce(true);
 
     const { body }: any = await server.executeOperation({
-      query: createExtraHourMutation,
+      query: processExtraHourMutation,
       variables: { extraHourInput: clonedInput },
     });
     expect(body.singleResult?.data)
-      .to.have.property("createExtraHour")
+      .to.have.property("processExtraHours")
       .that.deep.equals({
-        ...extraHourFixtures[0],
-        worker: {
-          _id: "1",
-          name: "Afonso",
-        },
-        nightlyAmount: 2,
+        created: 0,
+        deleted: 0,
+        updated: clonedInput.length,
       });
   });
 
-  it("shouldn't create an ExtraHour with a required props", async () => {
-    const clonedInput = dissoc("_id", extraHourFixtures[1]);
-    const inputWithoutWorkerId = dissoc("worker", clonedInput);
-    extraHourMock.mockResolvedValueOnce(null);
+  it("should process extraHours to delete", async () => {
+    const clonedInput = extraHourInputFixture.map((extraHourFixture) =>
+      pipe(assoc("nightlyAmount", 0), assoc("amount", 0))(extraHourFixture)
+    );
+    extraHourMock.mockResolvedValueOnce(true);
 
     const { body }: any = await server.executeOperation({
-      query: createExtraHourMutation,
-      variables: { extraHourInput: inputWithoutWorkerId },
+      query: processExtraHourMutation,
+      variables: { extraHourInput: clonedInput },
     });
     expect(body.singleResult?.data)
-      .to.have.property("createExtraHour")
-      .that.deep.equals(null);
+      .to.have.property("processExtraHours")
+      .that.deep.equals({
+        created: 0,
+        deleted: clonedInput.length,
+        updated: 0,
+      });
   });
 
-  it("should update an ExtraHour", async () => {
-    const updatePayload = {
-      ...extraHourFixtures[0],
-      worker: "2",
-    };
-    extraHourMock.mockResolvedValueOnce({
-      ...extraHourFixtures[0],
-      worker: { _id: "2", name: "Julio" },
-    });
+  it("should process a variaty of extraHours", async () => {
+    const clonedInput = clone(extraHourInputFixture);
+    // to delete
+    clonedInput[0].amount = 0;
+    clonedInput[0].nightlyAmount = 0;
+    // to create
+    clonedInput[1]._id = "";
+    extraHourMock.mockResolvedValueOnce(true);
 
-    const { body }: any = await server.executeOperation({
-      query: updateExtraHourMutation,
-      variables: { extraHourInput: updatePayload },
+    const {
+      body: {
+        singleResult: { data, errors },
+      },
+    }: any = await server.executeOperation({
+      query: processExtraHourMutation,
+      variables: { extraHourInput: clonedInput },
     });
-    expect(body.singleResult?.data)
-      .to.have.property("updateExtraHour")
-      .that.deep.equals(true);
+    console.log(
+      "🚀 ~ file: extraHour.resolver.test.ts:154 ~ it ~ errors:",
+      errors
+    );
+    expect(data)
+      .to.have.property("processExtraHours")
+      .that.deep.equals({
+        created: 1,
+        deleted: 1,
+        updated: extraHourFixtures.length - 2,
+      });
   });
 
-  it("should update an ExtraHour with nightly hours", async () => {
-    const updatePayload = {
-      ...extraHourFixtures[0],
-      worker: "2",
-      nightlyAmount: 3,
-    };
-    extraHourMock.mockResolvedValueOnce({
-      ...extraHourFixtures[0],
-      worker: { _id: "2", name: "Julio" },
-      nightlyAmount: 1,
+  it("should do nothing with an empty array in extraHourInput parameter", async () => {
+    const emptyInput: ExtraHourInput[] = [];
+
+    const {
+      body: {
+        singleResult: { data, errors },
+      },
+    }: any = await server.executeOperation({
+      query: processExtraHourMutation,
+      variables: { extraHourInput: emptyInput },
     });
-
-    const { body }: any = await server.executeOperation({
-      query: updateExtraHourMutation,
-      variables: { extraHourInput: updatePayload },
+    expect(data).to.have.property("processExtraHours").that.deep.equals({
+      created: 0,
+      deleted: 0,
+      updated: 0,
     });
-    expect(body.singleResult?.data)
-      .to.have.property("updateExtraHour")
-      .that.deep.equals(true);
-  });
-
-  it("shouldn't update an ExtraHour without an id", async () => {
-    const updatePayload = {
-      ...dissoc("_id", extraHourFixtures[0]),
-      worker: "1",
-    };
-    extraHourMock.mockResolvedValueOnce(false);
-
-    const { body }: any = await server.executeOperation({
-      query: updateExtraHourMutation,
-      variables: { extraHourInput: updatePayload },
-    });
-    expect(body.singleResult?.data)
-      .to.have.property("updateExtraHour")
-      .that.deep.equals(false);
-  });
-
-  it("should delete an ExtraHour if update it with amount of 0", async () => {
-    const extraHourInput = {
-      ...extraHourFixtures[0],
-      worker: extraHourFixtures[0].worker._id,
-      amount: 0,
-    };
-    extraHourMock
-      .mockResolvedValueOnce(extraHourFixtures[0])
-      .mockResolvedValueOnce(true);
-
-    const { body }: any = await server.executeOperation({
-      query: updateExtraHourMutation,
-      variables: { extraHourInput },
-    });
-    expect(body.singleResult?.data)
-      .to.have.property("updateExtraHour")
-      .that.deep.equals(true);
-  });
-
-  it("shouldn't delete an ExtraHour without a valid id", async () => {
-    extraHourMock.mockResolvedValueOnce(null);
-
-    const { body }: any = await server.executeOperation({
-      query: deleteExtraHourMutation,
-      variables: { _id: "invalidId" },
-    });
-    expect(body.singleResult?.data)
-      .to.have.property("deleteExtraHour")
-      .that.deep.equals(false);
-  });
-
-  it("should delete an ExtraHour", async () => {
-    extraHourMock
-      .mockResolvedValueOnce(extraHourFixtures[1])
-      .mockResolvedValueOnce(undefined);
-
-    const { body }: any = await server.executeOperation({
-      query: deleteExtraHourMutation,
-      variables: { _id: "1" },
-    });
-    expect(body.singleResult?.data)
-      .to.have.property("deleteExtraHour")
-      .that.deep.equals(true);
   });
 });

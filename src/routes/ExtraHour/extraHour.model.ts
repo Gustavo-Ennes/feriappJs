@@ -1,18 +1,18 @@
-import { Schema, model, Types } from "mongoose";
+import { Schema, model, Types, Document } from "mongoose";
 import { ExtraHourInterface } from "./types/extraHour";
 
 const ExtraHourSchema = new Schema({
-  reference:{
+  reference: {
     type: Date,
     required: true
   },
-  worker:{
+  worker: {
     type: Types.ObjectId,
-    required:true,
-    ref: 'Worker'
+    required: true,
+    ref: "Worker"
   },
   amount: {
-    type:Number,
+    type: Number,
     required: true
   },
   nightlyAmount: {
@@ -21,22 +21,11 @@ const ExtraHourSchema = new Schema({
   },
   department: {
     type: Types.ObjectId,
-    required:true,
-    ref: 'Department'
+    required: true,
+    ref: "Department"
   }
 });
 
-// pre is before model call
-ExtraHourSchema.pre(/^find/, function (next) {
-  this.populate("worker");
-  this.populate("department");
-  next();
-});
-
-
-const ExtraHourModel = model<ExtraHourInterface>(
-  "ExtraHour",
-  ExtraHourSchema
-);
+const ExtraHourModel = model<ExtraHourInterface>("ExtraHour", ExtraHourSchema);
 
 export { ExtraHourModel };

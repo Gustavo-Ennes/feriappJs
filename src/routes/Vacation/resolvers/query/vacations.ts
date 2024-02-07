@@ -2,7 +2,7 @@ import { verifyToken } from "../../../../firebase/firebase";
 import { Vacation } from "../../vacation.model";
 import {
   VacationInterface,
-  VacationsResolverArgsInterface,
+  VacationsResolverArgsInterface
 } from "../../types/vacation";
 import { buildOptions } from "./utils";
 
@@ -16,7 +16,9 @@ const vacationsResolver = async (
 
   const options = buildOptions(args);
 
-  const vacationInstance: VacationInterface[] = await Vacation.find(options);
+  const vacationInstance: VacationInterface[] = await Vacation.find(options)
+    .populate("worker")
+    .exec();
   return vacationInstance;
 };
 

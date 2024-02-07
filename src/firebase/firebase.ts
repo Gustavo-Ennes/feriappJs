@@ -7,7 +7,7 @@ const firebaseApp = initializeApp({
 
 const verifyToken = async (token: string): Promise<void> => {
   try {
-    const user = await getAuth().getUser(token);
+    await getAuth().getUser(token);
   } catch (err: any) {
     throw new Error("Token header is invalid.");
   }

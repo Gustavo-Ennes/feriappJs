@@ -12,7 +12,9 @@ const deleteWorkerResolver = async (
   await verifyToken(context.token || "");
 
   const { _id } = args;
-  const workerInstance: WorkerInterface | null = await Worker.findById(_id);
+  const workerInstance: WorkerInterface | null = await Worker.findById(_id)
+    .populate('department')
+    .exec();
 
   if (!workerInstance) throw new Error("Worker doesn't exists.");
 

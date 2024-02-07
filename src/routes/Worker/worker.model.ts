@@ -1,6 +1,5 @@
 import { Schema, Types, model } from "mongoose";
 
-// import { Vacation } from "../Vacation/vacation.model";
 import { WorkerInterface } from "./types/worker";
 import { Vacation } from "../Vacation";
 import { isFuture, isPast } from "date-fns";
@@ -43,11 +42,6 @@ const WorkerSchema = new Schema<WorkerInterface>(
     timestamps: true,
   }
 );
-// pre is before model call
-WorkerSchema.pre(/^find/, function (next) {
-  this.populate("department");
-  next();
-});
 
 WorkerSchema.virtual("status").get(async function () {
   const workerVacations = await Vacation.find({

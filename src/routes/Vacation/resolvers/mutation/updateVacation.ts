@@ -12,7 +12,9 @@ const updateVacationResolver = async (
   await verifyToken(context.token || "");
 
   const { vacationInput } = args;
-  const vacationToUpdate = await Vacation.findById(vacationInput._id);
+  const vacationToUpdate = await Vacation.findById(vacationInput._id)
+    .populate("worker")
+    .exec();
 
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");
 

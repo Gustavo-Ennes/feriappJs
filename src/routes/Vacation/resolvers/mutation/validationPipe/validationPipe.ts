@@ -12,7 +12,9 @@ const validateWorker = async (
 ): Promise<PipeContent> => {
   const worker: WorkerInterface | null = await Worker.findById(
     pipePayload.payload.worker
-  );
+  )
+    .populate("department")
+    .exec();
   if (!worker) pipePayload.errorMessage = "Worker ID not found";
   else pipePayload.worker = worker;
   return pipePayload;
@@ -50,10 +52,12 @@ const validateNoConflict = async (
         $gt: new Date(pipePayload.payload.startDate),
         $lte: add(new Date(pipePayload.payload.startDate), {
           days: pipePayload.payload.daysQtd,
-          seconds: -1,
-        }),
-      },
-    });
+          seconds: -1
+        })
+      }
+    })
+      .populate("worker")
+      .exec();
     const vacationsEndingInRange = await Vacation.find({
       deferred: true,
       worker: pipePayload.worker._id,
@@ -61,10 +65,12 @@ const validateNoConflict = async (
       startDate: {
         $lt: [new Date(pipePayload.payload.startDate)],
         $gte: sub(new Date(pipePayload.payload.startDate), {
-          days: pipePayload.payload.daysQtd,
-        }),
-      },
-    });
+          days: pipePayload.payload.daysQtd
+        })
+      }
+    })
+      .populate("worker")
+      .exec();
     const vacations = [...vacationsEndingInRange, ...vacationsStartingInRange];
     if (vacations.length) {
       pipePayload.errorMessage =

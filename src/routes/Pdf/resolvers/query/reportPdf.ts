@@ -25,14 +25,14 @@ const reportPdfResolver = async (
       minutes: 0,
       seconds: 0,
       hours: 0,
-      milliseconds: 0,
+      milliseconds: 0
     });
     const lastReferenceMonthDay = set(referenceDate, {
       date: getDaysInMonth(referenceDate),
       minutes: 59,
       seconds: 59,
       hours: 23,
-      milliseconds: 999,
+      milliseconds: 999
     });
 
     const instance: DepartmentInterface | null = await Department.findById(
@@ -42,14 +42,16 @@ const reportPdfResolver = async (
     if (!instance) throw new Error("Department not found.");
 
     const extraHours = await ExtraHourModel.find({
-      reference: { $gte: firstReferenceMonthDay, $lte: lastReferenceMonthDay },
-    });
+      reference: { $gte: firstReferenceMonthDay, $lte: lastReferenceMonthDay }
+    })
+      .populate(["worker", "department"])
+      .exec();
     const thisDepartmentExtraHours: ExtraHourInterface[] = extraHours.filter(
       ({
         worker: {
-          department: { _id },
+          department: { _id }
         },
-        department,
+        department
       }) =>
         department?._id?.toString() === instance._id?.toString() ||
         _id.toString() == instance._id?.toString()
@@ -59,7 +61,7 @@ const reportPdfResolver = async (
       document: pdfDoc,
       instance,
       reference: referenceDate,
-      extraHours: thisDepartmentExtraHours,
+      extraHours: thisDepartmentExtraHours
     });
     const pdfBytes = await pdfDoc.save();
 

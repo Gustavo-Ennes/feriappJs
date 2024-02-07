@@ -15,7 +15,7 @@ const justificationPdfResolver = async (
 
   try {
     const pdfDoc = await PDFDocument.create();
-    const instance = await Worker.findById(workerId);
+    const instance = await Worker.findById(workerId).populate("department").exec();
 
     if (!instance) throw new Error("Worker not found");
     await justificationRender({ document: pdfDoc, instance });

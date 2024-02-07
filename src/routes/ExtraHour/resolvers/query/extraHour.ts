@@ -12,7 +12,7 @@ const extraHourResolver = async (
 
   const { extraHourInput } = args;
   const extraHoursTableInstance: ExtraHourInterface | null =
-    await ExtraHourModel.findOne(extraHourInput).exec();
+    await ExtraHourModel.findOne(extraHourInput).populate('worker').exec();
   return extraHoursTableInstance;
 };
 

@@ -11,14 +11,16 @@ const extraHoursResolver = async (
 ): Promise<ExtraHourInterface[]> => {
   await verifyToken(context.token || "");
 
-  const { extraHourInput } = args;  
+  const { extraHourInput } = args;
   const reference = {
     ...(extraHourInput?.from && { $gte: new Date(extraHourInput?.from) }),
-    ...(extraHourInput?.to && { $lte: new Date(extraHourInput?.to) }),
+    ...(extraHourInput?.to && { $lte: new Date(extraHourInput?.to) })
   };
   const extraHoursTableInstances: ExtraHourInterface[] =
-    await ExtraHourModel.find(isEmpty(reference) ? {} : { reference });
-    
+    await ExtraHourModel.find(isEmpty(reference) ? {} : { reference })
+      .populate("worker")
+      .exec();
+
   return extraHoursTableInstances;
 };
 

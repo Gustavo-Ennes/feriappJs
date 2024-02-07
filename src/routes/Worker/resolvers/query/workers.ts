@@ -13,8 +13,11 @@ const workersResolver = async (
   const { fromDepartment } = args;
 
   const workerInstances: WorkerInterface[] = await Worker.find(
-    fromDepartment ? { department: fromDepartment } : {}
-  ).sort("name");
+    fromDepartment ? { department: fromDepartment } : {},
+  )
+    .populate("department")
+    .sort("name")
+    .exec();
   return workerInstances;
 };
 

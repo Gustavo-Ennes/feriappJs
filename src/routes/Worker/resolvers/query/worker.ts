@@ -1,6 +1,7 @@
 import { verifyToken } from "../../../../firebase/firebase";
 import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker";
+import { exec } from "child_process";
 
 const workerResolver = async (
   _: any,
@@ -11,7 +12,9 @@ const workerResolver = async (
   await verifyToken(context.token || "");
 
   const { _id } = args;
-  const workerInstance: WorkerInterface | null = await Worker.findById(_id);
+  const workerInstance: WorkerInterface | null = await Worker.findById(_id)
+    .populate("department")
+    .exec();
   return workerInstance;
 };
 

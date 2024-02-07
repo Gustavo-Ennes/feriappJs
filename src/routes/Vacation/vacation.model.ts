@@ -53,12 +53,6 @@ VacationSchema.virtual("subType").get(function () {
     : undefined;
 });
 
-// pre is before model call
-VacationSchema.pre(/^find/, function (next) {
-  this.populate("worker");
-  next();
-});
-
 const Vacation = model<VacationInterface>("Vacation", VacationSchema);
 
 export { Vacation };

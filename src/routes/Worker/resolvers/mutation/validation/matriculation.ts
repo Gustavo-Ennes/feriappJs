@@ -18,9 +18,12 @@ const validateMatriculation = async (
   const workerWithSameMatriculation = await Worker.find({
     matriculation: pipePayload.workerInput.matriculation,
     _id: {
-      $ne: pipePayload.workerInput._id,
-    },
-  });
+      $ne: pipePayload.workerInput._id
+    }
+  })
+    .populate("department")
+    .exec();
+  console.log("🚀 ~ workerWithSameMatriculation:", workerWithSameMatriculation)
 
   return {
     ...pipePayload,
@@ -28,7 +31,7 @@ const validateMatriculation = async (
     error:
       workerWithSameMatriculation.length > 0
         ? "Conflict: matriculation exists"
-        : undefined,
+        : undefined
   };
 };
 const validateRegistry = async (
@@ -38,9 +41,12 @@ const validateRegistry = async (
     const workerWithSameRegistry = await Worker.find({
       registry: pipePayload.workerInput.registry,
       _id: {
-        $ne: pipePayload.workerInput._id,
-      },
-    });
+        $ne: pipePayload.workerInput._id
+      }
+    })
+      .populate("department")
+      .exec();
+    console.log("🚀 ~ workerWithSameRegistry:", workerWithSameRegistry)
 
     return {
       ...pipePayload,
@@ -48,7 +54,7 @@ const validateRegistry = async (
       error:
         workerWithSameRegistry.length > 0
           ? "Conflict: registry exists"
-          : undefined,
+          : undefined
     };
   }
   return pipePayload;

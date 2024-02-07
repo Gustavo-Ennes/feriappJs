@@ -12,20 +12,12 @@ const processExtraHoursResolver = async (
 ): Promise<ProcessExtraHourReturn> => {
   await verifyToken(context.token || "");
   const { extraHourInput } = args;
-  console.log(
-    "🚀 ~ file: processExtraHours.ts:13 ~ extraHourInput:",
-    JSON.stringify(extraHourInput)
-  );
   const [withId, withoutId] = partition(
     (extraHour: ExtraHourInput) => extraHour._id,
     extraHourInput
   );
   const toCreate = withoutId.filter(
     ({ amount = 0, nightlyAmount = 0 }) => amount > 0 || nightlyAmount > 0
-  );
-  console.log(
-    "🚀 ~ file: processExtraHours.ts:23 ~ toCreate:",
-    JSON.stringify(toCreate.length, null, 2)
   );
   const [toDelete, toUpdate] = partition(
     ({ amount = 0, nightlyAmount = 0 }) => !amount && !nightlyAmount,
@@ -34,16 +26,8 @@ const processExtraHoursResolver = async (
   const returnObj = {
     created: toCreate.length,
     deleted: toDelete.length,
-    updated: toUpdate.length,
+    updated: toUpdate.length
   };
-  console.log(
-    "🚀 ~ file: processExtraHours.ts:28 ~ toDelete:",
-    JSON.stringify(toDelete, null, 2)
-  );
-  console.log(
-    "🚀 ~ file: processExtraHours.ts:28 ~ toUpdate:",
-    JSON.stringify(toUpdate, null, 2)
-  );
 
   await ExtraHourModel.insertMany(toCreate);
   toUpdate.forEach(async (item) => {

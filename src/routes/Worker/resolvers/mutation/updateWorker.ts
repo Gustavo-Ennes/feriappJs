@@ -15,7 +15,10 @@ const updateWorkerResolver = async (
 
   const workerInstance: WorkerInterface | null = await Worker.findById(
     workerInput._id
-  );
+  )
+    .populate("department")
+    .exec();
+  console.log("🚀 ~ workerInstance:", workerInstance);
   if (!workerInstance) throw new Error("Worker doesn't exists.");
 
   const { error, success } = await validateMatriculationNumbers(workerInput);

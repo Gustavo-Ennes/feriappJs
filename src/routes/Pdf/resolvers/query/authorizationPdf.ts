@@ -15,13 +15,15 @@ const authorizationPdfResolver = async (
 
   try {
     const pdfDoc = await PDFDocument.create();
-    const instance = await Worker.findById(workerId);
+    const instance = await Worker.findById(workerId)
+      .populate("department")
+      .exec();
 
     if (!instance) throw new Error("Worker not found");
     await authorizationRender({
       document: pdfDoc,
       instance,
-      reference: new Date(reference as string),
+      reference: new Date(reference as string)
     });
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes).toString("base64");

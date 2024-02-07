@@ -13,7 +13,9 @@ const vacationResolver = async (
   const { _id } = args;
   const vacationInstance: VacationInterface | null = await Vacation.findById(
     _id
-  );
+  )
+    .populate("worker")
+    .exec();
   return vacationInstance;
 };
 

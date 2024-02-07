@@ -1,11 +1,27 @@
 import { vi } from "vitest";
 
-const getModelMethods = (expectedFn: () => any) => ({
-  find: expectedFn,
-  findById: expectedFn,
-  findOne: (condition: any) => ({
-    exec: () => expectedFn(),
-  }),
+type GetModelMethodParameter = {
+  expectedFn: () => any;
+  populate?: boolean;
+};
+
+const defaultModelMethods = (expectedFn: () => any) => ({
+  populate: () => ({
+    exec: expectedFn,
+    sort: () => ({
+      exec: expectedFn
+    })
+  })
+});
+
+// some methods don't use populate('').exec()
+const getModelMethods = ({
+  expectedFn,
+  populate = true
+}: GetModelMethodParameter) => ({
+  find: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
+  findById: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
+  findOne: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
   create: expectedFn,
   updateOne: expectedFn,
   deleteOne: expectedFn,
@@ -22,20 +38,21 @@ const verifyTokenMock = vi.fn();
 const extraHourMock = vi.fn();
 
 vi.doMock("../routes/Vacation/vacation.model", () => ({
-  Vacation: getModelMethods(vacationMock),
+  Vacation: getModelMethods({ expectedFn: vacationMock })
 }));
 vi.doMock("../routes/Worker/worker.model", () => ({
-  Worker: getModelMethods(workerMock),
+  Worker: getModelMethods({ expectedFn: workerMock })
 }));
+// department dont call populate().exec()
 vi.doMock("../routes/Department/department.model", () => ({
-  Department: getModelMethods(departmentMock),
+  Department: getModelMethods({ expectedFn: departmentMock, populate: false })
 }));
 vi.doMock("../routes/ExtraHour/extraHour.model", () => ({
-  ExtraHourModel: getModelMethods(extraHourMock),
+  ExtraHourModel: getModelMethods({ expectedFn: extraHourMock })
 }));
 vi.doMock("../firebase/firebase", () => ({
   firebaseApp: vi.fn(),
-  verifyToken: verifyTokenMock,
+  verifyToken: verifyTokenMock
 }));
 
 export {
@@ -43,5 +60,5 @@ export {
   workerMock,
   departmentMock,
   verifyTokenMock,
-  extraHourMock,
+  extraHourMock
 };

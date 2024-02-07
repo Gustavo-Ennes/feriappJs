@@ -1,4 +1,3 @@
-
 import { verifyToken } from "../../../../firebase/firebase";
 import { Vacation } from "../../../Vacation";
 import { VacationInterface } from "../../../Vacation/types/vacation";
@@ -18,14 +17,18 @@ const searchResolver = async (
   const { searchTerm } = args;
   const results: SearchResult = {};
   results.departments = await Department.find({
-    name: { $regex: ".*" + searchTerm + ".*" },
+    name: { $regex: ".*" + searchTerm + ".*" }
   });
   results.workers = await Worker.find({
-    name: { $regex: ".*" + searchTerm + ".*" },
-  });
+    name: { $regex: ".*" + searchTerm + ".*" }
+  })
+    .populate("department")
+    .exec();
   const allVacations: VacationInterface[] = await Vacation.find({
-    deferred: true,
-  });
+    deferred: true
+  })
+    .populate("worker")
+    .exec();
   results.vacations = [];
   results.workers.forEach(({ _id }) => {
     const vacations: VacationInterface[] = allVacations.filter(({ worker }) => {

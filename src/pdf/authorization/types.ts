@@ -21,5 +21,5 @@ type calculateExtraHoursParams = {
 export type {
   JustificationPdfFnParam,
   CreateTableDataParams,
-  calculateExtraHoursParams,
+  calculateExtraHoursParams
 };

@@ -5,25 +5,23 @@ import {
   createTitle,
   createTable,
   createParagraph,
-  createSign,
+  createSign
 } from "../factory";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { getHeightObject } from "../utils";
 import { createTableData } from "./utils";
 import { StandardFonts } from "pdf-lib";
 import { capitalizeName } from "../../utils/capitalize";
+import { getAuthorizationPdfData } from "./data";
 
 const render = async ({
   document,
   instance,
-  reference,
+  reference
 }: PdfFnParam): Promise<void> => {
   const worker = instance as WorkerInterface;
   if (document && reference && worker) {
-    const tableData = await createTableData({
-      worker,
-      reference,
-    });
+    const tableData = await getAuthorizationPdfData(worker, reference);
     const page = document.addPage();
     const height = getHeightObject(page);
     const startLineX: number = 50;
@@ -36,7 +34,7 @@ const render = async ({
       document,
       height,
       title: "autorização para realização de horas extras",
-      size: 18,
+      size: 18
     });
     height.stepHugeLine();
 
@@ -49,6 +47,8 @@ const render = async ({
       endLineX,
       startY,
       page,
+      font,
+      lineHeight: 16
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -57,14 +57,14 @@ const render = async ({
       name: capitalizeName(worker.name),
       role: "ciente do servidor",
       document,
-      height,
+      height
     });
     height.stepHugeLine();
     height.stepHugeLine();
 
     page.drawLine({
       start: { x: startLineX, y: height.actual },
-      end: { x: endLineX, y: height.actual },
+      end: { x: endLineX, y: height.actual }
     });
     height.stepHugeLine();
 
@@ -74,7 +74,7 @@ const render = async ({
       title: authorizationText,
       document,
       height,
-      size: 14,
+      size: 14
     });
 
     const textWidth = font.widthOfTextAtSize(authorizationText, 14);
@@ -82,23 +82,24 @@ const render = async ({
       //underline
       start: {
         x: page.getWidth() / 2 - textWidth / 2 - 5,
-        y: height.actual - 2,
+        y: height.actual - 2
       },
       end: {
         x: page.getWidth() / 2 - textWidth / 2 + 5 + textWidth,
-        y: height.actual - 2,
+        y: height.actual - 2
       },
-      thickness: 1,
+      thickness: 1
     });
     height.stepHugeLine();
-    const paragraphText = `
-    Pela presente, autorizo o setor de recursos humanos a efetuar o pagamento das horas extras, referentes ao período autorizado, conforme o relatório de cartão de ponto que deverá ser anexado a presente autorização.
-    `;
+    const paragraphText = `Pela presente, autorizo o setor de recursos humanos a efetuar o pagamento das horas extras, referentes ao período autorizado, conforme o relatório de cartão de ponto que deverá ser anexado a presente autorização.`;
     await createParagraph({
       document,
       text: paragraphText,
       height,
       fontSize: 13,
+      x: 100,
+      maxWidth: page.getWidth() - 200,
+      font
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -107,7 +108,7 @@ const render = async ({
       name: "Sebastião Arosti",
       role: "Diretor do Departamento de Transporte",
       document,
-      height,
+      height
     });
   }
 };

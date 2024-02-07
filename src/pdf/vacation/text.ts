@@ -3,7 +3,7 @@ import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 import {
   translateVacation,
   translateVacationSubtype,
-  numberToNumberString,
+  numberToNumberString
 } from "./utils";
 
 const vacationParagraphBegin = (vacation: VacationInterface): string => `

@@ -2,7 +2,7 @@ import { DepartmentInterface } from "../routes/Department/types/department";
 import { ExtraHourInterface } from "../routes/ExtraHour/types/extraHour";
 import type { VacationInterface } from "../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../routes/Worker/types/worker";
-import type { PDFDocument, PDFPage } from "pdf-lib";
+import type { PDFDocument, PDFFont, PDFPage } from "pdf-lib";
 
 type Height = {
   actual: number;
@@ -13,16 +13,20 @@ type Height = {
 
 type PdfFnParam = {
   document?: PDFDocument;
-  instance: VacationInterface | WorkerInterface | DepartmentInterface | null;
+  instance?: VacationInterface | WorkerInterface | DepartmentInterface | null;
   reference?: Date;
-  extraHours?: ExtraHourInterface[]
+  extraHours?: ExtraHourInterface[];
 };
 
 type DrawCellFnParams = {
   height: Height;
   document: PDFDocument;
-  text: string;
+  line: (string | undefined)[];
   page: PDFPage;
+  font: PDFFont;
+  startLineX: number;
+  endLineX: number;
+  lineHeight: number;
 };
 
 type CreatePdfParams = {
@@ -36,7 +40,7 @@ type CreateTitleParams = {
   document: PDFDocument;
   height: Height;
   size?: number;
-  offset?: number
+  offset?: number;
 };
 
 type CreateParagraphParams = {
@@ -44,8 +48,11 @@ type CreateParagraphParams = {
   document: PDFDocument;
   height: Height;
   fontSize?: number;
+  font: PDFFont;
   x?: number;
   y?: number;
+  lineHeight?: number;
+  maxWidth?: number;
 };
 
 type CreateSignParams = {
@@ -64,13 +71,26 @@ type DrawHalfPageParams = {
 };
 
 type TableParams = {
-  data: string[];
+  data: (string | undefined)[][];
   document: PDFDocument;
   height: Height;
   page: PDFPage;
   startLineX: number;
   endLineX: number;
   startY: number;
+  font: PDFFont;
+  lineHeight?: number;
+};
+
+type GetMultiTextWidthParam = {
+  text: string;
+  page: PDFPage;
+  font: PDFFont;
+  lineHeight: number;
+  maxWidth: number;
+  x: number;
+  y: number;
+  fontSize: number;
 };
 
 export type {
@@ -83,4 +103,5 @@ export type {
   DrawHalfPageParams,
   TableParams,
   DrawCellFnParams,
+  GetMultiTextWidthParam
 };

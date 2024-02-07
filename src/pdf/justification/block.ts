@@ -3,17 +3,19 @@ import {
   createFooter,
   createTitle,
   createParagraph,
-  createSign,
+  createSign
 } from "../factory";
 import type { DrawJustificationBlockParams } from "./types";
 import { capitalizeName } from "../../utils/capitalize";
+import { StandardFonts } from "pdf-lib";
 
 const drawJustificationBlock = async ({
   document,
   height,
-  worker,
+  worker
 }: DrawJustificationBlockParams): Promise<void> => {
   const page = document.getPage(0);
+  const font = await document.embedFont(StandardFonts.Helvetica);
   await createHeader(document);
   await createFooter(document);
 
@@ -21,7 +23,7 @@ const drawJustificationBlock = async ({
     document,
     height,
     title: "justificativa de horas extras",
-    size: 18,
+    size: 18
   });
   await createParagraph({
     document,
@@ -29,6 +31,8 @@ const drawJustificationBlock = async ({
     text: "*favor não recortar!*",
     x: page.getWidth() - 130,
     fontSize: 9,
+    font,
+    maxWidth: page.getWidth() / 2
   });
 
   height.stepLine();
@@ -37,6 +41,8 @@ const drawJustificationBlock = async ({
     height,
     text: `Secretaria: ${capitalizeName(worker.department.name)}`,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
   await createParagraph({
     document,
@@ -44,6 +50,8 @@ const drawJustificationBlock = async ({
     text: `Setor: Transporte`,
     x: page.getWidth() - 170,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
 
   height.stepLine();
@@ -52,6 +60,8 @@ const drawJustificationBlock = async ({
     height,
     text: `Data: _____/______/${new Date().getFullYear()}`,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
   await createParagraph({
     document,
@@ -59,6 +69,8 @@ const drawJustificationBlock = async ({
     text: `Horário: _____:_____ ÁS _____:_____ `,
     x: page.getWidth() - 390,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
   await createParagraph({
     document,
@@ -66,6 +78,8 @@ const drawJustificationBlock = async ({
     text: `H.E.: ( _____ hs. )`,
     x: page.getWidth() - 170,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
 
   height.stepLine();
@@ -74,6 +88,8 @@ const drawJustificationBlock = async ({
     height,
     text: `Servidor: ${capitalizeName(worker.name)}`,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
   await createParagraph({
     document,
@@ -81,6 +97,8 @@ const drawJustificationBlock = async ({
     text: `Matrícula: ${worker.matriculation}`,
     x: page.getWidth() - 170,
     fontSize: 12,
+    font,
+    maxWidth: page.getWidth() / 2
   });
 
   height.stepLine();
@@ -94,13 +112,14 @@ const drawJustificationBlock = async ({
         underscore.times--;
       }
       return this.line;
-    },
+    }
   };
   await createParagraph({
     document,
     height,
     text: `Motivo: ${underscore.getLine()}`,
     fontSize: 12,
+    font
   });
 
   height.stepHugeLine();
@@ -109,7 +128,7 @@ const drawJustificationBlock = async ({
     role: capitalizeName(worker.role),
     document,
     height,
-    x: 150,
+    x: 150
   });
   height.actual += 44;
   await createSign({
@@ -117,7 +136,7 @@ const drawJustificationBlock = async ({
     role: "Diretor de Transporte",
     document,
     height,
-    x: 450,
+    x: 450
   });
   height.stepLine();
   height.stepSmallLine();

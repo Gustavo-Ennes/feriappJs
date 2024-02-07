@@ -52,5 +52,5 @@ export {
   translateVacation,
   translateMonth,
   translateVacationSubtype,
-  getParagraph,
+  getParagraph
 };

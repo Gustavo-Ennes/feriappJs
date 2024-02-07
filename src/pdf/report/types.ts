@@ -42,5 +42,5 @@ export {
   CreateReportTableParams,
   GetMaxWidthArrayParams,
   MakeLinesParams,
-  ParseDataFnParams,
+  ParseDataFnParams
 };

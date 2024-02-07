@@ -7,26 +7,26 @@ const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
   if (document) {
     const page = document.addPage();
     const height = getHeightObject(page);
-    
+
     await drawJustificationBlock({
       document,
       height,
-      worker: instance as WorkerInterface,
+      worker: instance as WorkerInterface
     });
     await drawJustificationBlock({
       document,
       height,
-      worker: instance as WorkerInterface,
+      worker: instance as WorkerInterface
     });
     await drawJustificationBlock({
       document,
       height,
-      worker: instance as WorkerInterface,
+      worker: instance as WorkerInterface
     });
     await drawJustificationBlock({
       document,
       height,
-      worker: instance as WorkerInterface,
+      worker: instance as WorkerInterface
     });
   }
 };

@@ -4,24 +4,27 @@ import {
   createFooter,
   createTitle,
   createParagraph,
-  createSign,
+  createSign
 } from "../factory";
 import { getHeightObject } from "../utils";
 import { DepartmentInterface } from "../../routes/Department/types/department";
 import { createReportTable, monthString } from "./utils";
 import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
 import { capitalizeName } from "../../utils/capitalize";
+import { StandardFonts } from "pdf-lib";
 
 const render = async ({
   document,
   instance,
   reference,
-  extraHours,
+  extraHours
 }: PdfFnParam): Promise<void> => {
   if (document) {
     const department = instance as DepartmentInterface;
     const page = document.addPage();
     const height = getHeightObject(page);
+    const font = await document.embedFont(StandardFonts.Helvetica);
+
     await createHeader(document);
     await createFooter(document);
 
@@ -30,7 +33,7 @@ const render = async ({
       height,
       title: "relatório mensal de horas extras - divisão de transporte",
       size: 16,
-      offset: 20,
+      offset: 20
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -45,6 +48,7 @@ const render = async ({
       text: identificationParagraph,
       fontSize: 14,
       x: 20,
+      font
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -52,7 +56,7 @@ const render = async ({
     await createReportTable({
       document,
       extraHours: extraHours as ExtraHourInterface[],
-      height,
+      height
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -62,7 +66,7 @@ const render = async ({
       name: "Sebastião Arosti",
       role: "Diretor Municipal de Transporte",
       document,
-      height,
+      height
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -71,7 +75,7 @@ const render = async ({
       name: capitalizeName(department.responsible),
       role: `Secretaria de ${capitalizeName(department.name)}`,
       document,
-      height,
+      height
     });
   }
 };

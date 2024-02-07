@@ -10,7 +10,7 @@ import {
   DrawCellParams,
   GetMaxWidthArrayParams,
   MakeLinesParams,
-  ParseDataFnParams,
+  ParseDataFnParams
 } from "./types";
 
 const calculateDepartmentTotal = (extraHours: ExtraHourInterface[]) =>
@@ -44,7 +44,7 @@ const calculateWorkerTotalNightlyHours = (
 const parseData = ({
   extraHours,
   total,
-  nightlyTotal,
+  nightlyTotal
 }: ParseDataFnParams): string[][] => {
   const workers: WorkerInterface[] = uniq(pluck("worker", extraHours));
   const data: string[][] = [];
@@ -54,7 +54,7 @@ const parseData = ({
     "MATRÍCULA",
     "H. EXTRAS",
     "A. NOTURNO",
-    "FALTAS",
+    "FALTAS"
   ];
   data.push(columns);
   workers.map((worker) => {
@@ -70,7 +70,7 @@ const parseData = ({
         worker.matriculation,
         workerTotal.toFixed(1),
         workerNightlyTotal.toFixed(1),
-        "0",
+        "0"
       ]);
     }
   });
@@ -85,7 +85,7 @@ const drawCell = async ({
   y,
   height,
   width,
-  font,
+  font
 }: DrawCellParams) => {
   const padding = 10;
   const startLineX = x;
@@ -95,7 +95,7 @@ const drawCell = async ({
   // top line
   page.drawLine({
     start: { x: startLineX, y: startLineY },
-    end: { x: endLineX, y: startLineY },
+    end: { x: endLineX, y: startLineY }
   });
   const textX = x + (width / 2 - font.widthOfTextAtSize(text, 10) / 2);
 
@@ -105,29 +105,29 @@ const drawCell = async ({
     size: 10,
     maxWidth: width,
     font,
-    lineHeight: 15,
+    lineHeight: 15
   });
 
   // bottom line
   page.drawLine({
     start: { x: startLineX, y: endLineY },
-    end: { x: endLineX, y: endLineY },
+    end: { x: endLineX, y: endLineY }
   });
   // right line
   page.drawLine({
     start: { x: startLineX, y: startLineY },
-    end: { x: startLineX, y: endLineY },
+    end: { x: startLineX, y: endLineY }
   });
   // left line
   page.drawLine({
     start: { x: endLineX, y: startLineY },
-    end: { x: endLineX, y: endLineY },
+    end: { x: endLineX, y: endLineY }
   });
 };
 
 const getMaxWidthArray = async ({
   parsedData,
-  document,
+  document
 }: GetMaxWidthArrayParams): Promise<number[]> => {
   const maxWidths: number[] = [];
   const paddings = 20;
@@ -150,7 +150,7 @@ const makeLines = async ({
   maxWidths,
   height,
   document,
-  page,
+  page
 }: MakeLinesParams): Promise<void> => {
   const tableWidth = sum(maxWidths);
   const actualWidthValue = page.getWidth() / 2 - tableWidth / 2;
@@ -158,7 +158,7 @@ const makeLines = async ({
     actual: actualWidthValue,
     step(number: number) {
       this.actual += number;
-    },
+    }
   };
 
   for (let h = 0; h < parsedData.length; h++) {
@@ -177,7 +177,7 @@ const makeLines = async ({
         y: height.actual,
         height: fontHeight * 2,
         width: maxWidths[i],
-        font,
+        font
       });
       widthObject.step(maxWidths[i]);
       height.actual = oldHeight;
@@ -190,7 +190,7 @@ const makeLines = async ({
 const createReportTable = async ({
   extraHours,
   document,
-  height,
+  height
 }: CreateReportTableParams) => {
   const page = document.getPage(0);
   const total = calculateDepartmentTotal(extraHours);
@@ -203,7 +203,7 @@ const createReportTable = async ({
     maxWidths,
     height,
     document,
-    page,
+    page
   });
 };
 
@@ -220,7 +220,7 @@ const monthString = (reference: Date): string => {
     September: "Setembro",
     October: "Outubro",
     November: "Novembro",
-    December: "Dezembro",
+    December: "Dezembro"
   };
   const englishMonth = format(reference, "LLLL");
 

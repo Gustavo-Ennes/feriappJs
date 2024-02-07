@@ -4,7 +4,7 @@ import {
   createHeader,
   createParagraph,
   createSign,
-  createTitle,
+  createTitle
 } from "../factory";
 import type { PdfFnParam } from "../types";
 import type { DrawHalfPageParams } from "../types";
@@ -13,14 +13,16 @@ import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { getParagraph, translateMonth, translateVacation } from "./utils";
 import { capitalizeName } from "../../utils/capitalize";
 import { getHeightObject } from "../utils";
+import { StandardFonts } from "pdf-lib";
 
 const drawHalfPage = async ({
   document,
   height,
-  vacation,
+  vacation
 }: DrawHalfPageParams): Promise<void> => {
   const page = document.getPage(0);
   const paragraph = getParagraph(vacation);
+  const font = await document.embedFont(StandardFonts.Helvetica);
 
   await createHeader(document);
   await createFooter(document);
@@ -28,13 +30,13 @@ const drawHalfPage = async ({
     document,
     daysQtd: vacation.daysQtd,
     height,
-    subtype: vacation.subType,
+    subtype: vacation.subType
   });
   await createTitle({
     title: `Requerimento de ${translateVacation(vacation.type)}`,
     document,
     height,
-    size: 19,
+    size: 19
   });
   height.stepHugeLine();
   await createParagraph({
@@ -42,6 +44,7 @@ const drawHalfPage = async ({
     height,
     text: paragraph,
     fontSize: vacation.type === "license" ? 12 : 14,
+    font
   });
 
   height.stepHugeLine();
@@ -59,8 +62,10 @@ const drawHalfPage = async ({
     text: dateString,
     x: page.getWidth() - dateString.length * 7.5,
     ...(vacation.type === "dayOff" && {
-      y: height.actual - 15,
+      y: height.actual - 15
     }),
+    maxWidth: page.getWidth(),
+    font
   });
 
   height.stepHugeLine();
@@ -71,7 +76,7 @@ const drawHalfPage = async ({
     name: capitalizeName((vacation.worker as unknown as WorkerInterface).name),
     matriculation: (vacation.worker as unknown as WorkerInterface)
       .matriculation,
-    role: capitalizeName((vacation.worker as unknown as WorkerInterface).role),
+    role: capitalizeName((vacation.worker as unknown as WorkerInterface).role)
   });
 
   height.stepHugeLine();
@@ -79,7 +84,7 @@ const drawHalfPage = async ({
     document,
     height,
     name: "Sebastião Arosti",
-    role: "Diretor do transporte",
+    role: "Diretor do transporte"
   });
 };
 
@@ -92,7 +97,7 @@ const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
     await drawHalfPage({
       document,
       height,
-      vacation,
+      vacation
     });
 
     height.stepHugeLine();
@@ -103,7 +108,7 @@ const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
     await drawHalfPage({
       document,
       height,
-      vacation,
+      vacation
     });
   }
 };

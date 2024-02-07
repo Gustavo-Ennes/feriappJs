@@ -4,7 +4,8 @@ const pdfDefinitions = {
     justificationPdf(workerId: ID!): String
     authorizationPdf(workerId: ID!, reference: Date!): String
     reportPdf(reference: Date!, departmentId: ID!): String
-  `,
+    vehicleUsageReportPdf: String
+  `
 };
 
 export { pdfDefinitions };

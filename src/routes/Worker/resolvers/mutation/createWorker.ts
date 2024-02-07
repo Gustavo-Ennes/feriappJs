@@ -19,6 +19,7 @@ const createWorkerResolver = async (
   if (!departmentInstance) throw new Error("not found: departmentId not found");
 
   const { success, error } = await validateMatriculationNumbers(workerInput);
+  
   if (!success) throw new Error(`validation error: ${error}`);
 
   const workerInstance: WorkerInterface = await Worker.create(workerInput);

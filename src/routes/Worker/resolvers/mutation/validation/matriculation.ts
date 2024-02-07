@@ -23,7 +23,6 @@ const validateMatriculation = async (
   })
     .populate("department")
     .exec();
-  console.log("🚀 ~ workerWithSameMatriculation:", workerWithSameMatriculation)
 
   return {
     ...pipePayload,
@@ -46,7 +45,6 @@ const validateRegistry = async (
     })
       .populate("department")
       .exec();
-    console.log("🚀 ~ workerWithSameRegistry:", workerWithSameRegistry)
 
     return {
       ...pipePayload,

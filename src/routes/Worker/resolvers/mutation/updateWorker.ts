@@ -18,7 +18,7 @@ const updateWorkerResolver = async (
   )
     .populate("department")
     .exec();
-  console.log("🚀 ~ workerInstance:", workerInstance);
+
   if (!workerInstance) throw new Error("Worker doesn't exists.");
 
   const { error, success } = await validateMatriculationNumbers(workerInput);

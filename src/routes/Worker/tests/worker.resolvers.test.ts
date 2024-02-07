@@ -104,7 +104,6 @@ describe("Workers integration tests", () => {
     const { body }: any = await server.executeOperation({
       query: createWorkerMutation
     });
-    console.log("🚀 ~ it ~ body:", JSON.stringify(body, null, 2));
     expect(body.singleResult).to.have.property("errors");
     expect(body.singleResult?.errors?.[0]).to.have.property(
       "message",
@@ -137,9 +136,7 @@ describe("Workers integration tests", () => {
   });
 
   it("shouldn't update a worker if there's another worker with same matriculation number", async () => {
-    workerMock
-      .mockReturnValueOnce(workerExample)
-      .mockReturnValueOnce([{}])
+    workerMock.mockReturnValueOnce(workerExample).mockReturnValueOnce([{}]);
     const { body }: any = await server.executeOperation({
       query: updateWorkerMutation
     });

@@ -3,6 +3,7 @@ import {
   justificationPdfResolver,
   authorizationPdfResolver,
   reportPdfResolver,
+  vehicleUsageReportResolver
 } from "./resolvers";
 
 const pdfResolvers = {
@@ -11,7 +12,8 @@ const pdfResolvers = {
     justificationPdf: justificationPdfResolver,
     authorizationPdf: authorizationPdfResolver,
     reportPdf: reportPdfResolver,
-  },
+    vehicleUsageReportPdf: vehicleUsageReportResolver
+  }
 };
 
 export { pdfResolvers };

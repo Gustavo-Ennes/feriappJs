@@ -158,10 +158,7 @@ describe("Update ExtraHoursTable model tests", async () => {
       query: processExtraHourMutation,
       variables: { extraHourInput: clonedInput },
     });
-    console.log(
-      "🚀 ~ file: extraHour.resolver.test.ts:154 ~ it ~ errors:",
-      errors
-    );
+    
     expect(data)
       .to.have.property("processExtraHours")
       .that.deep.equals({

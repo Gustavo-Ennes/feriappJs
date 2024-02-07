@@ -1,4 +1,5 @@
-export { vacationPdfResolver  } from './query/vacationPdf'
-export { justificationPdfResolver } from './query/justificationPdf'
-export { authorizationPdfResolver} from './query/authorizationPdf'
-export { reportPdfResolver } from './query/reportPdf'
+export { vacationPdfResolver } from "./query/vacationPdf";
+export { justificationPdfResolver } from "./query/justificationPdf";
+export { authorizationPdfResolver } from "./query/authorizationPdf";
+export { reportPdfResolver } from "./query/reportPdf";
+export { vehicleUsageReportResolver } from "./query/vehicleUsageReport";

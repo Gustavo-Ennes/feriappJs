@@ -2,6 +2,15 @@ import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 
 import { dayOffParagraph, licenseParagraph, vacationParagraph } from "./text";
 
+const boss = {
+  name: "Evandro Souza dos Santos",
+  role: "Chefe do departamento de Transporte"
+};
+const director = {
+  name: "Sebastião Arosti",
+  role: "Diretor de Transporte"
+};
+
 const numberToNumberString = (number: number): string => {
   if (number === 15) return "quinze";
   if (number === 30) return "trinta";
@@ -48,10 +57,17 @@ const getParagraph = (vacation: VacationInterface): string => {
   else throw new Error("getParagraph: invalid type parameter");
 };
 
+// type vacation envolves money to the worker, so director sign, others not
+const getBoss = (
+  vacation: VacationInterface
+): { name: string; role: string } =>
+  vacation.type === "vacation" ? director : boss;
+
 export {
+  getBoss,
+  getParagraph,
   numberToNumberString,
-  translateVacation,
   translateMonth,
+  translateVacation,
   translateVacationSubtype,
-  getParagraph
 };

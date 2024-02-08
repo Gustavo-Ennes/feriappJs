@@ -14,7 +14,7 @@ import {
   createTitle
 } from "../factory";
 import { getHeightObject } from "../utils";
-import { getParagraph, translateMonth, translateVacation } from "./utils";
+import { getBoss, getParagraph, translateMonth, translateVacation } from "./utils";
 
 const drawHalfPage = async ({
   document,
@@ -81,11 +81,12 @@ const drawHalfPage = async ({
   });
 
   height.stepHugeLine();
+  const { name: bossName, role: bossRole} = getBoss(vacation)
   await createSign({
     document,
     height,
-    name: "Sebastião Arosti",
-    role: "Diretor do transporte"
+    name: bossName,
+    role: bossRole
   });
 };
 

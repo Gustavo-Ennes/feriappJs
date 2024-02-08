@@ -1,17 +1,17 @@
 import {
-  vacationPdfResolver,
-  justificationPdfResolver,
   authorizationPdfResolver,
+  justificationPdfResolver,
   reportPdfResolver,
+  vacationPdfResolver,
   vehicleUsageReportResolver
 } from "./resolvers";
 
 const pdfResolvers = {
   Query: {
-    vacationPdf: vacationPdfResolver,
-    justificationPdf: justificationPdfResolver,
     authorizationPdf: authorizationPdfResolver,
+    justificationPdf: justificationPdfResolver,
     reportPdf: reportPdfResolver,
+    vacationPdf: vacationPdfResolver,
     vehicleUsageReportPdf: vehicleUsageReportResolver
   }
 };

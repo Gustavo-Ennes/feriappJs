@@ -5,7 +5,7 @@
   },
   "extends": [
     "eslint:recommended",
-    "prettier:recommended",
+    "prettier",
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -13,24 +13,28 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "perfectionist"],
+  "root": true,
   "rules": {
-    "indent": ["error", 2],
-    "unused-imports/no-unused-imports": "error",
     "no-unused-vars": [
       "error",
       { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
     ],
-    "sort-imports": [
+    "perfectionist/sort-objects": [
       "error",
       {
-        "ignoreCase": false,
-        "ignoreDeclarationSort": false,
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": false
+        "type": "natural",
+        "order": "asc"
       }
     ],
+    "perfectionist/sort-named-imports": [
+      "error",
+      {
+        "type": "natural",
+        "order": "asc"
+      }
+    ],
+    "no-duplicate-imports": ["error", { "includeExports": true }],
     "quotes": ["error", "double"]
   }
 }

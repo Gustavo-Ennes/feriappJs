@@ -1,4 +1,4 @@
-import { Document, Types } from "mongoose";
+import { Document } from "mongoose";
 import type { Worker } from "../../Worker/types/worker";
 import type { DepartmentInterface } from "../../Department/types/department";
 

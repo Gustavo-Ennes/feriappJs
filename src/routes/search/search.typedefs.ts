@@ -1,13 +1,13 @@
 const searchDefinitions = {
+  queries: `
+    search(searchTerm: String!): Search
+  `,
   types: `
     type Search{
       vacations: [Vacation!]
       workers: [Worker!]
       departments: [Department!]
     }
-  `,
-  queries: `
-    search(searchTerm: String!): Search
   `,
 };
 

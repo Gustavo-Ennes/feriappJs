@@ -1,9 +1,9 @@
 import { format } from "date-fns";
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 import {
+  numberToNumberString,
   translateVacation,
-  translateVacationSubtype,
-  numberToNumberString
+  translateVacationSubtype
 } from "./utils";
 
 const vacationParagraphBegin = (vacation: VacationInterface): string => `

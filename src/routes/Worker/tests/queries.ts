@@ -59,5 +59,5 @@ export {
   workerQuery,
   createWorkerMutation,
   deleteWorkerMutation,
-  updateWorkerMutation,
+  updateWorkerMutation
 };

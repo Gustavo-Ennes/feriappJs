@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const vacationDefaultObjectId: string = "6414697eb7d80144bcc86170";
 const workerDefaultObjectId: string = "6414697eb7d80144bcc86171";
 const vacationsQuery: string = `
@@ -32,10 +33,10 @@ query{
 }
 `;
 const createVacationMutation = ({
-  worker = workerDefaultObjectId,
   daysQtd = 15,
   startDate = "2023-02-23T17:35:31.308Z",
   type = "vacation",
+  worker = workerDefaultObjectId
 }): string => `
 mutation{
   createVacation(vacationInput: {
@@ -62,12 +63,12 @@ mutation{
 const updateVacationMutation = ({
   _id,
   daysQtd,
+  deferred,
+  enjoyed = false,
+  observation,
   startDate,
   type,
-  deferred,
-  observation,
-  enjoyed = false,
-  worker,
+  worker
 }: any): string => `
 mutation{
   updateVacation(vacationInput: { 
@@ -98,5 +99,5 @@ export {
   vacationsFromQuery,
   workerDefaultObjectId,
   vacationDefaultObjectId,
-  getVacationPdfQuery,
+  getVacationPdfQuery
 };

@@ -4,11 +4,10 @@ import { WorkerInterface } from "../../types/worker.d";
 import { validateMatriculationNumbers } from "./validation/matriculation";
 
 const updateWorkerResolver = async (
-  _: any,
+  _: unknown,
   args: { workerInput: WorkerInterface },
-  context: { token?: string },
-  ___: any
-): Promise<Boolean> => {
+  context: { token?: string }
+): Promise<boolean> => {
   await verifyToken(context.token || "");
 
   const { workerInput }: { workerInput: WorkerInterface } = args;

@@ -1,18 +1,18 @@
 import {
-  departmentResolver,
-  departmentsResolver,
   createDepartmentResolver,
   deleteDepartmentResolver,
+  departmentResolver,
+  departmentsResolver,
   updateDepartmentResolver,
 } from "./resolvers";
 
 const departmentResolvers = {
-  Query: { department: departmentResolver, departments: departmentsResolver },
   Mutation: {
     createDepartment: createDepartmentResolver,
     deleteDepartment: deleteDepartmentResolver,
     updateDepartment: updateDepartmentResolver,
   },
+  Query: { department: departmentResolver, departments: departmentsResolver },
 };
 
 export { departmentResolvers };

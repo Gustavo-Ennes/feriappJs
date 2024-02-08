@@ -6,24 +6,28 @@ import { Worker } from "../../../Worker";
 import { render as justificationRender } from "../../../../pdf/justification/render";
 
 const justificationPdfResolver = async (
-  _: any,
+  _: unknown,
   { workerId }: PdfResolverArgsInterface,
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<string | void> => {
   await verifyToken(context.token || "");
 
   try {
     const pdfDoc = await PDFDocument.create();
-    const instance = await Worker.findById(workerId).populate("department").exec();
+    const instance = await Worker.findById(workerId)
+      .populate("department")
+      .exec();
 
     if (!instance) throw new Error("Worker not found");
     await justificationRender({ document: pdfDoc, instance });
     const pdfBytes = await pdfDoc.save();
 
     return Buffer.from(pdfBytes).toString("base64");
-  } catch (err: any) {
-    console.log("Error in justification pdf making: ", err.message);
+  } catch (err: unknown) {
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    console.log("Error in authorization pdf making: ", message);
+    console.log("Error in justification pdf making: ", message);
   }
 };
 

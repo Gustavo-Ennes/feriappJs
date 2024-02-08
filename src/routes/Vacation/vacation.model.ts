@@ -1,4 +1,3 @@
-// import { add } from "date-fns";
 import { add, isAfter } from "date-fns";
 import { Schema, Types, model } from "mongoose";
 
@@ -7,38 +6,38 @@ import { VacationInterface } from "./types/vacation";
 const VacationSchema = new Schema<VacationInterface>(
   {
     daysQtd: {
-      type: Number,
       required: true,
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    worker: {
-      type: Types.ObjectId,
-      required: true,
-      ref: "Worker",
+      type: Number
     },
     deferred: {
-      type: Boolean,
       default: true,
+      type: Boolean
     },
     observation: {
-      type: String,
+      type: String
+    },
+    startDate: {
+      required: true,
+      type: Date
     },
     type: {
-      type: String,
       required: true,
+      type: String
     },
+    worker: {
+      ref: "Worker",
+      required: true,
+      type: Types.ObjectId
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
 VacationSchema.virtual("endDate").get(function () {
   const newDate: string = add(new Date(this.startDate), {
-    days: this.daysQtd < 1 ? 1 : this.daysQtd - 1,
+    days: this.daysQtd < 1 ? 1 : this.daysQtd - 1
   }).toISOString();
   return newDate;
 });

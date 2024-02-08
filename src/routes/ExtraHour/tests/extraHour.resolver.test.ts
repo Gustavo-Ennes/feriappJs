@@ -1,13 +1,14 @@
-import { describe, it, expect, afterEach, vi, beforeAll } from "vitest";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { parse } from "date-fns";
 import { assoc, clone, dissoc, pipe } from "ramda";
 
 import { extraHourMock } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import {
-  processExtraHourMutation,
   extraHourQuery,
   extraHoursQuery,
+  processExtraHourMutation
 } from "./queries";
 import { extraHourFixtures, extraHourInputFixture } from "./extraHour.fixture";
 import { ExtraHourInput } from "../types/extraHour";
@@ -25,7 +26,7 @@ describe("Update ExtraHoursTable model tests", async () => {
     const extraHourInput = { _id: "1" };
     const { body }: any = await server.executeOperation({
       query: extraHourQuery,
-      variables: { extraHourInput },
+      variables: { extraHourInput }
     });
     expect(body.singleResult?.data)
       .to.have.property("extraHour")
@@ -35,7 +36,7 @@ describe("Update ExtraHoursTable model tests", async () => {
   it("should get extra all ExtraHours", async () => {
     extraHourMock.mockResolvedValueOnce(extraHourFixtures);
     const { body }: any = await server.executeOperation({
-      query: extraHoursQuery,
+      query: extraHoursQuery
     });
     expect(body.singleResult?.data)
       .to.have.property("extraHours")
@@ -45,15 +46,15 @@ describe("Update ExtraHoursTable model tests", async () => {
   it("should get extraHours by a reference date range", async () => {
     extraHourMock.mockResolvedValueOnce([
       extraHourFixtures[0],
-      extraHourFixtures[1],
+      extraHourFixtures[1]
     ]);
     const extraHourInput = {
       from: parse("01-01-2023", "dd-MM-yyyy", new Date()).toISOString(),
-      to: parse("02-01-2023", "dd-MM-yyyy", new Date()).toISOString(),
+      to: parse("02-01-2023", "dd-MM-yyyy", new Date()).toISOString()
     };
     const { body }: any = await server.executeOperation({
       query: extraHoursQuery,
-      variables: { extraHourInput },
+      variables: { extraHourInput }
     });
     expect(body.singleResult?.data)
       .to.have.property("extraHours")
@@ -68,16 +69,16 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const {
       body: {
-        singleResult: { data },
-      },
+        singleResult: { data }
+      }
     }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: clonedInput },
+      variables: { extraHourInput: clonedInput }
     });
     expect(data).to.have.property("processExtraHours").that.deep.equals({
       created: clonedInput.length,
       deleted: 0,
-      updated: 0,
+      updated: 0
     });
   });
 
@@ -92,14 +93,14 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const { body }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: clonedInput },
+      variables: { extraHourInput: clonedInput }
     });
     expect(body.singleResult?.data)
       .to.have.property("processExtraHours")
       .that.deep.equals({
         created: clonedInput.length,
         deleted: 0,
-        updated: 0,
+        updated: 0
       });
   });
 
@@ -111,14 +112,14 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const { body }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: clonedInput },
+      variables: { extraHourInput: clonedInput }
     });
     expect(body.singleResult?.data)
       .to.have.property("processExtraHours")
       .that.deep.equals({
         created: 0,
         deleted: 0,
-        updated: clonedInput.length,
+        updated: clonedInput.length
       });
   });
 
@@ -130,14 +131,14 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const { body }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: clonedInput },
+      variables: { extraHourInput: clonedInput }
     });
     expect(body.singleResult?.data)
       .to.have.property("processExtraHours")
       .that.deep.equals({
         created: 0,
         deleted: clonedInput.length,
-        updated: 0,
+        updated: 0
       });
   });
 
@@ -152,19 +153,19 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const {
       body: {
-        singleResult: { data, errors },
-      },
+        singleResult: { data }
+      }
     }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: clonedInput },
+      variables: { extraHourInput: clonedInput }
     });
-    
+
     expect(data)
       .to.have.property("processExtraHours")
       .that.deep.equals({
         created: 1,
         deleted: 1,
-        updated: extraHourFixtures.length - 2,
+        updated: extraHourFixtures.length - 2
       });
   });
 
@@ -173,16 +174,16 @@ describe("Update ExtraHoursTable model tests", async () => {
 
     const {
       body: {
-        singleResult: { data, errors },
-      },
+        singleResult: { data }
+      }
     }: any = await server.executeOperation({
       query: processExtraHourMutation,
-      variables: { extraHourInput: emptyInput },
+      variables: { extraHourInput: emptyInput }
     });
     expect(data).to.have.property("processExtraHours").that.deep.equals({
       created: 0,
       deleted: 0,
-      updated: 0,
+      updated: 0
     });
   });
 });

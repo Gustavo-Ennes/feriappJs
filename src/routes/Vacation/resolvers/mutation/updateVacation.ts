@@ -4,10 +4,9 @@ import { Vacation } from "../../vacation.model";
 import { validationPipe } from "./validationPipe";
 
 const updateVacationResolver = async (
-  _: any,
+  _: unknown,
   args: { vacationInput: VacationInterface },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<boolean> => {
   await verifyToken(context.token || "");
 
@@ -18,7 +17,7 @@ const updateVacationResolver = async (
 
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");
 
-  const { payload, errorMessage, worker } = await validationPipe(vacationInput);
+  const { errorMessage, payload, worker } = await validationPipe(vacationInput);
 
   if (!errorMessage && worker && payload) {
     await Vacation.updateOne({ _id: vacationInput._id }, vacationInput);

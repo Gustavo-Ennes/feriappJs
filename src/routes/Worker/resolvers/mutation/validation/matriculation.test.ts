@@ -1,4 +1,4 @@
-import { describe, it, expect, afterEach, beforeAll, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { workerMock } from "../../../../../utils/mockApplication";
 import { workerExample } from "../../../tests/worker.example";

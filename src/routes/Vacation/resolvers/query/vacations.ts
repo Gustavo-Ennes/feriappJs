@@ -7,10 +7,9 @@ import {
 import { buildOptions } from "./utils";
 
 const vacationsResolver = async (
-  _: any,
+  _: unknown,
   args: VacationsResolverArgsInterface,
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<VacationInterface[]> => {
   await verifyToken(context.token || "");
 

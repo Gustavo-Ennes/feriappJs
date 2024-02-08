@@ -6,10 +6,9 @@ import { validateMatriculationNumbers } from "./validation/matriculation";
 import { DepartmentInterface } from "../../../Department/types/department";
 
 const createWorkerResolver = async (
-  _: any,
+  _: unknown,
   args: { workerInput: WorkerInterface },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<WorkerInterface> => {
   await verifyToken(context.token || "");
 
@@ -18,8 +17,8 @@ const createWorkerResolver = async (
     await Department.findById(workerInput.department);
   if (!departmentInstance) throw new Error("not found: departmentId not found");
 
-  const { success, error } = await validateMatriculationNumbers(workerInput);
-  
+  const { error, success } = await validateMatriculationNumbers(workerInput);
+
   if (!success) throw new Error(`validation error: ${error}`);
 
   const workerInstance: WorkerInterface = await Worker.create(workerInput);

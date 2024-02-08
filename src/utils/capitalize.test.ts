@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { capitalizeName } from "./capitalize";
 
@@ -8,7 +8,7 @@ const NAMES: string[] = [
   "maria das dores",
   "lúcia do carmo",
   "josé da graça",
-  "gustavo ennes",
+  "gustavo ennes"
 ];
 const CAPITALIZEDNAMES: string[] = [
   "Sérgio Silva dos Santos",
@@ -16,7 +16,7 @@ const CAPITALIZEDNAMES: string[] = [
   "Maria das Dores",
   "Lúcia do Carmo",
   "José da Graça",
-  "Gustavo Ennes",
+  "Gustavo Ennes"
 ];
 
 describe("Utils: capitalize text function", async (): Promise<void> => {

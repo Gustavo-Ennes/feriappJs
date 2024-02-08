@@ -1,4 +1,13 @@
 const workerDefinitions = {
+  mutations: `
+    createWorker(workerInput: WorkerInput): Worker
+    deleteWorker(_id: ID!): Boolean
+    updateWorker(workerInput: WorkerInput): Boolean
+  `,
+  queries: `
+    worker(_id: ID!): Worker
+    workers(fromDepartment: ID): [Worker]
+  `,
   types: `
     type Worker{
       _id: ID
@@ -27,16 +36,7 @@ const workerDefinitions = {
     }
 
     scalar Date
-  `,
-  queries: `
-    worker(_id: ID!): Worker
-    workers(fromDepartment: ID): [Worker]
-  `,
-  mutations: `
-    createWorker(workerInput: WorkerInput): Worker
-    deleteWorker(_id: ID!): Boolean
-    updateWorker(workerInput: WorkerInput): Boolean
-  `,
+  `
 };
 
 export { workerDefinitions };

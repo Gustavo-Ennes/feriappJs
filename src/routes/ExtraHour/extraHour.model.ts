@@ -1,28 +1,28 @@
-import { Schema, model, Types, Document } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 import { ExtraHourInterface } from "./types/extraHour";
 
 const ExtraHourSchema = new Schema({
-  reference: {
-    type: Date,
-    required: true
-  },
-  worker: {
-    type: Types.ObjectId,
-    required: true,
-    ref: "Worker"
-  },
   amount: {
-    type: Number,
-    required: true
-  },
-  nightlyAmount: {
-    type: Number,
-    default: 0
+    required: true,
+    type: Number
   },
   department: {
-    type: Types.ObjectId,
+    ref: "Department",
     required: true,
-    ref: "Department"
+    type: Types.ObjectId
+  },
+  nightlyAmount: {
+    default: 0,
+    type: Number
+  },
+  reference: {
+    required: true,
+    type: Date
+  },
+  worker: {
+    ref: "Worker",
+    required: true,
+    type: Types.ObjectId
   }
 });
 

@@ -4,9 +4,9 @@ import { PdfFnParam } from "../types";
 import { getHeightObject } from "../utils";
 import {
   createPageHeaderHorizontal,
-  createTitle,
   createParagraph,
-  createTable
+  createTable,
+  createTitle
 } from "../factory";
 import { fuelingTableData, vehicleUsageTableData } from "./data";
 
@@ -18,11 +18,11 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
     height.actual += 40;
     await createPageHeaderHorizontal(document);
     await createTitle({
-      title: "Boletim de utilização de veículo",
       document,
       height,
+      offset: 250,
       size: 15,
-      offset: 250
+      title: "Boletim de utilização de veículo"
     });
 
     height.stepHugeLine();
@@ -32,25 +32,25 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
     const paragraphWidth = font.widthOfTextAtSize(paragraphText, 15);
     await createParagraph({
       document,
-      text: paragraphText,
-      height,
+      font,
       fontSize: 15,
-      x: (page.getWidth() - 35) / 2 - paragraphWidth / 2 - 5,
-      font
+      height,
+      text: paragraphText,
+      x: (page.getWidth() - 35) / 2 - paragraphWidth / 2 - 5
     });
 
     height.stepLine();
 
     await createTable({
-      document,
-      height,
-      startLineX: 35,
-      endLineX: page.getWidth() - 35,
-      startY: height.actual,
       data: vehicleUsageTableData,
-      page,
+      document,
+      endLineX: page.getWidth() - 35,
       font,
-      lineHeight: 16
+      height,
+      lineHeight: 16,
+      page,
+      startLineX: 35,
+      startY: height.actual
     });
     height.stepLine();
 
@@ -59,37 +59,37 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
     const fuelingTextX = (page.getWidth() - 35) / 2 - fuelingTextWidth / 4;
     page.drawText("ABASTECIMENTO", {
       font,
-      x: fuelingTextX,
       size: 15,
+      x: fuelingTextX,
       y: height.actual
     });
 
     height.stepSmallLine();
 
     await createTable({
-      document,
-      height,
-      startLineX: 35,
-      endLineX: page.getWidth() - 35,
-      startY: height.actual,
       data: fuelingTableData,
-      page,
+      document,
+      endLineX: page.getWidth() - 35,
       font,
-      lineHeight: 12
+      height,
+      lineHeight: 12,
+      page,
+      startLineX: 35,
+      startY: height.actual
     });
 
     height.stepSmallLine();
 
     await createTable({
-      document,
-      height,
-      startLineX: 35,
-      endLineX: page.getWidth() - 35,
-      startY: height.actual,
       data: fuelingTableData,
-      page,
+      document,
+      endLineX: page.getWidth() - 35,
       font,
-      lineHeight: 12
+      height,
+      lineHeight: 12,
+      page,
+      startLineX: 35,
+      startY: height.actual
     });
   }
 };

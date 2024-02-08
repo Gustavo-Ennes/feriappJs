@@ -3,10 +3,9 @@ import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department";
 
 const departmentResolver = async (
-  _: any,
+  _: unknown,
   args: { _id: string },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<DepartmentInterface | null> => {
   await verifyToken(context.token || "");
 

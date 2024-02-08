@@ -1,16 +1,18 @@
 import { workerDefaultObjectId } from "../../Vacation/tests/queries";
+import { WorkerInterface } from "../types/worker";
 
-const workerExample: any = {
+const workerExample: WorkerInterface = {
   _id: workerDefaultObjectId,
-  name: "Joseph Climber",
-  role: "Paperweight",
-  status: "active",
-  registry: "0152636",
-  matriculation: "15.263-6",
   admissionDate: new Date(),
   department: {
-    name: "Saúde",
+    name: "Saúde"
   },
+  justification: "workando",
+  matriculation: "15.263-6",
+  name: "Joseph Climber",
+  registry: "0152636",
+  role: "Paperweight",
+  status: "active",
 };
 
 export { workerExample };

@@ -1,11 +1,12 @@
-import { describe, it, expect, afterEach, vi, beforeAll } from "vitest";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { departmentMock } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import {
-  departmentQuery,
-  departmentsQuery,
   createDepartmentMutation,
   deleteDepartmentMutation,
+  departmentQuery,
+  departmentsQuery,
   updateDepartmentMutation,
 } from "./queries";
 import { departmentFixture } from "./department.fixture";

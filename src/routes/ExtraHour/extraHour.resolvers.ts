@@ -5,10 +5,10 @@ import {
 } from "./resolvers";
 
 const extraHourResolvers = {
-  Query: { extraHour: extraHourResolver, extraHours: extraHoursResolver },
   Mutation: {
     processExtraHours: processExtraHoursResolver,
   },
+  Query: { extraHour: extraHourResolver, extraHours: extraHoursResolver },
 };
 
 export { extraHourResolvers };

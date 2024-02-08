@@ -1,24 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  afterEach,
+  beforeAll,
+  beforeEach,
   describe,
   expect,
   it,
-  afterEach,
-  vi,
-  beforeAll,
-  beforeEach,
+  vi
 } from "vitest";
 
 import {
-  workerMock,
-  vacationMock,
   departmentMock,
+  vacationMock,
+  workerMock
 } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import { searchQuery } from "./queries";
 import {
-  workerExamples,
   departmentExamples,
   vacationExamples,
+  workerExamples
 } from "./examples";
 
 describe("Search tests", () => {
@@ -38,8 +39,8 @@ describe("Search tests", () => {
     const { body }: any = await server.executeOperation({
       query: searchQuery,
       variables: {
-        searchTerm: "al",
-      },
+        searchTerm: "al"
+      }
     });
 
     expect(body.singleResult?.data).toHaveProperty("search");
@@ -54,8 +55,8 @@ describe("Search tests", () => {
     const { body }: any = await server.executeOperation({
       query: searchQuery,
       variables: {
-        searchTerm: "al",
-      },
+        searchTerm: "al"
+      }
     });
 
     expect(body.singleResult?.data).toHaveProperty("search");
@@ -70,8 +71,8 @@ describe("Search tests", () => {
     const { body }: any = await server.executeOperation({
       query: searchQuery,
       variables: {
-        searchTerm: "Alf",
-      },
+        searchTerm: "Alf"
+      }
     });
 
     expect(body.singleResult?.data).toHaveProperty("search");
@@ -79,7 +80,7 @@ describe("Search tests", () => {
     expect(body.singleResult?.data.search.vacations).toEqual([
       vacationExamples[0],
       vacationExamples[1],
-      vacationExamples[2],
+      vacationExamples[2]
     ]);
   });
 
@@ -88,14 +89,14 @@ describe("Search tests", () => {
     const { body }: any = await server.executeOperation({
       query: searchQuery,
       variables: {
-        searchTerm: "Ald",
-      },
+        searchTerm: "Ald"
+      }
     });
 
     expect(body.singleResult?.data).toHaveProperty("search");
     expect(body.singleResult?.data.search).toHaveProperty("vacations");
     expect(body.singleResult?.data.search.vacations).toEqual([
-      vacationExamples[3],
+      vacationExamples[3]
     ]);
   });
 });

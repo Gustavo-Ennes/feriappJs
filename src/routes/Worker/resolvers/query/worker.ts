@@ -1,13 +1,11 @@
 import { verifyToken } from "../../../../firebase/firebase";
 import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker";
-import { exec } from "child_process";
 
 const workerResolver = async (
-  _: any,
+  _: unknown,
   args: { _id: string },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<WorkerInterface | null> => {
   await verifyToken(context.token || "");
 

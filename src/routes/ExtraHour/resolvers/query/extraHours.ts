@@ -4,10 +4,9 @@ import { ExtraHourInput, ExtraHourInterface } from "../../types/extraHour";
 import { isEmpty } from "ramda";
 
 const extraHoursResolver = async (
-  _: any,
+  _: unknown,
   args: { extraHourInput?: ExtraHourInput },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<ExtraHourInterface[]> => {
   await verifyToken(context.token || "");
 

@@ -7,10 +7,9 @@ import { SearchResult } from "../../types/search";
 import { WorkerInterface } from "../../../Worker/types/worker";
 
 const searchResolver = async (
-  _: any,
+  _: unknown,
   args: { searchTerm: string },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<SearchResult> => {
   await verifyToken(context.token || "");
 

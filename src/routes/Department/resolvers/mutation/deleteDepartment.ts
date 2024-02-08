@@ -3,11 +3,10 @@ import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department";
 
 const deleteDepartmentResolver = async (
-  _: any,
-  args: any,
-  context: { token?: string },
-  ___: any
-): Promise<Boolean> => {
+  _: unknown,
+  args: { _id: string },
+  context: { token?: string }
+): Promise<boolean> => {
   await verifyToken(context.token || "");
 
   const { _id } = args;

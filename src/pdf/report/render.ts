@@ -1,10 +1,10 @@
 import type { PdfFnParam } from "../types";
 import {
-  createHeader,
   createFooter,
-  createTitle,
+  createHeader,
   createParagraph,
-  createSign
+  createSign,
+  createTitle
 } from "../factory";
 import { getHeightObject } from "../utils";
 import { DepartmentInterface } from "../../routes/Department/types/department";
@@ -15,9 +15,9 @@ import { StandardFonts } from "pdf-lib";
 
 const render = async ({
   document,
+  extraHours,
   instance,
-  reference,
-  extraHours
+  reference
 }: PdfFnParam): Promise<void> => {
   if (document) {
     const department = instance as DepartmentInterface;
@@ -31,9 +31,9 @@ const render = async ({
     await createTitle({
       document,
       height,
-      title: "relatório mensal de horas extras - divisão de transporte",
+      offset: 20,
       size: 16,
-      offset: 20
+      title: "relatório mensal de horas extras - divisão de transporte"
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -44,11 +44,11 @@ const render = async ({
     `;
     await createParagraph({
       document,
+      font,
+      fontSize: 14,
       height,
       text: identificationParagraph,
-      fontSize: 14,
-      x: 20,
-      font
+      x: 20
     });
     height.stepHugeLine();
     height.stepHugeLine();
@@ -63,19 +63,19 @@ const render = async ({
     height.stepHugeLine();
 
     await createSign({
-      name: "Sebastião Arosti",
-      role: "Diretor Municipal de Transporte",
       document,
-      height
+      height,
+      name: "Sebastião Arosti",
+      role: "Diretor Municipal de Transporte"
     });
     height.stepHugeLine();
     height.stepHugeLine();
 
     await createSign({
-      name: capitalizeName(department.responsible),
-      role: `Secretaria de ${capitalizeName(department.name)}`,
       document,
-      height
+      height,
+      name: capitalizeName(department.responsible),
+      role: `Secretaria de ${capitalizeName(department.name)}`
     });
   }
 };

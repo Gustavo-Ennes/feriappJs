@@ -1,4 +1,4 @@
-import { format, set, getDaysInMonth } from "date-fns";
+import { format, getDaysInMonth, set } from "date-fns";
 
 import type { CreateTableDataParams, calculateExtraHoursParams } from "./types";
 import { capitalizeName } from "../../utils/capitalize";
@@ -6,38 +6,38 @@ import { ExtraHourModel } from "../../routes/ExtraHour";
 import { pluck, sum } from "ramda";
 
 export const calculateExtraHours = async ({
-  worker,
-  reference: _reference
-}: calculateExtraHoursParams): Promise<Number> => {
+  reference: _reference,
+  worker
+}: calculateExtraHoursParams): Promise<number> => {
   const refFirstDay = set(_reference, {
     date: 1,
-    seconds: 0,
-    minutes: 0,
-    milliseconds: 0,
     hours: 0,
-    month: _reference.getMonth() - 1
+    milliseconds: 0,
+    minutes: 0,
+    month: _reference.getMonth() - 1,
+    seconds: 0
   });
   const refLasttDay = set(_reference, {
     date: getDaysInMonth(_reference),
-    seconds: 59,
-    minutes: 59,
     hours: 23,
-    milliseconds: 999
+    milliseconds: 999,
+    minutes: 59,
+    seconds: 59
   });
   const reference = {
     $gte: refFirstDay,
     $lte: refLasttDay
   };
   const extraHours = await ExtraHourModel.find({
-    worker: worker._id,
-    reference
+    reference,
+    worker: worker._id
   });
   return sum(pluck("amount", extraHours));
 };
 
 const createTableData = async ({
-  worker,
-  reference
+  reference,
+  worker
 }: CreateTableDataParams): Promise<string[][]> => {
   const data: string[][] = [];
   const firstDayReferenceMonth = format(
@@ -48,10 +48,11 @@ const createTableData = async ({
     set(reference, { date: getDaysInMonth(reference) }),
     "dd/MM/yyyy"
   );
-  const authorizationText: string = `Pela presente, autorizo o servidor acima designado, a realizar a quantidade de horas, extras previstas nessa autorização, com a finalidade de atender as necessidades, conforme as justificativas.`;
+  const authorizationText: string =
+    "Pela presente, autorizo o servidor acima designado, a realizar a quantidade de horas, extras previstas nessa autorização, com a finalidade de atender as necessidades, conforme as justificativas.";
   const extraHoursNumber = await calculateExtraHours({
-    worker,
-    reference
+    reference,
+    worker
   });
 
   data.push([`Nome do servidor: ${capitalizeName(worker.name)}`]);
@@ -66,7 +67,7 @@ const createTableData = async ({
   ]);
   data.push([`Justificativa: -> ${worker.justification}`]);
   data.push([`Autorização: ${authorizationText}`]);
-  data.push([`Nome do diretor: Sebastião Arosti`]);
+  data.push(["Nome do diretor: Sebastião Arosti"]);
 
   return data;
 };

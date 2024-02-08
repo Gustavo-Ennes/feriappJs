@@ -6,47 +6,47 @@ import { isFuture, isPast } from "date-fns";
 
 const WorkerSchema = new Schema<WorkerInterface>(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    role: {
-      type: String,
-      required: true,
-    },
-    registry: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    matriculation: {
-      type: String,
-      unique: true,
-      required: true,
-    },
     admissionDate: {
-      type: Date,
       required: true,
+      type: Date
     },
     department: {
-      type: Types.ObjectId,
-      required: true,
       ref: "Department",
+      required: true,
+      type: Types.ObjectId
     },
     justification: {
+      default: "Prestação de serviços ao setor de Transporte.",
+      type: String
+    },
+    matriculation: {
+      required: true,
       type: String,
-      default: "Prestação de serviços ao setor de Transporte."
+      unique: true
+    },
+    name: {
+      required: true,
+      type: String
+    },
+    registry: {
+      required: true,
+      type: String,
+      unique: true
+    },
+    role: {
+      required: true,
+      type: String
     }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 );
 
 WorkerSchema.virtual("status").get(async function () {
   const workerVacations = await Vacation.find({
     deferred: true,
-    worker: this._id,
+    worker: this._id
   });
   const result = { status: "active" };
   workerVacations.forEach((vacation) => {

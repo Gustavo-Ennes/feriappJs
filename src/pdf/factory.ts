@@ -1,17 +1,20 @@
 import { translateVacationSubtype } from "./vacation/utils";
-import { StandardFonts, TextAlignment, layoutMultilineText } from "pdf-lib";
-import type { PDFDocument } from "pdf-lib";
+import {
+  PDFDocument,
+  StandardFonts,
+  TextAlignment,
+  layoutMultilineText
+} from "pdf-lib";
 
 import type {
-  CreateSignParams,
   CreateParagraphParams,
+  CreateSignParams,
   CreateTitleParams,
+  DrawCellFnParams,
   Height,
-  TableParams,
-  DrawCellFnParams
+  TableParams
 } from "./types";
 import { getMultiTextMeasures } from "./utils";
-import { Number } from "mongoose";
 
 const createHeader = async (document: PDFDocument): Promise<void> => {
   const header =
@@ -22,11 +25,11 @@ const createHeader = async (document: PDFDocument): Promise<void> => {
   const page = document.getPage(0);
 
   page.drawImage(pngHeaderImage, {
-    x: 20,
-    y: page.getHeight() - 55,
-    width: pngHeaderDims.width,
     height: pngHeaderDims.height,
-    opacity: 1
+    opacity: 1,
+    width: pngHeaderDims.width,
+    x: 20,
+    y: page.getHeight() - 55
   });
 };
 
@@ -41,11 +44,11 @@ const createPageHeaderHorizontal = async (
   const page = document.getPage(0);
 
   page.drawImage(pngHeaderImage, {
-    x: 30,
-    y: page.getHeight() - 50,
-    width: pngHeaderDims.width,
     height: pngHeaderDims.height,
-    opacity: 1
+    opacity: 1,
+    width: pngHeaderDims.width,
+    x: 30,
+    y: page.getHeight() - 50
   });
 };
 
@@ -58,20 +61,20 @@ const createFooter = async (document: PDFDocument): Promise<void> => {
   const page = document.getPage(0);
 
   page.drawImage(pngFooterImage, {
-    x: 20,
-    y: 15,
-    width: pngFooterDims.width,
     height: pngFooterDims.height,
-    opacity: 1
+    opacity: 1,
+    width: pngFooterDims.width,
+    x: 20,
+    y: 15
   });
 };
 
 const createTitle = async ({
-  title,
   document,
   height,
+  offset,
   size = 24,
-  offset
+  title
 }: CreateTitleParams): Promise<void> => {
   const font = await document.embedFont(StandardFonts.CourierBold);
   const textWidth = font.widthOfTextAtSize(title, size);
@@ -81,90 +84,89 @@ const createTitle = async ({
 
   // title
   page.drawText(title.toUpperCase(), {
-    y: height.actual,
+    size,
     x: xCoordinate,
-    size
+    y: height.actual
   });
 };
 
 const createParagraph = async ({
   document,
-  text,
-  height,
+  font,
   fontSize = 14,
-  x = 50,
-  y = height.actual,
+  height,
   lineHeight = 15,
   maxWidth,
-  font
+  text,
+  x = 50,
+  y = height.actual
 }: CreateParagraphParams): Promise<void> => {
   const page = document.getPage(0);
   const multiText = layoutMultilineText(text, {
     alignment: TextAlignment.Center,
-    font,
-    fontSize,
     bounds: {
       height: page.getHeight(),
       width: maxWidth ?? page.getWidth() - x * 2,
       x,
       y
-    }
+    },
+    font,
+    fontSize
   });
   multiText.lines.forEach((line) => {
     page.drawText(line.text, {
-      y,
-      x,
-      size: fontSize,
-      maxWidth: maxWidth ?? page.getWidth() - x * 2,
       font,
       lineHeight,
-
+      maxWidth: maxWidth ?? page.getWidth() - x * 2,
+      size: fontSize,
+      x,
+      y
     });
     y -= lineHeight;
   });
 };
 
 const createSign = async ({
-  name,
-  role,
   document,
   height,
   matriculation,
+  name,
+  role,
   x = 300
 }: CreateSignParams): Promise<void> => {
   const page = document.getPage(0);
   const matriculationText = `Matr.: ${matriculation}`;
 
   page.drawLine({
-    start: { x: x - 85, y: height.actual },
-    end: { x: x + 85, y: height.actual }
+    end: { x: x + 85, y: height.actual },
+    start: { x: x - 85, y: height.actual }
   });
   height.stepLine();
   page.drawText(name, {
-    y: height.actual,
+    size: 13,
     x: x - name.length * 3.2,
-    size: 13
+    y: height.actual
   });
   height.stepSmallLine();
   page.drawText(role, {
-    y: height.actual,
+    size: 11,
     x: x - role.length * 2.5,
-    size: 11
+    y: height.actual
   });
   height.stepSmallLine();
   if (matriculation) {
     page.drawText(matriculationText, {
-      y: height.actual,
+      size: 10,
       x: x - matriculationText.length * 2.3,
-      size: 10
+      y: height.actual
     });
     height.stepSmallLine();
   }
 };
 
 const createDaysQtd = async ({
-  document,
   daysQtd,
+  document,
   height,
   subtype
 }: {
@@ -178,21 +180,21 @@ const createDaysQtd = async ({
     ? `${translateVacationSubtype(subtype)}`
     : `${daysQtd} dias`;
   page.drawText(text, {
-    y: height.actual + 10,
+    size: 11,
     x: subtype ? page.getWidth() - 100 : page.getWidth() - 80,
-    size: 11
+    y: height.actual + 10
   });
 };
 
 const drawTableLine = async ({
-  height,
   document,
-  page,
-  line,
-  font,
-  startLineX,
   endLineX,
-  lineHeight
+  font,
+  height,
+  line,
+  lineHeight,
+  page,
+  startLineX
 }: DrawCellFnParams) => {
   const cellSize = (endLineX - startLineX) / line.length;
   const getCellFinalX = (index: number) => 35 + (index + 1) * cellSize;
@@ -204,40 +206,40 @@ const drawTableLine = async ({
 
   // cell upper line
   page.drawLine({
-    start: { x: startLineX, y: height.actual },
-    end: { x: endLineX, y: height.actual }
+    end: { x: endLineX, y: height.actual },
+    start: { x: startLineX, y: height.actual }
   });
 
   // goto middle to write
   height.actual -= lineHeight;
 
   line.forEach(async (cell, index) => {
-    if(cell){
-      const { width: paragraphWidth, height: paragraphHeight } =
-      getMultiTextMeasures({
-        text: cell,
-        page,
+    if (cell) {
+      const { height: paragraphHeight, width: paragraphWidth } =
+        getMultiTextMeasures({
+          font,
+          fontSize,
+          lineHeight,
+          maxWidth: cellSize * 0.8,
+          page,
+          text: cell,
+          x: startLineX,
+          y: height.actual
+        });
+      const newX = getCellCenterX(index, paragraphWidth);
+
+      if (paragraphHeight > highestCellSize) highestCellSize = paragraphHeight;
+
+      await createParagraph({
+        document,
+        font,
         fontSize,
-        x: startLineX,
-        y: height.actual,
+        height,
         lineHeight,
         maxWidth: cellSize * 0.8,
-        font
+        text: cell,
+        x: newX
       });
-    const newX = getCellCenterX(index, paragraphWidth);
-
-    if (paragraphHeight > highestCellSize) highestCellSize = paragraphHeight;
-
-    await createParagraph({
-      document,
-      text: cell,
-      height,
-      fontSize,
-      x: newX,
-      lineHeight,
-      maxWidth: cellSize * 0.8,
-      font
-    });
     }
   });
 
@@ -247,46 +249,46 @@ const drawTableLine = async ({
     const newX = 35 + index * cellSize;
     if (index > 0)
       page.drawLine({
-        start: { x: newX, y: height.actual },
-        end: { x: newX, y: startHeight }
+        end: { x: newX, y: startHeight },
+        start: { x: newX, y: height.actual }
       });
   });
 };
 
 const createTable = async ({
-  document,
-  height,
   data,
-  startLineX,
+  document,
   endLineX,
-  startY,
-  page,
   font,
-  lineHeight = 8
+  height,
+  lineHeight = 8,
+  page,
+  startLineX,
+  startY
 }: TableParams): Promise<void> => {
   for (let i = 0; i < data.length; i++) {
     await drawTableLine({
-      height,
       document,
-      page,
-      line: data[i],
-      font,
-      startLineX,
       endLineX,
-      lineHeight
+      font,
+      height,
+      line: data[i],
+      lineHeight,
+      page,
+      startLineX
     });
   }
   page.drawLine({
-    start: { x: startLineX, y: height.actual },
-    end: { x: endLineX, y: height.actual }
+    end: { x: endLineX, y: height.actual },
+    start: { x: startLineX, y: height.actual }
   });
   page.drawLine({
-    start: { x: startLineX, y: startY },
-    end: { x: startLineX, y: height.actual }
+    end: { x: startLineX, y: height.actual },
+    start: { x: startLineX, y: startY }
   });
   page.drawLine({
-    start: { x: endLineX, y: startY },
-    end: { x: endLineX, y: height.actual }
+    end: { x: endLineX, y: height.actual },
+    start: { x: endLineX, y: startY }
   });
 };
 

@@ -6,10 +6,9 @@ import { Worker } from "../../../Worker";
 import { render as authorizationRender } from "../../../../pdf/authorization/render";
 
 const authorizationPdfResolver = async (
-  _: any,
-  { workerId, reference }: PdfResolverArgsInterface,
-  context: { token?: string },
-  ___: any
+  _: unknown,
+  { reference, workerId }: PdfResolverArgsInterface,
+  context: { token?: string }
 ): Promise<string | void> => {
   await verifyToken(context.token || "");
 
@@ -27,8 +26,10 @@ const authorizationPdfResolver = async (
     });
     const pdfBytes = await pdfDoc.save();
     return Buffer.from(pdfBytes).toString("base64");
-  } catch (err: any) {
-    console.log("Error in authorization pdf making: ", err.message);
+  } catch (err: unknown) {
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    console.log("Error in authorization pdf making: ", message);
   }
 };
 

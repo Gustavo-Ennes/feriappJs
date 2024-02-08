@@ -1,5 +1,5 @@
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
-import { vacationParagraph, licenseParagraph, dayOffParagraph } from "./text";
+import { dayOffParagraph, licenseParagraph, vacationParagraph } from "./text";
 
 const numberToNumberString = (number: number): string => {
   if (number === 15) return "quinze";

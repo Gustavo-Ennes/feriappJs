@@ -1,16 +1,17 @@
-import { describe, it, expect, beforeAll, afterEach, vi } from "vitest";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import {
-  workerMock,
   departmentMock,
-  vacationMock
+  vacationMock,
+  workerMock
 } from "../../../utils/mockApplication";
 import { server } from "../../../../app";
 import {
-  workerQuery,
-  workersQuery,
   createWorkerMutation,
   deleteWorkerMutation,
-  updateWorkerMutation
+  updateWorkerMutation,
+  workerQuery,
+  workersQuery
 } from "./queries";
 import { workerExample } from "./worker.example";
 import { workerDefaultObjectId } from "../../Vacation/tests/queries";
@@ -80,8 +81,8 @@ describe("Workers integration tests", () => {
     expect(body.singleResult?.data)
       .to.have.property("createWorker")
       .that.deep.equals({
-        name: "Joseph Climber",
-        _id: workerDefaultObjectId
+        _id: workerDefaultObjectId,
+        name: "Joseph Climber"
       });
   });
 

@@ -3,10 +3,9 @@ import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
 
 const vacationResolver = async (
-  _: any,
+  _: unknown,
   args: { _id: string },
   context: { token?: string },
-  ___: any
 ): Promise<VacationInterface | null> => {
   await verifyToken(context.token || "");
 

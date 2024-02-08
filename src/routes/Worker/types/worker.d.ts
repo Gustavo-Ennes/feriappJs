@@ -1,4 +1,3 @@
-import { Schema } from "mongoose";
 import { DepartmentInterface } from "../../Department/types/department";
 
 export interface WorkerInterface {

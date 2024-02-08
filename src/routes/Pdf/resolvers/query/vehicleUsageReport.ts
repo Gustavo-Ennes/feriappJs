@@ -4,10 +4,9 @@ import { verifyToken } from "../../../../firebase/firebase";
 import { render as vehicleUsageReportRender } from "../../../../pdf/vehicleUsageReport/render";
 
 const vehicleUsageReportResolver = async (
-  _: any,
-  __: any,
-  context: { token?: string },
-  ___: any
+  _: unknown,
+  __: unknown,
+  context: { token?: string }
 ): Promise<string | void> => {
   await verifyToken(context.token || "");
 
@@ -18,8 +17,11 @@ const vehicleUsageReportResolver = async (
     const pdfBytes = await pdfDoc.save();
 
     return Buffer.from(pdfBytes).toString("base64");
-  } catch (err: any) {
-    console.log("Error in vehicle usage report pdf making: ", err.message);
+  } catch (err: unknown) {
+    let message = "Unknown Error";
+    if (err instanceof Error) message = err.message;
+    console.log("Error in authorization pdf making: ", message);
+    console.log("Error in vehicle usage report pdf making: ", message);
   }
 };
 

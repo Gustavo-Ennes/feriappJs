@@ -1,4 +1,11 @@
 const extraHourDefinitions = {
+  mutations: `
+    processExtraHours(extraHourInput: [ExtraHourInput]!): ProcessExtraHoursReturnType
+  `,
+  queries: `
+    extraHour(extraHourInput: ExtraHourInput!): ExtraHour
+    extraHours(extraHourInput: ExtraHourInput): [ExtraHour]!
+  `,
   types: `
     type ExtraHour{
       _id: ID!
@@ -27,13 +34,6 @@ const extraHourDefinitions = {
       updated: Int
       deleted: Int
     }
-  `,
-  queries: `
-    extraHour(extraHourInput: ExtraHourInput!): ExtraHour
-    extraHours(extraHourInput: ExtraHourInput): [ExtraHour]!
-  `,
-  mutations: `
-    processExtraHours(extraHourInput: [ExtraHourInput]!): ProcessExtraHoursReturnType
   `,
 };
 

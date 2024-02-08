@@ -1,27 +1,26 @@
-import { sub } from "date-fns";
 import { mergeAll } from "ramda";
 
 import {
-  VacationsResolverArgsInterface,
   VacationsQueryOptionsInterface,
+  VacationsResolverArgsInterface
 } from "../../types/vacation";
-import { todayStartDate, todayEndDate } from "../../vacation.utils";
+import { todayEndDate, todayStartDate } from "../../vacation.utils";
 
 const buildOptions = ({
+  deferred,
   fromWorker,
   period,
-  type,
-  deferred,
+  type
 }: VacationsResolverArgsInterface) => {
   const worker = fromWorker || undefined;
   const options: VacationsQueryOptionsInterface = {};
   const periods = {
-    past: { startDate: { $lt: todayStartDate } },
     future: { startDate: { $gt: todayEndDate } },
+    past: { startDate: { $lt: todayStartDate } },
     present: {
       endDate: { $gte: todayEndDate },
-      startDate: { $lte: todayEndDate },
-    },
+      startDate: { $lte: todayEndDate }
+    }
   };
 
   // because it don't work if a prop is declared but undefined

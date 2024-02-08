@@ -1,9 +1,9 @@
 import {
-  createHeader,
   createFooter,
-  createTitle,
+  createHeader,
   createParagraph,
-  createSign
+  createSign,
+  createTitle
 } from "../factory";
 import type { DrawJustificationBlockParams } from "./types";
 import { capitalizeName } from "../../utils/capitalize";
@@ -22,120 +22,120 @@ const drawJustificationBlock = async ({
   await createTitle({
     document,
     height,
-    title: "justificativa de horas extras",
-    size: 18
+    size: 18,
+    title: "justificativa de horas extras"
   });
   await createParagraph({
     document,
-    height,
-    text: "*favor não recortar!*",
-    x: page.getWidth() - 130,
+    font,
     fontSize: 9,
-    font,
-    maxWidth: page.getWidth() / 2
+    height,
+    maxWidth: page.getWidth() / 2,
+    text: "*favor não recortar!*",
+    x: page.getWidth() - 130
   });
 
   height.stepLine();
   await createParagraph({
     document,
-    height,
-    text: `Secretaria: ${capitalizeName(worker.department.name)}`,
-    fontSize: 12,
     font,
-    maxWidth: page.getWidth() / 2
+    fontSize: 12,
+    height,
+    maxWidth: page.getWidth() / 2,
+    text: `Secretaria: ${capitalizeName(worker.department.name)}`
   });
   await createParagraph({
     document,
-    height,
-    text: `Setor: Transporte`,
-    x: page.getWidth() - 170,
-    fontSize: 12,
     font,
-    maxWidth: page.getWidth() / 2
-  });
-
-  height.stepLine();
-  await createParagraph({
-    document,
-    height,
-    text: `Data: _____/______/${new Date().getFullYear()}`,
     fontSize: 12,
-    font,
-    maxWidth: page.getWidth() / 2
-  });
-  await createParagraph({
-    document,
     height,
-    text: `Horário: _____:_____ ÁS _____:_____ `,
-    x: page.getWidth() - 390,
-    fontSize: 12,
-    font,
-    maxWidth: page.getWidth() / 2
-  });
-  await createParagraph({
-    document,
-    height,
-    text: `H.E.: ( _____ hs. )`,
-    x: page.getWidth() - 170,
-    fontSize: 12,
-    font,
-    maxWidth: page.getWidth() / 2
+    maxWidth: page.getWidth() / 2,
+    text: "Setor: Transporte",
+    x: page.getWidth() - 170
   });
 
   height.stepLine();
   await createParagraph({
     document,
-    height,
-    text: `Servidor: ${capitalizeName(worker.name)}`,
-    fontSize: 12,
     font,
-    maxWidth: page.getWidth() / 2
+    fontSize: 12,
+    height,
+    maxWidth: page.getWidth() / 2,
+    text: `Data: _____/______/${new Date().getFullYear()}`
   });
   await createParagraph({
     document,
+    font,
+    fontSize: 12,
     height,
+    maxWidth: page.getWidth() / 2,
+    text: "Horário: _____:_____ ÁS _____:_____ ",
+    x: page.getWidth() - 390
+  });
+  await createParagraph({
+    document,
+    font,
+    fontSize: 12,
+    height,
+    maxWidth: page.getWidth() / 2,
+    text: "H.E.: ( _____ hs. )",
+    x: page.getWidth() - 170
+  });
+
+  height.stepLine();
+  await createParagraph({
+    document,
+    font,
+    fontSize: 12,
+    height,
+    maxWidth: page.getWidth() / 2,
+    text: `Servidor: ${capitalizeName(worker.name)}`
+  });
+  await createParagraph({
+    document,
+    font,
+    fontSize: 12,
+    height,
+    maxWidth: page.getWidth() / 2,
     text: `Matrícula: ${worker.matriculation}`,
-    x: page.getWidth() - 170,
-    fontSize: 12,
-    font,
-    maxWidth: page.getWidth() / 2
+    x: page.getWidth() - 170
   });
 
   height.stepLine();
   const underscore = {
     char: "_",
-    times: 65,
-    line: "",
     getLine: function () {
       while (this.times > 0) {
         this.line += this.char;
         underscore.times--;
       }
       return this.line;
-    }
+    },
+    line: "",
+    times: 65
   };
   await createParagraph({
     document,
-    height,
-    text: `Motivo: ${underscore.getLine()}`,
+    font,
     fontSize: 12,
-    font
+    height,
+    text: `Motivo: ${underscore.getLine()}`
   });
 
   height.stepHugeLine();
   await createSign({
-    name: capitalizeName(worker.name),
-    role: capitalizeName(worker.role),
     document,
     height,
+    name: capitalizeName(worker.name),
+    role: capitalizeName(worker.role),
     x: 150
   });
   height.actual += 44;
   await createSign({
-    name: "Sebastião Arosti",
-    role: "Diretor de Transporte",
     document,
     height,
+    name: "Sebastião Arosti",
+    role: "Diretor de Transporte",
     x: 450
   });
   height.stepLine();

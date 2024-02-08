@@ -1,4 +1,4 @@
-import { Schema, type Model, Types } from "mongoose";
+import { Types } from "mongoose";
 import { WorkerInterface } from "../../Worker/types/worker";
 
 export interface VacationInterface {

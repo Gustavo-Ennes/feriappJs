@@ -1,9 +1,9 @@
-import { add, parse, sub } from "date-fns";
-import { andThen, pipe, concat } from "ramda";
+import { add, sub } from "date-fns";
+import { andThen, pipe } from "ramda";
 
 import { Worker } from "../../../../Worker";
 import { WorkerInterface } from "../../../../Worker/types/worker";
-import { VacationInterface, PipeContent } from "../../../types/vacation";
+import { PipeContent, VacationInterface } from "../../../types/vacation";
 import { Vacation } from "../../../vacation.model";
 import { checkDaysQtd, checkType } from "./check";
 
@@ -45,29 +45,29 @@ const validateNoConflict = async (
 ): Promise<PipeContent> => {
   if (!pipePayload.errorMessage && pipePayload.worker) {
     const vacationsStartingInRange = await Vacation.find({
-      deferred: true,
-      worker: pipePayload.worker._id,
       _id: { $ne: pipePayload.payload._id },
+      deferred: true,
       startDate: {
         $gt: new Date(pipePayload.payload.startDate),
         $lte: add(new Date(pipePayload.payload.startDate), {
           days: pipePayload.payload.daysQtd,
           seconds: -1
         })
-      }
+      },
+      worker: pipePayload.worker._id
     })
       .populate("worker")
       .exec();
     const vacationsEndingInRange = await Vacation.find({
-      deferred: true,
-      worker: pipePayload.worker._id,
       _id: { $ne: pipePayload.payload._id },
+      deferred: true,
       startDate: {
-        $lt: [new Date(pipePayload.payload.startDate)],
         $gte: sub(new Date(pipePayload.payload.startDate), {
           days: pipePayload.payload.daysQtd
-        })
-      }
+        }),
+        $lt: [new Date(pipePayload.payload.startDate)]
+      },
+      worker: pipePayload.worker._id
     })
       .populate("worker")
       .exec();

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { vi } from "vitest";
 
 type GetModelMethodParameter = {
@@ -19,16 +20,16 @@ const getModelMethods = ({
   expectedFn,
   populate = true
 }: GetModelMethodParameter) => ({
+  create: expectedFn,
+  deleteMany: expectedFn,
+  deleteOne: expectedFn,
   find: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
   findById: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
   findOne: populate ? () => defaultModelMethods(expectedFn) : expectedFn,
-  create: expectedFn,
-  updateOne: expectedFn,
-  deleteOne: expectedFn,
-  deleteMany: expectedFn,
   insertMany: expectedFn,
+  replaceOne: expectedFn,
   updateMany: expectedFn,
-  replaceOne: expectedFn
+  updateOne: expectedFn
 });
 
 const vacationMock = vi.fn();

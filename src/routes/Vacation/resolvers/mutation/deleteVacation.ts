@@ -3,11 +3,10 @@ import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
 
 const deleteVacationResolver = async (
-  _: any,
-  args: any,
-  context: { token?: string },
-  ___: any
-): Promise<Boolean> => {
+  _: unknown,
+  args: { _id: string },
+  context: { token?: string }
+): Promise<boolean> => {
   await verifyToken(context.token || "");
 
   const { _id } = args;

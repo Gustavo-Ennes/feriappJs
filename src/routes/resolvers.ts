@@ -7,31 +7,31 @@ import { searchResolvers } from "../routes/search";
 import { extraHourResolvers } from "./ExtraHour";
 import { pdfResolvers } from "./Pdf";
 
-const { Query: departmentQueries, Mutation: departmentMutations } =
+const { Mutation: departmentMutations, Query: departmentQueries } =
   departmentResolvers;
-const { Query: workerQueries, Mutation: workerMutations } = workerResolvers;
-const { Query: vacationQueries, Mutation: vacationMutations } =
+const { Mutation: workerMutations, Query: workerQueries } = workerResolvers;
+const { Mutation: vacationMutations, Query: vacationQueries } =
   vacationResolvers;
 const { Query: searchQuery } = searchResolvers;
-const { Query: extraHourQueries, Mutation: extraHourMutations } =
+const { Mutation: extraHourMutations, Query: extraHourQueries } =
   extraHourResolvers;
 const { Query: pdfQueries } = pdfResolvers;
 
 const resolvers = {
+  Mutation: {
+    ...departmentMutations,
+    ...workerMutations,
+    ...vacationMutations,
+    ...extraHourMutations
+  },
   Query: {
     ...departmentQueries,
     ...workerQueries,
     ...vacationQueries,
     ...searchQuery,
     ...extraHourQueries,
-    ...pdfQueries,
-  },
-  Mutation: {
-    ...departmentMutations,
-    ...workerMutations,
-    ...vacationMutations,
-    ...extraHourMutations,
-  },
+    ...pdfQueries
+  }
 };
 
 export { resolvers };

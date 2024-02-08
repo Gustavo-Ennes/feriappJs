@@ -6,8 +6,7 @@ import {
   createSign,
   createTitle
 } from "../factory";
-import type { PdfFnParam } from "../types";
-import type { DrawHalfPageParams } from "../types";
+import type { DrawHalfPageParams, PdfFnParam } from "../types";
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { getParagraph, translateMonth, translateVacation } from "./utils";
@@ -27,24 +26,24 @@ const drawHalfPage = async ({
   await createHeader(document);
   await createFooter(document);
   await createDaysQtd({
-    document,
     daysQtd: vacation.daysQtd,
+    document,
     height,
     subtype: vacation.subType
   });
   await createTitle({
-    title: `Requerimento de ${translateVacation(vacation.type)}`,
     document,
     height,
-    size: 19
+    size: 19,
+    title: `Requerimento de ${translateVacation(vacation.type)}`
   });
   height.stepHugeLine();
   await createParagraph({
     document,
-    height,
-    text: paragraph,
+    font,
     fontSize: vacation.type === "license" ? 12 : 14,
-    font
+    height,
+    text: paragraph
   });
 
   height.stepHugeLine();
@@ -64,8 +63,8 @@ const drawHalfPage = async ({
     ...(vacation.type === "dayOff" && {
       y: height.actual - 15
     }),
-    maxWidth: page.getWidth(),
-    font
+    font,
+    maxWidth: page.getWidth()
   });
 
   height.stepHugeLine();
@@ -73,9 +72,9 @@ const drawHalfPage = async ({
   await createSign({
     document,
     height,
-    name: capitalizeName((vacation.worker as unknown as WorkerInterface).name),
     matriculation: (vacation.worker as unknown as WorkerInterface)
       .matriculation,
+    name: capitalizeName((vacation.worker as unknown as WorkerInterface).name),
     role: capitalizeName((vacation.worker as unknown as WorkerInterface).role)
   });
 

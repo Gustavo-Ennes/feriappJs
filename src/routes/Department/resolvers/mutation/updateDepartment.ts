@@ -3,11 +3,10 @@ import { Department } from "../../department.model";
 import { DepartmentInterface } from "../../types/department.d";
 
 const updateDepartmentResolver = async (
-  _: any,
+  _: unknown,
   args: { departmentInput: DepartmentInterface },
-  context: { token?: string },
-  ___: any
-): Promise<Boolean> => {
+  context: { token?: string }
+): Promise<boolean> => {
   await verifyToken(context.token || "");
 
   const { departmentInput } = args;
@@ -22,4 +21,3 @@ const updateDepartmentResolver = async (
 };
 
 export { updateDepartmentResolver };
-

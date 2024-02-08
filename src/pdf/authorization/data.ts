@@ -1,16 +1,16 @@
 import { format } from "date-fns";
 
-import { WorkerInterface } from "../../routes/Worker/types/worker";
 import { calculateExtraHours } from "./utils";
 import { capitalizeName } from "../../utils/capitalize";
+import { WorkerInterface } from "../../routes/Worker/types/worker";
 
 export const getAuthorizationPdfData = async (
   worker: WorkerInterface,
   reference: Date
 ) => {
   const extraHoursNumber = await calculateExtraHours({
-    worker,
-    reference
+    reference,
+    worker
   });
   return [
     ["Nome do servidor", capitalizeName(worker.name)],
@@ -26,7 +26,7 @@ export const getAuthorizationPdfData = async (
     ["Justificativa", worker.justification],
     [
       "Autorização",
-      `Pela presente, autorizo o servidor acima designado,a realizar a quantidade de horas, extras previstas nessa autorização,com a finalidade de atender as necessidades,conforme as justificativas.`
+      "Pela presente, autorizo o servidor acima designado,a realizar a quantidade de horas, extras previstas nessa autorização,com a finalidade de atender as necessidades,conforme as justificativas."
     ],
     ["Nome do diretor", "Sebastião Arosti"]
   ];

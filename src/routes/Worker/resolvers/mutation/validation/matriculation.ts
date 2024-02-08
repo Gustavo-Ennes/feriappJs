@@ -16,21 +16,21 @@ const validateMatriculation = async (
   pipePayload: PipePayload
 ): Promise<PipePayload> => {
   const workerWithSameMatriculation = await Worker.find({
-    matriculation: pipePayload.workerInput.matriculation,
     _id: {
       $ne: pipePayload.workerInput._id
-    }
+    },
+    matriculation: pipePayload.workerInput.matriculation
   })
     .populate("department")
     .exec();
 
   return {
     ...pipePayload,
-    validationSuccess: workerWithSameMatriculation.length === 0,
     error:
       workerWithSameMatriculation.length > 0
         ? "Conflict: matriculation exists"
-        : undefined
+        : undefined,
+    validationSuccess: workerWithSameMatriculation.length === 0
   };
 };
 const validateRegistry = async (
@@ -38,21 +38,21 @@ const validateRegistry = async (
 ): Promise<PipePayload> => {
   if (pipePayload.validationSuccess) {
     const workerWithSameRegistry = await Worker.find({
-      registry: pipePayload.workerInput.registry,
       _id: {
         $ne: pipePayload.workerInput._id
-      }
+      },
+      registry: pipePayload.workerInput.registry
     })
       .populate("department")
       .exec();
 
     return {
       ...pipePayload,
-      validationSuccess: workerWithSameRegistry.length === 0,
       error:
         workerWithSameRegistry.length > 0
           ? "Conflict: registry exists"
-          : undefined
+          : undefined,
+      validationSuccess: workerWithSameRegistry.length === 0
     };
   }
   return pipePayload;
@@ -61,11 +61,11 @@ const validateRegistry = async (
 const validateMatriculationNumbers = async (
   workerInput: WorkerInterface
 ): Promise<PipeResponse> => {
-  const { validationSuccess, error } = await pipe(
+  const { error, validationSuccess } = await pipe(
     validateMatriculation,
     andThen(validateRegistry)
   )({ workerInput });
-  return { success: validationSuccess as boolean, error };
+  return { error, success: validationSuccess as boolean };
 };
 
 export { validateMatriculationNumbers };

@@ -5,10 +5,9 @@ import { ExtraHourModel } from "../../extraHour.model";
 import { ExtraHourInput, ProcessExtraHourReturn } from "../../types/extraHour";
 
 const processExtraHoursResolver = async (
-  _: any,
+  _: unknown,
   args: { extraHourInput: ExtraHourInput[] },
-  context: { token?: string },
-  ___: any
+  context: { token?: string }
 ): Promise<ProcessExtraHourReturn> => {
   await verifyToken(context.token || "");
   const { extraHourInput } = args;

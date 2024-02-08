@@ -1,4 +1,4 @@
-import { sum, pluck, uniq } from "ramda";
+import { pluck, sum, uniq } from "ramda";
 import { format } from "date-fns";
 
 import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
@@ -43,8 +43,8 @@ const calculateWorkerTotalNightlyHours = (
 
 const parseData = ({
   extraHours,
-  total,
-  nightlyTotal
+  nightlyTotal,
+  total
 }: ParseDataFnParams): string[][] => {
   const workers: WorkerInterface[] = uniq(pluck("worker", extraHours));
   const data: string[][] = [];
@@ -79,13 +79,13 @@ const parseData = ({
 };
 
 const drawCell = async ({
+  font,
+  height,
   page,
   text,
-  x,
-  y,
-  height,
   width,
-  font
+  x,
+  y
 }: DrawCellParams) => {
   const padding = 10;
   const startLineX = x;
@@ -94,40 +94,40 @@ const drawCell = async ({
   const endLineY = y - height;
   // top line
   page.drawLine({
-    start: { x: startLineX, y: startLineY },
-    end: { x: endLineX, y: startLineY }
+    end: { x: endLineX, y: startLineY },
+    start: { x: startLineX, y: startLineY }
   });
   const textX = x + (width / 2 - font.widthOfTextAtSize(text, 10) / 2);
 
   page.drawText(text, {
-    y: y - 1.5 * padding,
-    x: textX,
-    size: 10,
-    maxWidth: width,
     font,
-    lineHeight: 15
+    lineHeight: 15,
+    maxWidth: width,
+    size: 10,
+    x: textX,
+    y: y - 1.5 * padding
   });
 
   // bottom line
   page.drawLine({
-    start: { x: startLineX, y: endLineY },
-    end: { x: endLineX, y: endLineY }
+    end: { x: endLineX, y: endLineY },
+    start: { x: startLineX, y: endLineY }
   });
   // right line
   page.drawLine({
-    start: { x: startLineX, y: startLineY },
-    end: { x: startLineX, y: endLineY }
+    end: { x: startLineX, y: endLineY },
+    start: { x: startLineX, y: startLineY }
   });
   // left line
   page.drawLine({
-    start: { x: endLineX, y: startLineY },
-    end: { x: endLineX, y: endLineY }
+    end: { x: endLineX, y: endLineY },
+    start: { x: endLineX, y: startLineY }
   });
 };
 
 const getMaxWidthArray = async ({
-  parsedData,
-  document
+  document,
+  parsedData
 }: GetMaxWidthArrayParams): Promise<number[]> => {
   const maxWidths: number[] = [];
   const paddings = 20;
@@ -146,11 +146,11 @@ const getMaxWidthArray = async ({
 };
 
 const makeLines = async ({
-  parsedData,
-  maxWidths,
-  height,
   document,
-  page
+  height,
+  maxWidths,
+  page,
+  parsedData
 }: MakeLinesParams): Promise<void> => {
   const tableWidth = sum(maxWidths);
   const actualWidthValue = page.getWidth() / 2 - tableWidth / 2;
@@ -171,13 +171,13 @@ const makeLines = async ({
     const fontHeight = font.heightAtSize(11);
     for (let i = 0; i < maxWidths.length; i++) {
       await drawCell({
+        font,
+        height: fontHeight * 2,
         page,
         text: parsedData[h][i],
-        x: widthObject.actual,
-        y: height.actual,
-        height: fontHeight * 2,
         width: maxWidths[i],
-        font
+        x: widthObject.actual,
+        y: height.actual
       });
       widthObject.step(maxWidths[i]);
       height.actual = oldHeight;
@@ -188,39 +188,39 @@ const makeLines = async ({
 };
 
 const createReportTable = async ({
-  extraHours,
   document,
+  extraHours,
   height
 }: CreateReportTableParams) => {
   const page = document.getPage(0);
   const total = calculateDepartmentTotal(extraHours);
   const nightlyTotal = calculateTotalNightlyHours(extraHours);
-  const parsedData = parseData({ extraHours, total, nightlyTotal });
-  const maxWidths = await getMaxWidthArray({ parsedData, document });
+  const parsedData = parseData({ extraHours, nightlyTotal, total });
+  const maxWidths = await getMaxWidthArray({ document, parsedData });
 
   await makeLines({
-    parsedData,
-    maxWidths,
-    height,
     document,
-    page
+    height,
+    maxWidths,
+    page,
+    parsedData
   });
 };
 
 const monthString = (reference: Date): string => {
   const months: Record<string, string> = {
-    January: "Janeiro",
-    February: "Fevereiro",
-    March: "Março",
     April: "Abril",
-    May: "Maio",
-    June: "Junho",
-    July: "Julho",
     August: "Agosto",
-    September: "Setembro",
-    October: "Outubro",
+    December: "Dezembro",
+    February: "Fevereiro",
+    January: "Janeiro",
+    July: "Julho",
+    June: "Junho",
+    March: "Março",
+    May: "Maio",
     November: "Novembro",
-    December: "Dezembro"
+    October: "Outubro",
+    September: "Setembro"
   };
   const englishMonth = format(reference, "LLLL");
 

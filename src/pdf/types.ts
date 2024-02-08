@@ -31,6 +31,7 @@ type DrawCellFnParams = {
 
 type CreatePdfParams = {
   name: string;
+  // eslint-disable-next-line no-unused-vars
   pdfFn: (pdfFnParam: PdfFnParam) => Promise<void>;
   instance: VacationInterface | WorkerInterface;
 };

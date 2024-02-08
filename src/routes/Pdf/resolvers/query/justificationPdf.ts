@@ -1,9 +1,9 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
-import { PdfResolverArgsInterface } from "../../types";
-import { Worker } from "../../../Worker";
 import { render as justificationRender } from "../../../../pdf/justification/render";
+import { Worker } from "../../../Worker";
+import { PdfResolverArgsInterface } from "../../types";
 
 const justificationPdfResolver = async (
   _: unknown,

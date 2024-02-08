@@ -1,8 +1,8 @@
+import { isFuture, isPast } from "date-fns";
 import { Schema, Types, model } from "mongoose";
 
-import { WorkerInterface } from "./types/worker";
 import { Vacation } from "../Vacation";
-import { isFuture, isPast } from "date-fns";
+import { WorkerInterface } from "./types/worker";
 
 const WorkerSchema = new Schema<WorkerInterface>(
   {

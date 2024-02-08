@@ -1,4 +1,10 @@
+import { StandardFonts } from "pdf-lib";
+
 import type { PdfFnParam } from "../types";
+
+import { DepartmentInterface } from "../../routes/Department/types/department";
+import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
+import { capitalizeName } from "../../utils/capitalize";
 import {
   createFooter,
   createHeader,
@@ -7,11 +13,7 @@ import {
   createTitle
 } from "../factory";
 import { getHeightObject } from "../utils";
-import { DepartmentInterface } from "../../routes/Department/types/department";
 import { createReportTable, monthString } from "./utils";
-import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
-import { capitalizeName } from "../../utils/capitalize";
-import { StandardFonts } from "pdf-lib";
 
 const render = async ({
   document,

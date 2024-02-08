@@ -1,10 +1,10 @@
-import { pluck, sum, uniq } from "ramda";
 import { format } from "date-fns";
+import { StandardFonts } from "pdf-lib";
+import { pluck, sum, uniq } from "ramda";
 
 import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
 import { WorkerInterface } from "../../routes/Worker/types/worker";
 import { capitalizeName } from "../../utils/capitalize";
-import { StandardFonts } from "pdf-lib";
 import {
   CreateReportTableParams,
   DrawCellParams,

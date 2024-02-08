@@ -1,3 +1,8 @@
+import { StandardFonts } from "pdf-lib";
+
+import type { DrawJustificationBlockParams } from "./types";
+
+import { capitalizeName } from "../../utils/capitalize";
 import {
   createFooter,
   createHeader,
@@ -5,9 +10,6 @@ import {
   createSign,
   createTitle
 } from "../factory";
-import type { DrawJustificationBlockParams } from "./types";
-import { capitalizeName } from "../../utils/capitalize";
-import { StandardFonts } from "pdf-lib";
 
 const drawJustificationBlock = async ({
   document,

@@ -1,5 +1,7 @@
 import { andThen, pipe } from "ramda";
+
 import type { WorkerInterface } from "../../../types/worker";
+
 import { Worker } from "../../../worker.model";
 
 interface PipePayload {

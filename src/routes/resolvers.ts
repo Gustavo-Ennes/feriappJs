@@ -1,8 +1,8 @@
 //import resolvers or each model inside source
 
 import { departmentResolvers } from "../routes/Department";
-import { workerResolvers } from "../routes/Worker";
 import { vacationResolvers } from "../routes/Vacation/";
+import { workerResolvers } from "../routes/Worker";
 import { searchResolvers } from "../routes/search";
 import { extraHourResolvers } from "./ExtraHour";
 import { pdfResolvers } from "./Pdf";

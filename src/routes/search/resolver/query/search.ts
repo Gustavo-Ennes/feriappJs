@@ -1,10 +1,10 @@
 import { verifyToken } from "../../../../firebase/firebase";
+import { Department } from "../../../Department";
 import { Vacation } from "../../../Vacation";
 import { VacationInterface } from "../../../Vacation/types/vacation";
 import { Worker } from "../../../Worker";
-import { Department } from "../../../Department";
-import { SearchResult } from "../../types/search";
 import { WorkerInterface } from "../../../Worker/types/worker";
+import { SearchResult } from "../../types/search";
 
 const searchResolver = async (
   _: unknown,

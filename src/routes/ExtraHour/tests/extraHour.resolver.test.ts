@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { parse } from "date-fns";
 import { assoc, clone, dissoc, pipe } from "ramda";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { extraHourMock } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
+import { ExtraHourInput } from "../types/extraHour";
+import { extraHourFixtures, extraHourInputFixture } from "./extraHour.fixture";
 import {
   extraHourQuery,
   extraHoursQuery,
   processExtraHourMutation
 } from "./queries";
-import { extraHourFixtures, extraHourInputFixture } from "./extraHour.fixture";
-import { ExtraHourInput } from "../types/extraHour";
 
 describe("Update ExtraHoursTable model tests", async () => {
+  const { server } = await import("../../../../app")
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

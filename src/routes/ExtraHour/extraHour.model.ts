@@ -1,4 +1,5 @@
 import { Schema, Types, model } from "mongoose";
+
 import { ExtraHourInterface } from "./types/extraHour";
 
 const ExtraHourSchema = new Schema({

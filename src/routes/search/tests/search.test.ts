@@ -14,15 +14,16 @@ import {
   vacationMock,
   workerMock
 } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
-import { searchQuery } from "./queries";
 import {
   departmentExamples,
   vacationExamples,
   workerExamples
 } from "./examples";
+import { searchQuery } from "./queries";
 
-describe("Search tests", () => {
+describe("Search tests", async () => {
+  const { server } = await import("../../../../app");
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

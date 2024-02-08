@@ -1,7 +1,8 @@
-import type { PdfFnParam } from "../types";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
-import { drawJustificationBlock } from "./block";
+import type { PdfFnParam } from "../types";
+
 import { getHeightObject } from "../utils";
+import { drawJustificationBlock } from "./block";
 
 const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
   if (document) {

@@ -1,9 +1,9 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
-import { PdfResolverArgsInterface } from "../../types";
-import { Vacation } from "../../../Vacation/vacation.model";
 import { render as vacationRender } from "../../../../pdf/vacation/render";
+import { Vacation } from "../../../Vacation/vacation.model";
+import { PdfResolverArgsInterface } from "../../types";
 
 const vacationPdfResolver = async (
   _: unknown,

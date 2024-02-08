@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+
 import { departmentMock } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
+import { departmentFixture } from "./department.fixture";
 import {
   createDepartmentMutation,
   deleteDepartmentMutation,
@@ -9,9 +10,10 @@ import {
   departmentsQuery,
   updateDepartmentMutation,
 } from "./queries";
-import { departmentFixture } from "./department.fixture";
 
 describe("Department integration tests", async () => {
+  const {server} = await import("../../../../app")
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

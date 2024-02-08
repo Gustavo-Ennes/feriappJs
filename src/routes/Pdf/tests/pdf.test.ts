@@ -10,16 +10,17 @@ import {
 } from "vitest";
 
 import { vacationMock } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
+import { vacationFixture, workerFixture } from "./fixtures";
 import {
   authorizationPdfQuery,
   justificationPdfQuery,
   reportPdfPdfQuery,
   vacationPdfQuery
 } from "./queries";
-import { vacationFixture, workerFixture } from "./fixtures";
 
 describe("Pdf route tests", async () => {
+  const { server } = await import("../../../../app");
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+
 import {
   departmentMock,
   vacationMock,
   workerMock
 } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
+import { workerDefaultObjectId } from "../../Vacation/tests/queries";
 import {
   createWorkerMutation,
   deleteWorkerMutation,
@@ -14,9 +15,10 @@ import {
   workersQuery
 } from "./queries";
 import { workerExample } from "./worker.example";
-import { workerDefaultObjectId } from "../../Vacation/tests/queries";
 
-describe("Workers integration tests", () => {
+describe("Workers integration tests", async () => {
+  const { server } = await import("../../../../app");
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

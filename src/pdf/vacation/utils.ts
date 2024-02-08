@@ -1,4 +1,5 @@
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
+
 import { dayOffParagraph, licenseParagraph, vacationParagraph } from "./text";
 
 const numberToNumberString = (number: number): string => {

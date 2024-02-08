@@ -1,8 +1,8 @@
 import { format } from "date-fns";
 
-import { calculateExtraHours } from "./utils";
-import { capitalizeName } from "../../utils/capitalize";
 import { WorkerInterface } from "../../routes/Worker/types/worker";
+import { capitalizeName } from "../../utils/capitalize";
+import { calculateExtraHours } from "./utils";
 
 export const getAuthorizationPdfData = async (
   worker: WorkerInterface,

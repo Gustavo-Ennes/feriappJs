@@ -1,3 +1,10 @@
+import { StandardFonts } from "pdf-lib";
+
+import type { VacationInterface } from "../../routes/Vacation/types/vacation";
+import type { WorkerInterface } from "../../routes/Worker/types/worker";
+import type { DrawHalfPageParams, PdfFnParam } from "../types";
+
+import { capitalizeName } from "../../utils/capitalize";
 import {
   createDaysQtd,
   createFooter,
@@ -6,13 +13,8 @@ import {
   createSign,
   createTitle
 } from "../factory";
-import type { DrawHalfPageParams, PdfFnParam } from "../types";
-import type { VacationInterface } from "../../routes/Vacation/types/vacation";
-import type { WorkerInterface } from "../../routes/Worker/types/worker";
-import { getParagraph, translateMonth, translateVacation } from "./utils";
-import { capitalizeName } from "../../utils/capitalize";
 import { getHeightObject } from "../utils";
-import { StandardFonts } from "pdf-lib";
+import { getParagraph, translateMonth, translateVacation } from "./utils";
 
 const drawHalfPage = async ({
   document,

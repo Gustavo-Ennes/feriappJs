@@ -1,9 +1,9 @@
 import { verifyToken } from "../../../../firebase/firebase";
-import { Vacation } from "../../vacation.model";
 import {
   VacationInterface,
   VacationsResolverArgsInterface
 } from "../../types/vacation";
+import { Vacation } from "../../vacation.model";
 import { buildOptions } from "./utils";
 
 const vacationsResolver = async (

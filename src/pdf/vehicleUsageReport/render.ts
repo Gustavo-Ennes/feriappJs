@@ -1,13 +1,13 @@
 import { PageSizes, StandardFonts } from "pdf-lib";
 
-import { PdfFnParam } from "../types";
-import { getHeightObject } from "../utils";
 import {
   createPageHeaderHorizontal,
   createParagraph,
   createTable,
   createTitle
 } from "../factory";
+import { PdfFnParam } from "../types";
+import { getHeightObject } from "../utils";
 import { fuelingTableData, vehicleUsageTableData } from "./data";
 
 const render = async ({ document }: PdfFnParam): Promise<void> => {

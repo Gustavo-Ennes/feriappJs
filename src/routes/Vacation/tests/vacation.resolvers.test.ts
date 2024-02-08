@@ -2,7 +2,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { vacationMock, workerMock } from "../../../utils/mockApplication";
-import { server } from "../../../../app";
+import { workerExample } from "../../Worker/tests/worker.example";
 import {
   createVacationMutation,
   deleteVacationMutation,
@@ -12,9 +12,10 @@ import {
   vacationsQuery
 } from "./queries";
 import { vacationExample } from "./vacation.example";
-import { workerExample } from "../../Worker/tests/worker.example";
 
-describe("Vacation: integration", () => {
+describe("Vacation: integration", async () => {
+  const { server } = await import("../../../../app");
+
   beforeAll(() => {
     vi.clearAllMocks();
   });

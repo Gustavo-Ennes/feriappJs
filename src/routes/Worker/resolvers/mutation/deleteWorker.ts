@@ -1,7 +1,7 @@
 import { verifyToken } from "../../../../firebase/firebase";
-import { Worker } from "../../worker.model";
-import { WorkerInterface } from "../../types/worker";
 import { Vacation } from "../../../Vacation";
+import { WorkerInterface } from "../../types/worker";
+import { Worker } from "../../worker.model";
 
 const deleteWorkerResolver = async (
   _: unknown,

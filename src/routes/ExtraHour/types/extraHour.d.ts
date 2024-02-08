@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
-import type { Worker } from "../../Worker/types/worker";
+
 import type { DepartmentInterface } from "../../Department/types/department";
+import type { Worker } from "../../Worker/types/worker";
 
 interface ExtraHourInterface extends Document {
   reference: Date;

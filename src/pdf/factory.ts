@@ -1,4 +1,3 @@
-import { translateVacationSubtype } from "./vacation/utils";
 import {
   PDFDocument,
   StandardFonts,
@@ -14,7 +13,9 @@ import type {
   Height,
   TableParams
 } from "./types";
+
 import { getMultiTextMeasures } from "./utils";
+import { translateVacationSubtype } from "./vacation/utils";
 
 const createHeader = async (document: PDFDocument): Promise<void> => {
   const header =

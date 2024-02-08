@@ -1,4 +1,9 @@
+import { StandardFonts } from "pdf-lib";
+
+import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import type { PdfFnParam } from "../types";
+
+import { capitalizeName } from "../../utils/capitalize";
 import {
   createFooter,
   createHeader,
@@ -7,10 +12,7 @@ import {
   createTable,
   createTitle
 } from "../factory";
-import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import { getHeightObject } from "../utils";
-import { StandardFonts } from "pdf-lib";
-import { capitalizeName } from "../../utils/capitalize";
 import { getAuthorizationPdfData } from "./data";
 
 const render = async ({

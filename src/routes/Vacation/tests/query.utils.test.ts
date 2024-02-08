@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { buildOptions } from "../resolvers/query/utils";
 import { todayEndDate, todayStartDate } from "../vacation.utils";
 

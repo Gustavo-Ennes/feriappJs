@@ -1,6 +1,6 @@
 import { verifyToken } from "../../../../firebase/firebase";
-import { Worker } from "../../worker.model";
 import { WorkerInterface } from "../../types/worker.d";
+import { Worker } from "../../worker.model";
 import { validateMatriculationNumbers } from "./validation/matriculation";
 
 const updateWorkerResolver = async (

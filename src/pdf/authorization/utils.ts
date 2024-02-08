@@ -1,9 +1,10 @@
 import { format, getDaysInMonth, set } from "date-fns";
+import { pluck, sum } from "ramda";
 
 import type { CreateTableDataParams, calculateExtraHoursParams } from "./types";
-import { capitalizeName } from "../../utils/capitalize";
+
 import { ExtraHourModel } from "../../routes/ExtraHour";
-import { pluck, sum } from "ramda";
+import { capitalizeName } from "../../utils/capitalize";
 
 export const calculateExtraHours = async ({
   reference: _reference,

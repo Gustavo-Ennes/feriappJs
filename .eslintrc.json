@@ -27,11 +27,21 @@
         "order": "asc"
       }
     ],
-    "perfectionist/sort-named-imports": [
+    "perfectionist/sort-imports": [
       "error",
       {
         "type": "natural",
-        "order": "asc"
+        "order": "asc",
+        "groups": [
+          "type",
+          ["builtin", "external"],
+          "internal-type",
+          "internal",
+          ["parent-type", "sibling-type", "index-type"],
+          ["parent", "sibling", "index"],
+          "object",
+          "unknown"
+        ]
       }
     ],
     "no-duplicate-imports": ["error", { "includeExports": true }],

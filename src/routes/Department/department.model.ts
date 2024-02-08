@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+
 import { DepartmentInterface } from "./types/department";
 
 const DepartmentSchema = new Schema<DepartmentInterface>(

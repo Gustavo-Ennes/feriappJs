@@ -1,7 +1,8 @@
+import { isEmpty } from "ramda";
+
 import { verifyToken } from "../../../../firebase/firebase";
 import { ExtraHourModel } from "../../extraHour.model";
 import { ExtraHourInput, ExtraHourInterface } from "../../types/extraHour";
-import { isEmpty } from "ramda";
 
 const extraHoursResolver = async (
   _: unknown,

@@ -1,9 +1,9 @@
 import { verifyToken } from "../../../../firebase/firebase";
-import { Worker } from "../../worker.model";
-import { WorkerInterface } from "../../types/worker";
 import { Department } from "../../../Department";
-import { validateMatriculationNumbers } from "./validation/matriculation";
 import { DepartmentInterface } from "../../../Department/types/department";
+import { WorkerInterface } from "../../types/worker";
+import { Worker } from "../../worker.model";
+import { validateMatriculationNumbers } from "./validation/matriculation";
 
 const createWorkerResolver = async (
   _: unknown,

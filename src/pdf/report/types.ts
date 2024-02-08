@@ -1,6 +1,7 @@
 import { PDFDocument, PDFFont, PDFPage } from "pdf-lib";
-import { Height } from "../types";
+
 import { ExtraHourInterface } from "../../routes/ExtraHour/types/extraHour";
+import { Height } from "../types";
 
 type DrawCellParams = {
   page: PDFPage;

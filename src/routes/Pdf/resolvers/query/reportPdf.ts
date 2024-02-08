@@ -1,13 +1,13 @@
-import { PDFDocument } from "pdf-lib";
 import { getDaysInMonth, set } from "date-fns";
+import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
-import { PdfResolverArgsInterface } from "../../types";
 import { render as reportRender } from "../../../../pdf/report/render";
 import { Department } from "../../../Department";
+import { DepartmentInterface } from "../../../Department/types/department";
 import { ExtraHourModel } from "../../../ExtraHour";
 import { ExtraHourInterface } from "../../../ExtraHour/types/extraHour";
-import { DepartmentInterface } from "../../../Department/types/department";
+import { PdfResolverArgsInterface } from "../../types";
 
 const reportPdfResolver = async (
   _: unknown,

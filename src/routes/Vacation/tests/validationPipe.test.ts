@@ -1,5 +1,5 @@
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { clone } from "ramda";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { vacationMock, workerMock } from "../../../utils/mockApplication";
 import { workerExample } from "../../Worker/tests/worker.example";

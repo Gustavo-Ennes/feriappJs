@@ -5,6 +5,7 @@ const pdfDefinitions = {
     authorizationPdf(workerId: ID!, reference: Date!): String
     reportPdf(reference: Date!, departmentId: ID!): String
     vehicleUsageReportPdf: String
+    materialRequisitionPdf: String
   `
 };
 

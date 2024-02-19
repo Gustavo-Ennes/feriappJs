@@ -15,7 +15,10 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
     const page = document.addPage([PageSizes.A4[1], PageSizes.A4[0]]);
     const height = getHeightObject(page);
     const font = await document.embedFont(StandardFonts.Helvetica);
+    const fontSize = 12;
+
     height.actual += 40;
+
     await createPageHeaderHorizontal(document);
     await createTitle({
       document,
@@ -46,6 +49,7 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
       document,
       endLineX: page.getWidth() - 35,
       font,
+      fontSize,
       height,
       lineHeight: 16,
       page,
@@ -71,6 +75,7 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
       document,
       endLineX: page.getWidth() - 35,
       font,
+      fontSize,
       height,
       lineHeight: 12,
       page,
@@ -85,6 +90,7 @@ const render = async ({ document }: PdfFnParam): Promise<void> => {
       document,
       endLineX: page.getWidth() - 35,
       font,
+      fontSize,
       height,
       lineHeight: 12,
       page,

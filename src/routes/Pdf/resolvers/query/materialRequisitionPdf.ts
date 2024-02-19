@@ -1,9 +1,9 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
-import { render as vehicleUsageReportRender } from "../../../../pdf/vehicleUsageReport/render";
+import { render as materialRequisitionRender } from "../../../../pdf/materialRequisition/render";
 
-const vehicleUsageReportResolver = async (
+const materialRequisitionResolver = async (
   _: unknown,
   __: unknown,
   context: { token?: string }
@@ -13,15 +13,15 @@ const vehicleUsageReportResolver = async (
   try {
     const pdfDoc = await PDFDocument.create();
 
-    await vehicleUsageReportRender({ document: pdfDoc });
+    await materialRequisitionRender({ document: pdfDoc });
     const pdfBytes = await pdfDoc.save();
 
     return Buffer.from(pdfBytes).toString("base64");
   } catch (err: unknown) {
     let message = "Unknown Error";
     if (err instanceof Error) message = err.message;
-    console.log("Error in vehicle usage report pdf making: ", message);
+    console.log("Error in material requisition pdf making: ", message);
   }
 };
 
-export { vehicleUsageReportResolver };
+export { materialRequisitionResolver };

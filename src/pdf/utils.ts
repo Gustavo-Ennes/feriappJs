@@ -25,7 +25,7 @@ const getMultiTextMeasures = ({
   x,
   y
 }: GetMultiTextWidthParam) => {
-  const multiText = layoutMultilineText(text, {
+  const multiText = layoutMultilineText(text ?? "", {
     alignment: TextAlignment.Center,
     bounds: {
       height: page.getHeight(),
@@ -48,4 +48,24 @@ const getMultiTextMeasures = ({
   );
 };
 
-export { getHeightObject, getMultiTextMeasures };
+const sumMapUntil = (arr: number[], index: number) =>
+  arr.reduce(
+    (sum, actual, reduceIndex) => (reduceIndex < index ? sum + actual : sum),
+    0
+  );
+
+const calculateCellRealWidth = (
+  columnsXArray: number[],
+  index: number,
+  startX: number
+) =>
+  index > 0
+    ? columnsXArray[index] - columnsXArray[index - 1]
+    : columnsXArray[index] - startX;
+
+export {
+  getHeightObject,
+  getMultiTextMeasures,
+  sumMapUntil,
+  calculateCellRealWidth
+};

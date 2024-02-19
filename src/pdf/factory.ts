@@ -14,10 +14,14 @@ import type {
   TableParams
 } from "./types";
 
-import { getMultiTextMeasures } from "./utils";
+import { getTableInfo } from "./table";
+import { calculateCellRealWidth, getMultiTextMeasures } from "./utils";
 import { translateVacationSubtype } from "./vacation/utils";
 
-const createHeader = async (document: PDFDocument): Promise<void> => {
+const createHeader = async (
+  document: PDFDocument,
+  y?: number
+): Promise<void> => {
   const header =
     "https://storage.googleapis.com/feriappjs/feriapp-pdf-header.png";
   const headerBuffer = await fetch(header).then((res) => res.arrayBuffer());
@@ -30,7 +34,7 @@ const createHeader = async (document: PDFDocument): Promise<void> => {
     opacity: 1,
     width: pngHeaderDims.width,
     x: 20,
-    y: page.getHeight() - 55
+    y: y ?? page.getHeight() - 55
   });
 };
 
@@ -139,12 +143,12 @@ const createSign = async ({
   const matriculationText = `Matr.: ${matriculation}`;
 
   page.drawLine({
-    end: { x: x + 85, y: height.actual },
-    start: { x: x - 85, y: height.actual }
+    end: { x: x + 70, y: height.actual },
+    start: { x: x - 55, y: height.actual }
   });
   height.stepLine();
   page.drawText(name, {
-    size: 13,
+    size: 12,
     x: x - name.length * 3.2,
     y: height.actual
   });
@@ -188,6 +192,7 @@ const createDaysQtd = async ({
 };
 
 const drawTableLine = async ({
+  columnsXArray,
   document,
   endLineX,
   font,
@@ -197,10 +202,12 @@ const drawTableLine = async ({
   page,
   startLineX
 }: DrawCellFnParams) => {
-  const cellSize = (endLineX - startLineX) / line.length;
-  const getCellFinalX = (index: number) => 35 + (index + 1) * cellSize;
-  const getCellCenterX = (index: number, textWidth: number) =>
-    getCellFinalX(index) - cellSize / 2 - textWidth / 2;
+  const defaultCellWidth = (endLineX - startLineX) / line.length;
+  const getCellCenterX = (
+    textWidth: number,
+    cellEndX: number,
+    cellWidth?: number
+  ) => cellEndX - (cellWidth ?? defaultCellWidth) / 2 - textWidth / 2;
   const startHeight = height.actual;
   const fontSize = 11;
   let highestCellSize = 0;
@@ -216,28 +223,36 @@ const drawTableLine = async ({
 
   line.forEach(async (cell, index) => {
     if (cell) {
+      const cellRealWidth = calculateCellRealWidth(
+        columnsXArray,
+        index,
+        startLineX
+      );
       const { height: paragraphHeight, width: paragraphWidth } =
         getMultiTextMeasures({
           font,
           fontSize,
           lineHeight,
-          maxWidth: cellSize * 0.8,
+          maxWidth: cellRealWidth * 0.8,
           page,
           text: cell,
           x: startLineX,
           y: height.actual
         });
-      const newX = getCellCenterX(index, paragraphWidth);
+      const newX = getCellCenterX(
+        paragraphWidth,
+        columnsXArray[index],
+        cellRealWidth
+      );
 
       if (paragraphHeight > highestCellSize) highestCellSize = paragraphHeight;
-
       await createParagraph({
         document,
         font,
         fontSize,
         height,
         lineHeight,
-        maxWidth: cellSize * 0.8,
+        maxWidth: cellRealWidth * 0.8,
         text: cell,
         x: newX
       });
@@ -247,11 +262,11 @@ const drawTableLine = async ({
   height.actual -= highestCellSize;
   // each cell (except first) draws a vertical line in x1 point
   line.forEach((_, index) => {
-    const newX = 35 + index * cellSize;
-    if (index > 0)
+    const x = columnsXArray[index];
+    if (index >= 0)
       page.drawLine({
-        end: { x: newX, y: startHeight },
-        start: { x: newX, y: height.actual }
+        end: { x, y: startHeight },
+        start: { x, y: height.actual }
       });
   });
 };
@@ -261,14 +276,31 @@ const createTable = async ({
   document,
   endLineX,
   font,
+  fontSize,
   height,
   lineHeight = 8,
   page,
   startLineX,
   startY
 }: TableParams): Promise<void> => {
+  const maxColumnWidth = (endLineX - startLineX) / data[0].length;
+  const { columnsXArray } = getTableInfo({
+    data,
+    font,
+    fontSize,
+    lineHeight,
+    maxColumnWidth,
+    maxWidth: page.getWidth() - 70,
+    page,
+    startX: startLineX,
+    x: 35,
+    y: height.actual
+  });
+
   for (let i = 0; i < data.length; i++) {
     await drawTableLine({
+      columnsXArray,
+      data,
       document,
       endLineX,
       font,

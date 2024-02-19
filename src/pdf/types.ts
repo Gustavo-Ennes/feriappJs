@@ -6,6 +6,9 @@ import type { WorkerInterface } from "../routes/Worker/types/worker";
 import { DepartmentInterface } from "../routes/Department/types/department";
 import { ExtraHourInterface } from "../routes/ExtraHour/types/extraHour";
 
+type LineData = (string | undefined)[];
+type TableData = LineData[];
+
 type Height = {
   actual: number;
   stepLine: () => void;
@@ -21,14 +24,16 @@ type PdfFnParam = {
 };
 
 type DrawCellFnParams = {
+  columnsXArray: number[];
   height: Height;
   document: PDFDocument;
-  line: (string | undefined)[];
+  line: LineData;
   page: PDFPage;
   font: PDFFont;
   startLineX: number;
   endLineX: number;
   lineHeight: number;
+  data: TableData;
 };
 
 type CreatePdfParams = {
@@ -74,7 +79,7 @@ type DrawHalfPageParams = {
 };
 
 type TableParams = {
-  data: (string | undefined)[][];
+  data: TableData;
   document: PDFDocument;
   height: Height;
   page: PDFPage;
@@ -83,10 +88,14 @@ type TableParams = {
   startY: number;
   font: PDFFont;
   lineHeight?: number;
+  fontSize: number;
 };
 
 type GetMultiTextWidthParam = {
-  text: string;
+  startX?: number;
+  maxColumnWidth?: number;
+  data?: TableData;
+  text?: string;
   page: PDFPage;
   font: PDFFont;
   lineHeight: number;
@@ -96,15 +105,34 @@ type GetMultiTextWidthParam = {
   fontSize: number;
 };
 
+type GetTableInfoParam = {
+  data: TableData;
+  x: number;
+  y: number;
+};
+
+type MaterialRequisitionDrawBlockParam = {
+  document: PDFDocument;
+  height: Height;
+  font: PDFFont;
+  fontSize: number;
+  page: PDFPage;
+  headerY?: number;
+};
+
 export type {
-  PdfFnParam,
-  CreatePdfParams,
-  CreateTitleParams,
   CreateParagraphParams,
+  CreatePdfParams,
   CreateSignParams,
-  Height,
-  DrawHalfPageParams,
-  TableParams,
+  CreateTitleParams,
   DrawCellFnParams,
-  GetMultiTextWidthParam
+  DrawHalfPageParams,
+  GetMultiTextWidthParam,
+  GetTableInfoParam,
+  Height,
+  LineData,
+  MaterialRequisitionDrawBlockParam,
+  PdfFnParam,
+  TableData,
+  TableParams
 };

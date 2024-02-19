@@ -28,6 +28,7 @@ const render = async ({
     const startLineX: number = 50;
     const endLineX: number = page.getWidth() - 50;
     const font = await document.embedFont(StandardFonts.Helvetica);
+    const fontSize = 12;
 
     await createHeader(document);
     await createFooter(document);
@@ -45,6 +46,7 @@ const render = async ({
       document,
       endLineX,
       font,
+      fontSize,
       height,
       lineHeight: 16,
       page,

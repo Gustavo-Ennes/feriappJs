@@ -132,7 +132,6 @@ const drawJustificationBlock = async ({
     role: capitalizeName(worker.role),
     x: 150
   });
-  height.actual += 44;
   await createSign({
     document,
     height,
@@ -140,8 +139,9 @@ const drawJustificationBlock = async ({
     role: "Diretor de Transporte",
     x: 450
   });
-  height.stepLine();
-  height.stepSmallLine();
+  height.stepHugeLine();
+  height.stepHugeLine();
+  height.stepHugeLine();
 };
 
 export { drawJustificationBlock };

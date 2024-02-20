@@ -71,6 +71,7 @@ const drawHalfPage = async ({
 
   height.stepHugeLine();
   height.stepHugeLine();
+  height.stepHugeLine();
   await createSign({
     document,
     height,
@@ -80,6 +81,8 @@ const drawHalfPage = async ({
     role: capitalizeName((vacation.worker as unknown as WorkerInterface).role)
   });
 
+  height.stepHugeLine();
+  height.stepHugeLine();
   height.stepHugeLine();
   const { name: bossName, role: bossRole} = getBoss(vacation)
   await createSign({

@@ -81,7 +81,7 @@ const createTitle = async ({
   size = 24,
   title
 }: CreateTitleParams): Promise<void> => {
-  const font = await document.embedFont(StandardFonts.CourierBold);
+  const font = await document.embedFont(StandardFonts.HelveticaBold);
   const textWidth = font.widthOfTextAtSize(title, size);
   const page = document.getPage(0);
   const { width } = page.getSize();
@@ -141,32 +141,35 @@ const createSign = async ({
 }: CreateSignParams): Promise<void> => {
   const page = document.getPage(0);
   const matriculationText = `Matr.: ${matriculation}`;
+  const regularFont = await document.embedFont(StandardFonts.Helvetica);
+  const boldFont = await document.embedFont(StandardFonts.HelveticaBold);
+  const regularFontSize = 12;
+  const boldFontSize = regularFontSize * 1.1;
+  const textLines = ["_______________________", name, role];
+  const maxWidth = page.getWidth();
+  const lineHeight = 15;
+  const NAME_TEXT_LINE_INDEX = 1;
+  let y = height.actual;
 
-  page.drawLine({
-    end: { x: x + 70, y: height.actual },
-    start: { x: x - 55, y: height.actual }
-  });
-  height.stepLine();
-  page.drawText(name, {
-    size: 12,
-    x: x - name.length * 3.2,
-    y: height.actual
-  });
-  height.stepSmallLine();
-  page.drawText(role, {
-    size: 11,
-    x: x - role.length * 2.5,
-    y: height.actual
-  });
-  height.stepSmallLine();
-  if (matriculation) {
-    page.drawText(matriculationText, {
-      size: 10,
-      x: x - matriculationText.length * 2.3,
-      y: height.actual
+  if (matriculation) textLines.push(matriculationText);
+
+  textLines.forEach((line, index) => {
+    const font = index === NAME_TEXT_LINE_INDEX ? boldFont : regularFont;
+    const fontSize =
+      index === NAME_TEXT_LINE_INDEX ? boldFontSize : regularFontSize;
+    const textWidth = font.widthOfTextAtSize(line, fontSize);
+
+    page.drawText(line, {
+      font,
+      lineHeight,
+      maxWidth,
+      size: fontSize,
+      x: x - textWidth / 2,
+      y
     });
-    height.stepSmallLine();
-  }
+    y -= lineHeight;
+  });
+
 };
 
 const createDaysQtd = async ({

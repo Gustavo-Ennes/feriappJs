@@ -53,8 +53,7 @@ const render = async ({
       startLineX,
       startY
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(2, "huge");
 
     await createSign({
       document,
@@ -62,8 +61,7 @@ const render = async ({
       name: capitalizeName(worker.name),
       role: "ciente do servidor"
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(2, "huge");
 
     page.drawLine({
       end: { x: endLineX, y: height.actual },
@@ -105,9 +103,8 @@ const render = async ({
       text: paragraphText,
       x: 100
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(5, "huge");
+
     await createSign({
       document,
       height,

@@ -1,4 +1,5 @@
 import { PDFPage, TextAlignment, layoutMultilineText } from "pdf-lib";
+import { range } from "ramda";
 
 import { GetMultiTextWidthParam } from "./types";
 
@@ -9,6 +10,12 @@ const getHeightObject = (page: PDFPage) => ({
   },
   stepLine() {
     this.actual -= 20;
+  },
+  stepLines(linesQtd: number, type = "regular") {
+    const size = type === "regular" ? 20 : 28;
+    range(0, linesQtd).forEach(() => {
+      this.actual -= size;
+    });
   },
   stepSmallLine() {
     this.actual -= 12;

@@ -14,7 +14,12 @@ import {
   createTitle
 } from "../factory";
 import { getHeightObject } from "../utils";
-import { getBoss, getParagraph, translateMonth, translateVacation } from "./utils";
+import {
+  getBoss,
+  getParagraph,
+  translateMonth,
+  translateVacation
+} from "./utils";
 
 const drawHalfPage = async ({
   document,
@@ -48,9 +53,7 @@ const drawHalfPage = async ({
     text: paragraph
   });
 
-  height.stepHugeLine();
-  height.stepHugeLine();
-  height.stepHugeLine();
+  height.stepLines(3, "huge");
 
   const dateString = `Ilha solteira, ${new Date(
     vacation.updatedAt
@@ -69,9 +72,7 @@ const drawHalfPage = async ({
     maxWidth: page.getWidth()
   });
 
-  height.stepHugeLine();
-  height.stepHugeLine();
-  height.stepHugeLine();
+  height.stepLines(3, "huge");
   await createSign({
     document,
     height,
@@ -81,10 +82,8 @@ const drawHalfPage = async ({
     role: capitalizeName((vacation.worker as unknown as WorkerInterface).role)
   });
 
-  height.stepHugeLine();
-  height.stepHugeLine();
-  height.stepHugeLine();
-  const { name: bossName, role: bossRole} = getBoss(vacation)
+  height.stepLines(3, "huge");
+  const { name: bossName, role: bossRole } = getBoss(vacation);
   await createSign({
     document,
     height,
@@ -105,10 +104,7 @@ const render = async ({ document, instance }: PdfFnParam): Promise<void> => {
       vacation
     });
 
-    height.stepHugeLine();
-    height.stepHugeLine();
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(4, "huge");
 
     await drawHalfPage({
       document,

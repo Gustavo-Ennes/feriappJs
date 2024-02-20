@@ -37,8 +37,7 @@ const render = async ({
       size: 16,
       title: "relatório mensal de horas extras - divisão de transporte"
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(2, "huge");
 
     const identificationParagraph = `
     Secretaria: ${department.name.toLocaleUpperCase()}
@@ -52,17 +51,14 @@ const render = async ({
       text: identificationParagraph,
       x: 20
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(2, "huge");
 
     await createReportTable({
       document,
       extraHours: extraHours as ExtraHourInterface[],
       height
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(3, "huge");
 
     await createSign({
       document,
@@ -70,8 +66,7 @@ const render = async ({
       name: "Sebastião Arosti",
       role: "Diretor Municipal de Transporte"
     });
-    height.stepHugeLine();
-    height.stepHugeLine();
+    height.stepLines(2, "huge");
 
     await createSign({
       document,

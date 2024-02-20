@@ -139,9 +139,7 @@ const drawJustificationBlock = async ({
     role: "Diretor de Transporte",
     x: 450
   });
-  height.stepHugeLine();
-  height.stepHugeLine();
-  height.stepHugeLine();
+  height.stepLines(3, "huge");
 };
 
 export { drawJustificationBlock };

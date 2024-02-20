@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import type { PDFDocument, PDFFont, PDFPage } from "pdf-lib";
 
 import type { VacationInterface } from "../routes/Vacation/types/vacation";
@@ -13,6 +14,7 @@ type Height = {
   actual: number;
   stepLine: () => void;
   stepHugeLine: () => void;
+  stepLines: (lineQtd: number, type?: string) => void
   stepSmallLine: () => void;
 };
 

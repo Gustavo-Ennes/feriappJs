@@ -77,15 +77,15 @@ const createFooter = async (document: PDFDocument): Promise<void> => {
 const createTitle = async ({
   document,
   height,
-  offset,
+  offset = 0,
   size = 24,
   title
 }: CreateTitleParams): Promise<void> => {
   const font = await document.embedFont(StandardFonts.HelveticaBold);
-  const textWidth = font.widthOfTextAtSize(title, size);
+  const textWidth = font.widthOfTextAtSize(title.toUpperCase(), size);
   const page = document.getPage(0);
   const { width } = page.getSize();
-  const xCoordinate = width / 2 - textWidth / 2 - 15 + (offset ?? 0);
+  const xCoordinate = width / 2 - textWidth / 2 + offset;
 
   // title
   page.drawText(title.toUpperCase(), {
@@ -169,7 +169,6 @@ const createSign = async ({
     });
     y -= lineHeight;
   });
-
 };
 
 const createDaysQtd = async ({

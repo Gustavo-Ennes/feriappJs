@@ -37,6 +37,7 @@ const workerMock = vi.fn();
 const departmentMock = vi.fn();
 const verifyTokenMock = vi.fn();
 const extraHourMock = vi.fn();
+const bossMock = vi.fn();
 
 vi.doMock("../routes/Vacation/vacation.model", () => ({
   Vacation: getModelMethods({ expectedFn: vacationMock })
@@ -51,6 +52,9 @@ vi.doMock("../routes/Department/department.model", () => ({
 vi.doMock("../routes/ExtraHour/extraHour.model", () => ({
   ExtraHourModel: getModelMethods({ expectedFn: extraHourMock })
 }));
+vi.doMock("../routes/Boss/boss.model", () => ({
+  Boss: getModelMethods({ expectedFn: bossMock, populate: false })
+}));
 vi.doMock("../firebase/firebase", () => ({
   firebaseApp: vi.fn(),
   verifyToken: verifyTokenMock
@@ -61,5 +65,6 @@ export {
   workerMock,
   departmentMock,
   verifyTokenMock,
-  extraHourMock
+  extraHourMock,
+  bossMock
 };

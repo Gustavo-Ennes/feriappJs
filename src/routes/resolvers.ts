@@ -1,5 +1,6 @@
 //import resolvers or each model inside source
 
+import { bossResolvers } from "../routes/Boss";
 import { departmentResolvers } from "../routes/Department";
 import { vacationResolvers } from "../routes/Vacation/";
 import { workerResolvers } from "../routes/Worker";
@@ -16,13 +17,15 @@ const { Query: searchQuery } = searchResolvers;
 const { Mutation: extraHourMutations, Query: extraHourQueries } =
   extraHourResolvers;
 const { Query: pdfQueries } = pdfResolvers;
+const { Mutation: bossMutations, Query: bossQueries } = bossResolvers;
 
 const resolvers = {
   Mutation: {
     ...departmentMutations,
     ...workerMutations,
     ...vacationMutations,
-    ...extraHourMutations
+    ...extraHourMutations,
+    ...bossMutations
   },
   Query: {
     ...departmentQueries,
@@ -30,7 +33,8 @@ const resolvers = {
     ...vacationQueries,
     ...searchQuery,
     ...extraHourQueries,
-    ...pdfQueries
+    ...pdfQueries,
+    ...bossQueries
   }
 };
 

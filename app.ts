@@ -8,9 +8,9 @@ import { typeDefs, resolvers } from "./src/routes/";
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  resolvers,
+  typeDefs
 });
 
 export { server, app, httpServer };

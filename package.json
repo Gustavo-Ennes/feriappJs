@@ -6,7 +6,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q NODE_ENV=test dist/index.js\"",
-    "test": "npx vitest --outputDiffMaxSize=50000",
+    "test": "npx vitest",
     "prettier-check": "npx prettier --check src/**",
     "lint-check": "npx eslint src/**",
     "lint-fix": "npx eslint --fix src/**"

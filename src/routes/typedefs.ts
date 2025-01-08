@@ -1,5 +1,6 @@
 // import typedefs like defined in pizza.typedefs
 
+import { bossDefinitions } from "./Boss";
 import { departmentDefinitions } from "./Department";
 import { extraHourDefinitions } from "./ExtraHour";
 import { pdfDefinitions } from "./Pdf";
@@ -15,12 +16,14 @@ const typeDefs = `
     ${searchDefinitions.queries}
     ${extraHourDefinitions.queries}
     ${pdfDefinitions.queries}
+    ${bossDefinitions.queries}
   }
   type Mutation{
     ${departmentDefinitions.mutations}
     ${workerDefinitions.mutations}
     ${vacationDefinitions.mutations}
     ${extraHourDefinitions.mutations}
+    ${bossDefinitions.mutations}
   }
   
   ${departmentDefinitions.types}
@@ -28,6 +31,7 @@ const typeDefs = `
   ${vacationDefinitions.types}
   ${searchDefinitions.types}
   ${extraHourDefinitions.types}
+  ${bossDefinitions.types}
 `;
 
 export { typeDefs };

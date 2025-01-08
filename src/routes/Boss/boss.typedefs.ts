@@ -15,12 +15,14 @@ const bossDefinitions = {
       role: String
       createdAt: Date
       updatedAt: Date
+      isDirector: Boolean
     }
 
     input BossInput{
       _id: ID
       name: String!
       role: String!
+      isDirector: Boolean
     }
   `
 };

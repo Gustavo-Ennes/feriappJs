@@ -10,7 +10,7 @@ const bossesResolver = async (
   try {
     await verifyToken(context.token || "");
 
-    const bossInstances: BossInterface[] = await Boss.find({});
+    const bossInstances: BossInterface[] = await Boss.find();
 
     return bossInstances;
   } catch (error) {

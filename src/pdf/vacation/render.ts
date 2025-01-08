@@ -83,7 +83,14 @@ const drawHalfPage = async ({
   });
 
   height.stepLines(3, "huge");
-  const { name: bossName, role: bossRole } = getBoss(vacation);
+  const boss = await getBoss(vacation);
+
+  if (!boss)
+    throw new Error(
+      `Não há chefe cadastrado para a assinatura de ${translateVacation(vacation.type)}.`
+    );
+
+  const { name: bossName, role: bossRole } = boss;
   await createSign({
     document,
     height,

@@ -1,15 +1,8 @@
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 
+import { Boss } from "../../routes/Boss";
+import { BossInterface } from "../../routes/Boss/types/boss.interface";
 import { dayOffParagraph, licenseParagraph, vacationParagraph } from "./text";
-
-const boss = {
-  name: "Evandro Souza dos Santos",
-  role: "Chefe do departamento de Transporte"
-};
-const director = {
-  name: "Sebastião Arosti",
-  role: "Diretor de Transporte"
-};
 
 const numberToNumberString = (number: number): string => {
   if (number === 15) return "quinze";
@@ -58,10 +51,12 @@ const getParagraph = (vacation: VacationInterface): string => {
 };
 
 // type vacation envolves money to the worker, so director sign, others not
-const getBoss = (
+const getBoss = async (
   vacation: VacationInterface
-): { name: string; role: string } =>
-  vacation.type === "vacation" ? director : boss;
+): Promise<BossInterface | null> => {
+  const isDirector = vacation.type === "vacation";
+  return await Boss.findOne({ isDirector }).exec();
+};
 
 export {
   getBoss,
@@ -69,5 +64,5 @@ export {
   numberToNumberString,
   translateMonth,
   translateVacation,
-  translateVacationSubtype,
+  translateVacationSubtype
 };

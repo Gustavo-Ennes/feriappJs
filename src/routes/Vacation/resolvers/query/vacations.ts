@@ -17,6 +17,7 @@ const vacationsResolver = async (
 
   const vacationInstance: VacationInterface[] = await Vacation.find(options)
     .populate("worker")
+    .populate("boss")
     .exec();
   return vacationInstance;
 };

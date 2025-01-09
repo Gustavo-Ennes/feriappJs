@@ -1,7 +1,12 @@
 import { clone } from "ramda";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
-import { vacationMock, workerMock } from "../../../utils/mockApplication";
+import {
+  bossMock,
+  vacationMock,
+  workerMock
+} from "../../../utils/mockApplication";
+import { bossFixture } from "../../Boss/tests/boss.fixture";
 import { workerExample } from "../../Worker/tests/worker.example";
 import { validationPipe } from "../resolvers/mutation/validationPipe";
 import { vacationExamplePayload } from "./vacation.example";
@@ -17,6 +22,7 @@ describe("Vacation: Validation pipe", () => {
 
   it("should validate if all validation succeed to create a worker", async () => {
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } = await validationPipe(
       vacationExamplePayload
     );
@@ -33,10 +39,20 @@ describe("Vacation: Validation pipe", () => {
     expect(errorMessage).to.be.equals("Worker ID not found");
   });
 
+  it("shouldn't validate if not found a valid boss", async () => {
+    bossMock.mockResolvedValueOnce(null);
+    const { errorMessage, payload } = await validationPipe(
+      vacationExamplePayload
+    );
+    expect(payload).not.to.be.empty;
+    expect(errorMessage).to.be.equals("Boss not found");
+  });
+
   it("should validate if vacation type equals license", async () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "license";
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -48,6 +64,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "dayOff";
     vacationExampleClone.daysQtd = 1;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -57,6 +74,7 @@ describe("Vacation: Validation pipe", () => {
   it("shouldn't validate if found an invalid type", async () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "anyone";
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -70,6 +88,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "dayOff";
     vacationExampleClone.daysQtd = 1;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -81,6 +100,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "dayOff";
     vacationExampleClone.daysQtd = 0.5;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -91,6 +111,7 @@ describe("Vacation: Validation pipe", () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "dayOff";
     vacationExampleClone.daysQtd = 15;
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -102,6 +123,7 @@ describe("Vacation: Validation pipe", () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.daysQtd = 30;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -111,6 +133,7 @@ describe("Vacation: Validation pipe", () => {
   it("shouldn't allow a 60 day vacation", async () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.daysQtd = 60;
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -123,6 +146,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 15;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -134,6 +158,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 60;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -145,6 +170,7 @@ describe("Vacation: Validation pipe", () => {
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 90;
     vacationMock.mockResolvedValueOnce([]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -155,6 +181,7 @@ describe("Vacation: Validation pipe", () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 1;
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -167,6 +194,7 @@ describe("Vacation: Validation pipe", () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 12;
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -179,6 +207,7 @@ describe("Vacation: Validation pipe", () => {
     const vacationExampleClone = clone(vacationExamplePayload);
     vacationExampleClone.type = "license";
     vacationExampleClone.daysQtd = 76;
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } =
       await validationPipe(vacationExampleClone);
     expect(payload).not.to.be.empty;
@@ -189,6 +218,7 @@ describe("Vacation: Validation pipe", () => {
 
   it("shouldn't allow if there's another vacation in given time period", async () => {
     vacationMock.mockResolvedValueOnce([{}]).mockResolvedValueOnce([]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { errorMessage, payload } = await validationPipe(
       vacationExamplePayload
     );

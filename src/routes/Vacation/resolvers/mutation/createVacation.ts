@@ -11,9 +11,10 @@ const createVacationResolver = async (
   await verifyToken(context.token || "");
 
   const { vacationInput } = args;
-  const { errorMessage, payload, worker } = await validationPipe(vacationInput);
+  const { boss, errorMessage, payload, worker } =
+    await validationPipe(vacationInput);
 
-  if (!errorMessage && worker && payload) {
+  if (!errorMessage && worker && payload && boss) {
     const vacationInstance: VacationInterface =
       await Vacation.create(vacationInput);
     return vacationInstance;

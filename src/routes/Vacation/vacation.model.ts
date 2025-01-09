@@ -5,6 +5,11 @@ import { VacationInterface } from "./types/vacation";
 
 const VacationSchema = new Schema<VacationInterface>(
   {
+    boss: {
+      ref: "Boss",
+      required: true,
+      type: Types.ObjectId,
+    },
     daysQtd: {
       required: true,
       type: Number
@@ -28,7 +33,7 @@ const VacationSchema = new Schema<VacationInterface>(
       ref: "Worker",
       required: true,
       type: Types.ObjectId
-    }
+    },
   },
   {
     timestamps: true

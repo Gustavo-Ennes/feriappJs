@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 
+import { BossInterface } from "../../Boss/types/boss.interface";
 import { WorkerInterface } from "../../Worker/types/worker";
 
 export interface VacationInterface {
@@ -13,6 +14,7 @@ export interface VacationInterface {
   type: string;
   enjoyed?: boolean;
   _id?: string | Types.ObjectId;
+  boss?: string | BossInterface;
   createdAt?: date;
   updatedAt?: date;
 }
@@ -21,6 +23,7 @@ export interface PipeContent {
   payload: VacationInterface;
   errorMessage?: string;
   worker?: WorkerInterface | null;
+  boss?: BossInterface | null;
 }
 
 export interface VacationsResolverArgsInterface {

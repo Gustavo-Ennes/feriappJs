@@ -27,6 +27,7 @@ const vacationDefinitions = {
       enjoyed: Boolean
       createdAt: Date
       updatedAt: Date
+      boss: Boss
     }
 
     input VacationInput{
@@ -34,6 +35,7 @@ const vacationDefinitions = {
       daysQtd: Float!
       startDate: Date!
       worker: ID!
+      boss: ID!
       observation: String
       type: String!
       enjoyed: Boolean

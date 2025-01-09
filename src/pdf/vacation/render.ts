@@ -4,6 +4,7 @@ import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 import type { WorkerInterface } from "../../routes/Worker/types/worker";
 import type { DrawHalfPageParams, PdfFnParam } from "../types";
 
+import { BossInterface } from "../../routes/Boss/types/boss.interface";
 import { capitalizeName } from "../../utils/capitalize";
 import {
   createDaysQtd,
@@ -83,14 +84,15 @@ const drawHalfPage = async ({
   });
 
   height.stepLines(3, "huge");
-  const boss = await getBoss(vacation);
+  const boss = vacation.boss ?? (await getBoss(vacation));
 
   if (!boss)
     throw new Error(
       `Não há chefe cadastrado para a assinatura de ${translateVacation(vacation.type)}.`
     );
 
-  const { name: bossName, role: bossRole } = boss;
+  const { name: bossName, role: bossRole } = (vacation.boss ??
+    (await getBoss(vacation))) as BossInterface;
   await createSign({
     document,
     height,

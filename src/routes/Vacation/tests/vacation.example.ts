@@ -1,21 +1,23 @@
-import { vacationDefaultObjectId, workerDefaultObjectId } from "./queries";
+import { bossFixture } from "../../Boss/tests/boss.fixture";
+import { workerExample } from "../../Worker/tests/worker.example";
+import {
+  bossDefaultObjectId,
+  vacationDefaultObjectId,
+  workerDefaultObjectId
+} from "./queries";
 
 const vacationExample = {
   _id: vacationDefaultObjectId,
+  boss: bossFixture,
   daysQtd: 15,
   startDate: "2023-02-23T17:35:31.308Z",
   type: "vacation",
-  worker: {
-    admissionDate: new Date().toISOString(),
-    matriculation: "123123",
-    name: "Elias Maluco",
-    registry: "654.654-8",
-    role: "Curador de AIDS"
-  }
+  worker: workerExample,
 };
 
 const vacationExamplePayload = {
   ...vacationExample,
+  boss: bossDefaultObjectId,
   worker: workerDefaultObjectId
 };
 

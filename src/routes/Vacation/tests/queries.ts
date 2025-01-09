@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const vacationDefaultObjectId: string = "6414697eb7d80144bcc86170";
 const workerDefaultObjectId: string = "6414697eb7d80144bcc86171";
+const bossDefaultObjectId: string = "6414697eb7d80144bcc86172";
 const vacationsQuery: string = `
 query{
   vacations{
     worker{
+      name
+    }
+    boss {
       name
     }
     _id
@@ -15,6 +19,9 @@ const vacationsFromQuery: string = `
 query{
   vacations(fromWorker: "${vacationDefaultObjectId}"){
     worker{
+      name
+    }
+    boss {
       name
     }
     _id
@@ -28,11 +35,15 @@ query{
     worker{
       name
     }
+    boss {
+      name
+    }
     _id
   }
 }
 `;
 const createVacationMutation = ({
+  boss = bossDefaultObjectId,
   daysQtd = 15,
   startDate = "2023-02-23T17:35:31.308Z",
   type = "vacation",
@@ -41,6 +52,7 @@ const createVacationMutation = ({
 mutation{
   createVacation(vacationInput: {
       worker: "${worker}"
+      boss: "${boss}"
       daysQtd: ${daysQtd}
       startDate: "${startDate}"
       type: "${type}"
@@ -48,6 +60,9 @@ mutation{
   ){
     _id
     worker{
+      name
+    }
+    boss {
       name
     }
   }
@@ -62,6 +77,7 @@ mutation{
 
 const updateVacationMutation = ({
   _id,
+  boss,
   daysQtd,
   deferred,
   enjoyed = false,
@@ -80,6 +96,7 @@ mutation{
     ${observation ? `observation: "${observation}"` : ""}
     ${enjoyed ? `enjoyed: "${enjoyed}"` : ""}
     ${worker ? `worker: "${worker}"` : ""}
+    ${boss ? `boss: "${boss}"` : ""}
   })
 }
 `;
@@ -99,5 +116,6 @@ export {
   vacationsFromQuery,
   workerDefaultObjectId,
   vacationDefaultObjectId,
-  getVacationPdfQuery
+  getVacationPdfQuery,
+  bossDefaultObjectId
 };

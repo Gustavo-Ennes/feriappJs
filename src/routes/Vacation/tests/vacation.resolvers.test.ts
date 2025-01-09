@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
-import { vacationMock, workerMock } from "../../../utils/mockApplication";
+import {
+  bossMock,
+  vacationMock,
+  workerMock
+} from "../../../utils/mockApplication";
+import { bossFixture } from "../../Boss/tests/boss.fixture";
 import { workerExample } from "../../Worker/tests/worker.example";
 import {
   createVacationMutation,
@@ -30,7 +35,11 @@ describe("Vacation: integration", async () => {
     });
     expect(body.singleResult?.data).toHaveProperty("vacations");
     expect(body.singleResult?.data.vacations).toEqual([
-      { _id: vacationExample._id, worker: { name: "Elias Maluco" } }
+      {
+        _id: vacationExample._id,
+        boss: { name: bossFixture.name },
+        worker: { name: vacationExample.worker.name }
+      }
     ]);
   });
 
@@ -43,9 +52,8 @@ describe("Vacation: integration", async () => {
     expect(body.singleResult?.data.vacations).toEqual([
       {
         _id: vacationExample._id,
-        worker: {
-          name: "Elias Maluco"
-        }
+        boss: { name: bossFixture.name },
+        worker: { name: vacationExample.worker.name }
       }
     ]);
   });
@@ -58,9 +66,8 @@ describe("Vacation: integration", async () => {
     expect(body.singleResult?.data).toHaveProperty("vacation");
     expect(body.singleResult?.data.vacation).toEqual({
       _id: vacationExample._id,
-      worker: {
-        name: "Elias Maluco"
-      }
+      boss: { name: bossFixture.name },
+      worker: { name: vacationExample.worker.name }
     });
   });
 
@@ -71,21 +78,23 @@ describe("Vacation: integration", async () => {
       .mockReturnValueOnce([])
       .mockReturnValueOnce(vacationExample);
     workerMock.mockReturnValueOnce(workerExample);
+    bossMock.mockReturnValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
       query
     });
+
     expect(body.singleResult?.data).toHaveProperty("createVacation");
     expect(body.singleResult?.data.createVacation).toEqual({
       _id: vacationExample._id,
-      worker: {
-        name: "Elias Maluco"
-      }
+      boss: { name: bossFixture.name },
+      worker: { name: vacationExample.worker.name }
     });
   });
 
   it("shouldn't create a vacation if type doesn't exists", async () => {
     const query = createVacationMutation({ type: "foo" });
     workerMock.mockReturnValueOnce(workerExample);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
       query
     });
@@ -98,6 +107,7 @@ describe("Vacation: integration", async () => {
   it("shouldn't create a vacation if daysQtd dont't match type", async () => {
     const query = createVacationMutation({ daysQtd: 60, type: "dayOff" });
     workerMock.mockReturnValueOnce(workerExample);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
       query
     });
@@ -113,6 +123,7 @@ describe("Vacation: integration", async () => {
       .mockReturnValueOnce([{ _id: "a9d9a7f8a0da9s0d90a09" }, { _id: "2" }])
       .mockReturnValueOnce([]);
     workerMock.mockReturnValueOnce(workerExample);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
       query
     });
@@ -129,6 +140,7 @@ describe("Vacation: integration", async () => {
       .mockReturnValueOnce([])
       .mockReturnValueOnce([])
       .mockReturnValueOnce(undefined);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({ ...vacationExample, daysQtd: 30 });
     const { body }: any = await server.executeOperation({
       query
@@ -152,6 +164,7 @@ describe("Vacation: integration", async () => {
   it("shouldn't update a vacation if it's type doesn't exists", async () => {
     workerMock.mockReturnValueOnce(workerExample);
     vacationMock.mockReturnValueOnce(vacationExample);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({ ...vacationExample, type: "bar" });
     const { body }: any = await server.executeOperation({
       query
@@ -165,6 +178,7 @@ describe("Vacation: integration", async () => {
   it("shouldn't update a vacation if it's daysQtd don't match it's type", async () => {
     workerMock.mockReturnValueOnce(workerExample);
     vacationMock.mockReturnValueOnce(vacationExample);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({
       ...vacationExample,
       daysQtd: 1,
@@ -185,6 +199,7 @@ describe("Vacation: integration", async () => {
       .mockReturnValueOnce(vacationExample)
       .mockReturnValueOnce([])
       .mockReturnValueOnce([{}]);
+    bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({ ...vacationExample, daysQtd: 15 });
     const { body }: any = await server.executeOperation({
       query

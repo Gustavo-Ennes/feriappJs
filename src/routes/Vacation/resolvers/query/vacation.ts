@@ -14,6 +14,7 @@ const vacationResolver = async (
     _id
   )
     .populate("worker")
+    .populate("boss")
     .exec();
   return vacationInstance;
 };

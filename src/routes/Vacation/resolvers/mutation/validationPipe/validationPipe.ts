@@ -1,6 +1,7 @@
 import { add, sub } from "date-fns";
 import { andThen, pipe } from "ramda";
 
+import { Boss } from "../../../../Boss";
 import { Worker } from "../../../../Worker";
 import { WorkerInterface } from "../../../../Worker/types/worker";
 import { PipeContent, VacationInterface } from "../../../types/vacation";
@@ -17,6 +18,16 @@ const validateWorker = async (
     .exec();
   if (!worker) pipePayload.errorMessage = "Worker ID not found";
   else pipePayload.worker = worker;
+  return pipePayload;
+};
+
+const validateBoss = async (pipePayload: PipeContent): Promise<PipeContent> => {
+  if (pipePayload.errorMessage) return pipePayload;
+
+  const boss = await Boss.findById(pipePayload.payload.boss);
+  if (!boss) pipePayload.errorMessage = "Boss not found";
+  else pipePayload.boss = boss;
+
   return pipePayload;
 };
 
@@ -85,6 +96,7 @@ const validationPipe = async (
 ): Promise<PipeContent> =>
   pipe(
     validateWorker,
+    andThen(validateBoss),
     andThen(validateType),
     andThen(validateDaysQtd),
     andThen(validateNoConflict)

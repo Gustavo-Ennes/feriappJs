@@ -13,6 +13,7 @@ const updateVacationResolver = async (
   const { vacationInput } = args;
   const vacationToUpdate = await Vacation.findById(vacationInput._id)
     .populate("worker")
+    .populate("boss")
     .exec();
 
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");

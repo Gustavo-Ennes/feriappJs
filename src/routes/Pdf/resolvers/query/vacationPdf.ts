@@ -16,6 +16,7 @@ const vacationPdfResolver = async (
     const pdfDoc = await PDFDocument.create();
     const instance = await Vacation.findById(vacationId)
       .populate("worker")
+      .populate("boss")
       .exec();
 
     if (!instance) throw new Error("Vacation not found");

@@ -9,6 +9,12 @@ type GetModelMethodParameter = {
 const defaultModelMethods = (expectedFn: () => any) => ({
   populate: () => ({
     exec: expectedFn,
+    populate: () => ({
+      exec: expectedFn,
+      sort: () => ({
+        exec: expectedFn
+      })
+    }),
     sort: () => ({
       exec: expectedFn
     })

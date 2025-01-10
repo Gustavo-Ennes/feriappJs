@@ -1,6 +1,9 @@
 import { PDFPage, TextAlignment, layoutMultilineText } from "pdf-lib";
 import { range } from "ramda";
 
+import { Boss } from "../routes/Boss";
+import { BossInterface } from "../routes/Boss/types/boss.interface";
+import { VacationInterface } from "../routes/Vacation/types/vacation";
 import { GetMultiTextWidthParam } from "./types";
 
 const getHeightObject = (page: PDFPage) => ({
@@ -70,7 +73,16 @@ const calculateCellRealWidth = (
     ? columnsXArray[index] - columnsXArray[index - 1]
     : columnsXArray[index] - startX;
 
+// type vacation envolves money to the worker, so director sign, others not
+const getBoss = async (
+  vacation?: VacationInterface
+): Promise<BossInterface | null> => {
+  const isDirector = vacation?.type === "vacation";
+  return await Boss.findOne({ isDirector }).exec();
+};
+
 export {
+  getBoss,
   getHeightObject,
   getMultiTextMeasures,
   sumMapUntil,

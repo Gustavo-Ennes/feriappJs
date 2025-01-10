@@ -1,7 +1,5 @@
 import type { VacationInterface } from "../../routes/Vacation/types/vacation";
 
-import { Boss } from "../../routes/Boss";
-import { BossInterface } from "../../routes/Boss/types/boss.interface";
 import { dayOffParagraph, licenseParagraph, vacationParagraph } from "./text";
 
 const numberToNumberString = (number: number): string => {
@@ -49,17 +47,7 @@ const getParagraph = (vacation: VacationInterface): string => {
   else if (vacation.type === "dayOff") return dayOffParagraph(vacation);
   else throw new Error("getParagraph: invalid type parameter");
 };
-
-// type vacation envolves money to the worker, so director sign, others not
-const getBoss = async (
-  vacation: VacationInterface
-): Promise<BossInterface | null> => {
-  const isDirector = vacation.type === "vacation";
-  return await Boss.findOne({ isDirector }).exec();
-};
-
 export {
-  getBoss,
   getParagraph,
   numberToNumberString,
   translateMonth,

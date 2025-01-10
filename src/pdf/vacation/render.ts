@@ -14,9 +14,8 @@ import {
   createSign,
   createTitle
 } from "../factory";
-import { getHeightObject } from "../utils";
+import { getHeightObject, getBoss } from "../utils";
 import {
-  getBoss,
   getParagraph,
   translateMonth,
   translateVacation

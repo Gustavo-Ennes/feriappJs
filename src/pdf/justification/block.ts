@@ -10,6 +10,7 @@ import {
   createSign,
   createTitle
 } from "../factory";
+import { getBoss } from "../utils";
 
 const drawJustificationBlock = async ({
   document,
@@ -18,6 +19,7 @@ const drawJustificationBlock = async ({
 }: DrawJustificationBlockParams): Promise<void> => {
   const page = document.getPage(0);
   const font = await document.embedFont(StandardFonts.Helvetica);
+  const boss = await getBoss();
   await createHeader(document);
   await createFooter(document);
 
@@ -135,8 +137,8 @@ const drawJustificationBlock = async ({
   await createSign({
     document,
     height,
-    name: "Sebastião Arosti",
-    role: "Diretor de Transporte",
+    name: boss?.name ?? "",
+    role: boss?.role ?? "",
     x: 450
   });
   height.stepLines(3, "huge");

@@ -3,28 +3,38 @@ const vacationDefaultObjectId: string = "6414697eb7d80144bcc86170";
 const workerDefaultObjectId: string = "6414697eb7d80144bcc86171";
 const bossDefaultObjectId: string = "6414697eb7d80144bcc86172";
 const vacationsQuery: string = `
-query{
-  vacations{
-    worker{
-      name
-    }
-    boss {
-      name
-    }
+query($page: Int!){
+  vacations(page: $page){
+    pageNumber
+    totalPages
+    items {
+      worker{
+        name
+      }
+      boss {
+        name
+      }
     _id
+    }
+    error
   }
 } 
 `;
 const vacationsFromQuery: string = `
 query{
   vacations(fromWorker: "${vacationDefaultObjectId}"){
-    worker{
-      name
-    }
-    boss {
-      name
-    }
+    pageNumber
+    totalPages
+    items {
+      worker{
+        name
+      }
+      boss {
+        name
+      }
     _id
+    }  
+    error  
   }
 } 
 `;

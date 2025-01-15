@@ -31,6 +31,7 @@ export interface VacationsResolverArgsInterface {
   period?: PeriodOptionsType;
   type?: string;
   deferred?: boolean;
+  page?: number;
 }
 export interface VacationsQueryOptionsInterface {
   worker?: string;

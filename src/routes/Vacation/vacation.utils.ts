@@ -1,11 +1,7 @@
-import { add, sub } from "date-fns";
+import { endOfDay, startOfDay } from "date-fns";
 
 const now = new Date();
-const todayStartDate = sub(now, {
-  hours: now.getHours() - 3,
-  minutes: now.getMinutes(),
-  seconds: now.getSeconds()
-});
-const todayEndDate = add(todayStartDate, { hours: 24, seconds: -1 });
+const todayStartDate = startOfDay(now)
+const todayEndDate = endOfDay(now);
 
 export { todayEndDate, todayStartDate };

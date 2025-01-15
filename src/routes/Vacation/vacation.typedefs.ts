@@ -10,8 +10,9 @@ const vacationDefinitions = {
       fromWorker: ID, 
       period: String, 
       type: String, 
-      deferred: Boolean
-    ): [Vacation]
+      deferred: Boolean,
+      page: Int
+    ): VacationPagination
   `,
   types: `
     type Vacation{
@@ -30,6 +31,13 @@ const vacationDefinitions = {
       boss: Boss
     }
 
+    type VacationPagination {
+      items: [Vacation]
+      pageNumber: Int
+      totalPages: Int
+      error: String
+    }
+
     input VacationInput{
       _id: ID
       daysQtd: Float!
@@ -41,6 +49,7 @@ const vacationDefinitions = {
       enjoyed: Boolean
       deferred: Boolean
     }
+
   `
 };
 

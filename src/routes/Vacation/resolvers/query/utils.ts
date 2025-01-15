@@ -15,11 +15,11 @@ const buildOptions = ({
   const worker = fromWorker || undefined;
   const options: VacationsQueryOptionsInterface = {};
   const periods = {
-    future: { startDate: { $gt: todayEndDate } },
-    past: { startDate: { $lt: todayStartDate } },
+    future: { startDate: { $gt: `${todayEndDate.toISOString()}` } },
+    past: { startDate: { $lt: todayStartDate.toISOString() } },
     present: {
-      endDate: { $gte: todayEndDate },
-      startDate: { $lte: todayEndDate }
+      endDate: { $lte: todayEndDate.toISOString() },
+      startDate: { $gte: todayStartDate.toISOString() }
     }
   };
 

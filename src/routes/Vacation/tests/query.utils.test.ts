@@ -16,19 +16,23 @@ describe("Query utils tests", () => {
     const response = buildOptions({ deferred: false });
     expect(response).to.deep.equals({ deferred: false });
   });
-  it("should return startDate in past when period prop equals 'past'", () => {
+  it("should return startDate less than today's start when period is 'past'", () => {
     const response = buildOptions({ period: "past" });
-    expect(response).to.deep.equals({ startDate: { $lt: todayStartDate } });
+    expect(response).to.deep.equals({
+      startDate: { $lt: todayStartDate.toISOString() }
+    });
   });
-  it("should return startDate in past when period prop equals 'future'", () => {
+  it("should return startDate more than today's end when period is 'future'", () => {
     const response = buildOptions({ period: "future" });
-    expect(response).to.deep.equals({ startDate: { $gt: todayEndDate } });
+    expect(response).to.deep.equals({
+      startDate: { $gt: todayEndDate.toISOString() }
+    });
   });
-  it("should return startDate in past when period prop equals 'present'", () => {
+  it("should return startDate(begin of today) and endDate(end of today) when period is present", () => {
     const response = buildOptions({ period: "present" });
     expect(response).to.deep.equals({
-      endDate: { $gte: todayEndDate },
-      startDate: { $lte: todayEndDate }
+      endDate: { $lte: todayEndDate.toISOString() },
+      startDate: { $gte: todayStartDate.toISOString() }
     });
   });
 });

@@ -31,16 +31,22 @@ describe("Vacation: integration", async () => {
   it("should list the vacations", async () => {
     vacationMock.mockResolvedValueOnce([vacationExample]);
     const { body }: any = await server.executeOperation({
-      query: vacationsQuery
+      query: vacationsQuery,
+      variables: { page: 1 }
     });
     expect(body.singleResult?.data).toHaveProperty("vacations");
-    expect(body.singleResult?.data.vacations).toEqual([
-      {
-        _id: vacationExample._id,
-        boss: { name: bossFixture.name },
-        worker: { name: vacationExample.worker.name }
-      }
-    ]);
+    expect(body.singleResult?.data.vacations).toEqual({
+      error: null,
+      items: [
+        {
+          _id: vacationExample._id,
+          boss: { name: bossFixture.name },
+          worker: { name: vacationExample.worker.name }
+        }
+      ],
+      pageNumber: 1,
+      totalPages: 1
+    });
   });
 
   it("should list the vacations from a specific worker", async () => {
@@ -49,13 +55,18 @@ describe("Vacation: integration", async () => {
       query: vacationsFromQuery
     });
     expect(body.singleResult?.data).toHaveProperty("vacations");
-    expect(body.singleResult?.data.vacations).toEqual([
-      {
-        _id: vacationExample._id,
-        boss: { name: bossFixture.name },
-        worker: { name: vacationExample.worker.name }
-      }
-    ]);
+    expect(body.singleResult?.data.vacations).toEqual({
+      error: null,
+      items: [
+        {
+          _id: vacationExample._id,
+          boss: { name: bossFixture.name },
+          worker: { name: vacationExample.worker.name }
+        }
+      ],
+      pageNumber: 1,
+      totalPages: 1
+    });
   });
 
   it("should list a vacation by id", async () => {

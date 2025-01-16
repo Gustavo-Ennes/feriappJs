@@ -35,6 +35,7 @@ const vacationDefinitions = {
       items: [Vacation]
       pageNumber: Int
       totalPages: Int
+      totalResults: Int
       error: String
     }
 

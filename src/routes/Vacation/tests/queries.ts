@@ -7,6 +7,7 @@ query($page: Int!){
   vacations(page: $page){
     pageNumber
     totalPages
+    totalResults
     items {
       worker{
         name
@@ -25,6 +26,7 @@ query{
   vacations(fromWorker: "${vacationDefaultObjectId}"){
     pageNumber
     totalPages
+    totalResults
     items {
       worker{
         name

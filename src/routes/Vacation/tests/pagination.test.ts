@@ -17,7 +17,7 @@ describe("Vacation: pagination", async () => {
     vi.clearAllMocks();
   });
 
-  it("should throw an error if page requested is beyond query results", async () => {
+  it("should return an error if page requested is beyond query results", async () => {
     const vacationQuantity = 100;
     const vacations = Array(vacationQuantity).fill(vacationExample);
 
@@ -31,6 +31,7 @@ describe("Vacation: pagination", async () => {
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 0);
     expect(body.singleResult?.data.vacations.items).to.be.empty;
     expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 0);
+    expect(body.singleResult?.data.vacations).toHaveProperty("totalResults", 0);
     expect(body.singleResult?.data.vacations).toHaveProperty("error");
   });
 
@@ -45,6 +46,7 @@ describe("Vacation: pagination", async () => {
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 1);
     expect(body.singleResult?.data.vacations.items).to.be.empty;
     expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 1);
+    expect(body.singleResult?.data.vacations).toHaveProperty("totalResults", 0);
     expect(body.singleResult?.data.vacations).to.have.property("error", null);
   });
 
@@ -66,6 +68,10 @@ describe("Vacation: pagination", async () => {
 
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 1);
     expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 1);
+    expect(body.singleResult?.data.vacations).toHaveProperty(
+      "totalResults",
+      vacationQuantity
+    );
     expect(body.singleResult?.data.vacations).to.have.property("error", null);
     expect(resultIds).to.deep.equals(vacationIds);
   });
@@ -82,7 +88,11 @@ describe("Vacation: pagination", async () => {
     });
 
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 10);
-    expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 10);
+    expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 10);vacationQuantity
+    expect(body.singleResult?.data.vacations).toHaveProperty(
+      "totalResults",
+      vacationQuantity
+    );
     expect(body.singleResult?.data.vacations.items).toHaveLength(1);
     expect(body.singleResult?.data.vacations.items[0]).toHaveProperty(
       "_id",

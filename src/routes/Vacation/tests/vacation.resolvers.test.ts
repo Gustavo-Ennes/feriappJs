@@ -45,7 +45,8 @@ describe("Vacation: integration", async () => {
         }
       ],
       pageNumber: 1,
-      totalPages: 1
+      totalPages: 1,
+      totalResults: 1
     });
   });
 
@@ -65,7 +66,8 @@ describe("Vacation: integration", async () => {
         }
       ],
       pageNumber: 1,
-      totalPages: 1
+      totalPages: 1,
+      totalResults: 1
     });
   });
 

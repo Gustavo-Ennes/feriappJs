@@ -6,7 +6,7 @@ const bossDefinitions = {
   `,
   queries: `
     boss(_id: ID!): Boss
-    bosses: [Boss]
+    bosses(onlyDirectors: Boolean): [Boss]
   `,
   types: `
     type Boss{

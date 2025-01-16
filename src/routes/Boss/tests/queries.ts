@@ -4,6 +4,7 @@ query{
     _id
     name
     role
+    isDirector
   }
 } 
 `;
@@ -14,6 +15,7 @@ query{
     _id
     name
     role
+    isDirector
   }
 }
 `;
@@ -24,6 +26,7 @@ mutation{
     name
     role
     _id
+    isDirector
   }
 }
 `;

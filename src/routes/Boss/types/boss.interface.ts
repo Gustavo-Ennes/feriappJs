@@ -6,3 +6,7 @@ export interface BossInterface {
   _id?: string | Types.ObjectId;
   isDirector?: boolean;
 }
+
+export type BossesResolverArgs = {
+  onlyDirectors?: boolean;
+};

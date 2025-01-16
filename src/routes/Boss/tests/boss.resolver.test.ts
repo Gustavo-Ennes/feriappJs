@@ -32,77 +32,77 @@ describe("Boss integration tests", async () => {
       .that.deep.equals([bossFixture]);
   });
 
-    it("Should get a boss by id", async () => {
-      bossMock.mockResolvedValueOnce(bossFixture);
+  it("Should get a boss by id", async () => {
+    bossMock.mockResolvedValueOnce(bossFixture);
 
-      const { body }: any = await server.executeOperation({
-        query: bossQuery
-      });
-
-      expect(body.singleResult?.data)
-        .to.have.property("boss")
-        .that.deep.equals(bossFixture);
+    const { body }: any = await server.executeOperation({
+      query: bossQuery
     });
 
-    it("Should return null if don't find a boss by pk", async () => {
-      bossMock.mockResolvedValueOnce(null);
+    expect(body.singleResult?.data)
+      .to.have.property("boss")
+      .that.deep.equals(bossFixture);
+  });
 
-      const { body }: any = await server.executeOperation({
-        query: bossQuery
-      });
+  it("Should return null if don't find a boss by pk", async () => {
+    bossMock.mockResolvedValueOnce(null);
 
-      expect(body.singleResult?.data)
-        .to.have.property("boss")
-        .that.deep.equals(null);
+    const { body }: any = await server.executeOperation({
+      query: bossQuery
     });
 
-    it("should create a boss", async () => {
-      bossMock.mockResolvedValueOnce(bossFixture);
+    expect(body.singleResult?.data)
+      .to.have.property("boss")
+      .that.deep.equals(null);
+  });
 
-      const { body }: any = await server.executeOperation({
-        query: createBossMutation
-      });
+  it("should create a boss", async () => {
+    bossMock.mockResolvedValueOnce(bossFixture);
 
-      expect(body.singleResult?.data)
-        .to.have.property("createBoss")
-        .that.deep.equals(bossFixture);
+    const { body }: any = await server.executeOperation({
+      query: createBossMutation
     });
 
-    it("should delete a boss", async () => {
-      bossMock.mockResolvedValueOnce(null);
+    expect(body.singleResult?.data)
+      .to.have.property("createBoss")
+      .that.deep.equals(bossFixture);
+  });
 
-      const { body }: any = await server.executeOperation({
-        query: deleteBossMutation
-      });
+  it("should delete a boss", async () => {
+    bossMock.mockResolvedValueOnce(null);
 
-      expect(body.singleResult?.data)
-        .to.have.property("deleteBoss")
-        .that.deep.equals(false);
+    const { body }: any = await server.executeOperation({
+      query: deleteBossMutation
     });
 
-    it("should update a boss", async () => {
-      bossMock
-        .mockResolvedValueOnce([bossFixture])
-        .mockResolvedValueOnce(undefined);
+    expect(body.singleResult?.data)
+      .to.have.property("deleteBoss")
+      .that.deep.equals(false);
+  });
 
-      const { body }: any = await server.executeOperation({
-        query: updateBossMutation
-      });
+  it("should update a boss", async () => {
+    bossMock
+      .mockResolvedValueOnce([bossFixture])
+      .mockResolvedValueOnce(undefined);
 
-      expect(body.singleResult?.data)
-        .to.have.property("updateBoss")
-        .that.deep.equals(true);
+    const { body }: any = await server.executeOperation({
+      query: updateBossMutation
     });
 
-    it("should do nothing if no such boss exists", async () => {
-      bossMock.mockResolvedValueOnce(null);
+    expect(body.singleResult?.data)
+      .to.have.property("updateBoss")
+      .that.deep.equals(true);
+  });
 
-      const { body }: any = await server.executeOperation({
-        query: updateBossMutation
-      });
+  it("should do nothing if no such boss exists", async () => {
+    bossMock.mockResolvedValueOnce(null);
 
-      expect(body.singleResult?.data)
-        .to.have.property("updateBoss")
-        .that.deep.equals(false);
+    const { body }: any = await server.executeOperation({
+      query: updateBossMutation
     });
+
+    expect(body.singleResult?.data)
+      .to.have.property("updateBoss")
+      .that.deep.equals(false);
+  });
 });

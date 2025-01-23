@@ -27,7 +27,7 @@ const createHeader = async (
   const headerBuffer = await fetch(header).then((res) => res.arrayBuffer());
   const pngHeaderImage = await document.embedPng(headerBuffer);
   const pngHeaderDims = pngHeaderImage.scale(0.75);
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
 
   page.drawImage(pngHeaderImage, {
     height: pngHeaderDims.height,
@@ -46,7 +46,7 @@ const createPageHeaderHorizontal = async (
   const headerBuffer = await fetch(header).then((res) => res.arrayBuffer());
   const pngHeaderImage = await document.embedPng(headerBuffer);
   const pngHeaderDims = pngHeaderImage.scale(0.65);
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
 
   page.drawImage(pngHeaderImage, {
     height: pngHeaderDims.height,
@@ -63,7 +63,7 @@ const createFooter = async (document: PDFDocument): Promise<void> => {
   const footerBuffer = await fetch(footer).then((res) => res.arrayBuffer());
   const pngFooterImage = await document.embedPng(footerBuffer);
   const pngFooterDims = pngFooterImage.scale(0.75);
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
 
   page.drawImage(pngFooterImage, {
     height: pngFooterDims.height,
@@ -83,7 +83,7 @@ const createTitle = async ({
 }: CreateTitleParams): Promise<void> => {
   const font = await document.embedFont(StandardFonts.HelveticaBold);
   const textWidth = font.widthOfTextAtSize(title.toUpperCase(), size);
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
   const { width } = page.getSize();
   const xCoordinate = width / 2 - textWidth / 2 + offset;
 
@@ -106,7 +106,7 @@ const createParagraph = async ({
   x = 50,
   y = height.actual
 }: CreateParagraphParams): Promise<void> => {
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
   const multiText = layoutMultilineText(text, {
     alignment: TextAlignment.Center,
     bounds: {
@@ -139,7 +139,7 @@ const createSign = async ({
   role,
   x = 300
 }: CreateSignParams): Promise<void> => {
-  const page = document.getPage(0);
+  const page = document.getPage(document.getPageCount() - 1);
   const matriculationText = `Matr.: ${matriculation}`;
   const regularFont = await document.embedFont(StandardFonts.Helvetica);
   const boldFont = await document.embedFont(StandardFonts.HelveticaBold);
@@ -182,13 +182,30 @@ const createDaysQtd = async ({
   height: Height;
   subtype?: string;
 }): Promise<void> => {
-  const page = document.getPage(0);
   const text = subtype
     ? `${translateVacationSubtype(subtype)}`
     : `${daysQtd} dias`;
+  const offset = 20;
+  drawTopRightText({ document, fontSize: 12, height, offset, text });
+};
+
+const drawTopRightText = ({
+  document,
+  fontSize = 11,
+  height,
+  offset = 0,
+  text
+}: {
+  height: Height;
+  document: PDFDocument;
+  text: string;
+  fontSize?: number;
+  offset?: number;
+}) => {
+  const page = document.getPage(document.getPageCount() - 1);
   page.drawText(text, {
-    size: 11,
-    x: subtype ? page.getWidth() - 100 : page.getWidth() - 80,
+    size: fontSize,
+    x: page.getWidth() - 100 - offset,
     y: height.actual + 10
   });
 };
@@ -335,5 +352,6 @@ export {
   createSign,
   createDaysQtd,
   createTable,
+  drawTopRightText,
   createPageHeaderHorizontal
 };

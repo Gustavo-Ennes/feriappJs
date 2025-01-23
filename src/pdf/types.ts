@@ -14,15 +14,22 @@ type Height = {
   actual: number;
   stepLine: () => void;
   stepHugeLine: () => void;
-  stepLines: (lineQtd: number, type?: string) => void
+  stepLines: (lineQtd: number, type?: string) => void;
   stepSmallLine: () => void;
 };
 
 type PdfFnParam = {
   document?: PDFDocument;
   instance?: VacationInterface | WorkerInterface | DepartmentInterface | null;
+  instances?:
+    | VacationInterface[]
+    | WorkerInterface[]
+    | DepartmentInterface[]
+    | null;
   reference?: Date;
   extraHours?: ExtraHourInterface[];
+  type?: string; // print type
+  period?: string;
 };
 
 type DrawCellFnParams = {

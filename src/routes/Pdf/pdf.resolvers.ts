@@ -4,7 +4,8 @@ import {
   reportPdfResolver,
   vacationPdfResolver,
   vehicleUsageReportResolver,
-  materialRequisitionResolver
+  materialRequisitionResolver,
+  relationPdfResolver
 } from "./resolvers";
 
 const pdfResolvers = {
@@ -12,9 +13,10 @@ const pdfResolvers = {
     authorizationPdf: authorizationPdfResolver,
     justificationPdf: justificationPdfResolver,
     materialRequisitionPdf: materialRequisitionResolver,
+    relationPdf: relationPdfResolver,
     reportPdf: reportPdfResolver,
     vacationPdf: vacationPdfResolver,
-    vehicleUsageReportPdf: vehicleUsageReportResolver
+    vehicleUsageReportPdf: vehicleUsageReportResolver,
   }
 };
 

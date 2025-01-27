@@ -1,3 +1,5 @@
+import { add } from "date-fns";
+
 import { verifyToken } from "../../../../firebase/firebase";
 import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
@@ -19,6 +21,10 @@ const updateVacationResolver = async (
   if (!vacationToUpdate) throw new Error("Vacation doesn't exists.");
 
   const { errorMessage, payload, worker } = await validationPipe(vacationInput);
+
+  vacationInput.startDate = add(new Date(vacationInput.startDate), {
+    hours: 3
+  });
 
   if (!errorMessage && worker && payload) {
     await Vacation.updateOne({ _id: vacationInput._id }, vacationInput);

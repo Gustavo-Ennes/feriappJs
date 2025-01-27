@@ -1,3 +1,5 @@
+import { add } from "date-fns";
+
 import { verifyToken } from "../../../../firebase/firebase";
 import { VacationInterface } from "../../types/vacation";
 import { Vacation } from "../../vacation.model";
@@ -13,6 +15,10 @@ const createVacationResolver = async (
   const { vacationInput } = args;
   const { boss, errorMessage, payload, worker } =
     await validationPipe(vacationInput);
+
+  vacationInput.startDate = add(new Date(vacationInput.startDate), {
+    hours: 3
+  });
 
   if (!errorMessage && worker && payload && boss) {
     const vacationInstance: VacationInterface =

@@ -1,4 +1,4 @@
-import { add, sub } from "date-fns";
+import { add, startOfDay } from "date-fns";
 import { andThen, pipe } from "ramda";
 
 import { Boss } from "../../../../Boss";
@@ -55,35 +55,30 @@ const validateNoConflict = async (
   pipePayload: PipeContent
 ): Promise<PipeContent> => {
   if (!pipePayload.errorMessage && pipePayload.worker) {
-    const vacationsStartingInRange = await Vacation.find({
+    const startDate = startOfDay(
+      new Date(pipePayload.payload.startDate).setHours(3)
+    );
+    const endDate = add(startDate, { days: pipePayload.payload.daysQtd });
+
+    const vacations = await Vacation.find({
       _id: { $ne: pipePayload.payload._id },
       deferred: true,
-      startDate: {
-        $gt: new Date(pipePayload.payload.startDate),
-        $lte: add(new Date(pipePayload.payload.startDate), {
-          days: pipePayload.payload.daysQtd,
-          seconds: -1
-        })
-      },
       worker: pipePayload.worker._id
     })
       .populate("worker")
       .exec();
-    const vacationsEndingInRange = await Vacation.find({
-      _id: { $ne: pipePayload.payload._id },
-      deferred: true,
-      startDate: {
-        $gte: sub(new Date(pipePayload.payload.startDate), {
-          days: pipePayload.payload.daysQtd
-        }),
-        $lt: [new Date(pipePayload.payload.startDate)]
-      },
-      worker: pipePayload.worker._id
-    })
-      .populate("worker")
-      .exec();
-    const vacations = [...vacationsEndingInRange, ...vacationsStartingInRange];
-    if (vacations.length) {
+
+    const conflictVacations = vacations.filter((vacation) => {
+      const loopVacationEndDate = add(vacation.startDate, {
+        days: vacation.daysQtd
+      });
+      return (
+        (vacation.startDate >= startDate && vacation.startDate <= endDate) ||
+        (vacation.startDate <= startDate && loopVacationEndDate >= startDate)
+      );
+    });
+    
+    if (conflictVacations.length) {
       pipePayload.errorMessage =
         "There are another vacation(s) within the given vacation payload period.";
     }

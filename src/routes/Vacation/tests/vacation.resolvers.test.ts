@@ -86,10 +86,7 @@ describe("Vacation: integration", async () => {
 
   it("should create a vacation", async () => {
     const query = createVacationMutation({});
-    vacationMock
-      .mockReturnValueOnce([])
-      .mockReturnValueOnce([])
-      .mockReturnValueOnce(vacationExample);
+    vacationMock.mockReturnValueOnce([]).mockReturnValueOnce(vacationExample);
     workerMock.mockReturnValueOnce(workerExample);
     bossMock.mockReturnValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
@@ -132,9 +129,12 @@ describe("Vacation: integration", async () => {
 
   it("shouldn't create a vacation if there's another worker's vacation in given period", async () => {
     const query = createVacationMutation({});
-    vacationMock
-      .mockReturnValueOnce([{ _id: "a9d9a7f8a0da9s0d90a09" }, { _id: "2" }])
-      .mockReturnValueOnce([]);
+    vacationMock.mockReturnValueOnce([
+      {
+        _id: "a9d9a7f8a0da9s0d90a09",
+        startDate: new Date("2023-02-23T17:35:31.308Z")
+      }
+    ]);
     workerMock.mockReturnValueOnce(workerExample);
     bossMock.mockResolvedValueOnce(bossFixture);
     const { body }: any = await server.executeOperation({
@@ -150,7 +150,6 @@ describe("Vacation: integration", async () => {
     workerMock.mockReturnValueOnce(workerExample);
     vacationMock
       .mockReturnValueOnce(vacationExample)
-      .mockReturnValueOnce([])
       .mockReturnValueOnce([])
       .mockReturnValueOnce(undefined);
     bossMock.mockResolvedValueOnce(bossFixture);
@@ -210,8 +209,9 @@ describe("Vacation: integration", async () => {
     workerMock.mockReturnValueOnce(workerExample);
     vacationMock
       .mockReturnValueOnce(vacationExample)
-      .mockReturnValueOnce([])
-      .mockReturnValueOnce([{}]);
+      .mockReturnValueOnce([
+        { _id: 1, startDate: new Date("2023-02-25T17:35:31.308Z") }
+      ]);
     bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({ ...vacationExample, daysQtd: 15 });
     const { body }: any = await server.executeOperation({

@@ -77,7 +77,7 @@ const validateNoConflict = async (
         (vacation.startDate <= startDate && loopVacationEndDate >= startDate)
       );
     });
-    
+
     if (conflictVacations.length) {
       pipePayload.errorMessage =
         "There are another vacation(s) within the given vacation payload period.";

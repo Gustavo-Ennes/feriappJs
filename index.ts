@@ -3,14 +3,18 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
+import "pino";
 dotenv.config();
 
 import { server, app } from "./app";
 import "./src/database/database";
 import "./src/firebase/firebase";
+import { getLogger } from "./src/logger/logger";
+
 try {
   (async () => {
     const httpServer = http.createServer(app);
+    const logger = getLogger("index");
     await server.start();
 
     app.use(
@@ -25,7 +29,9 @@ try {
     await new Promise<void>((resolve) =>
       httpServer.listen({ port: 8080 }, resolve)
     );
-    console.log(
+
+    logger.info(
+      { query: undefined },
       "🗺	 ~ Feriapp node graphql backend running at http://localhost:8080/ ~  🗺"
     );
   })();

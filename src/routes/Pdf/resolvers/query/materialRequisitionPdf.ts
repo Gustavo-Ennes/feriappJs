@@ -27,6 +27,7 @@ const materialRequisitionResolver = async (
       "justificatmaterialRequisitionResolverionPdfResolver"
     );
     logger.error(`Error getting material requisition pdf: ${message}`);
+    throw err;
   }
 };
 

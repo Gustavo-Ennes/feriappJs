@@ -16,7 +16,8 @@ const bossResolver = async (
     return bossInstance;
   } catch (error) {
     const logger = getLogger("bossResolver");
-    logger.error({ args }, `Erro getting a boss: ${(error as Error).message}`);
+    logger.error({ args }, `Error getting a boss: ${(error as Error).message}`);
+    throw error;
   }
 };
 

@@ -45,6 +45,7 @@ const processExtraHoursResolver = async (
       { args },
       `Erro at processing extra hours: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

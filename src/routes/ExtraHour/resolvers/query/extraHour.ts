@@ -21,6 +21,7 @@ const extraHourResolver = async (
       { args },
       `Erro getting extra hour: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

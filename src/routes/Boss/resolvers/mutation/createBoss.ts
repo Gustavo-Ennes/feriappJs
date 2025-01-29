@@ -18,8 +18,9 @@ const createBossResolver = async (
     const logger = getLogger("createBossResolver");
     logger.error(
       { args },
-      `Erro at creating boss: ${(error as Error).message}`
+      `Error at creating boss: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

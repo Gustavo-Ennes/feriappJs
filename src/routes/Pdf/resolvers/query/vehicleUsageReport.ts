@@ -24,6 +24,7 @@ const vehicleUsageReportResolver = async (
 
     const logger = getLogger("vehicleUsageReportResolver");
     logger.error(`Error vehicle usage pdf: ${message}`);
+    throw err;
   }
 };
 

@@ -21,6 +21,7 @@ const departmentResolver = async (
       { args },
       `Erro getting a department: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

@@ -34,6 +34,7 @@ const justificationPdfResolver = async (
       { args: { workerId } },
       `Error getting justification pdf: ${message}`
     );
+    throw err;
   }
 };
 

@@ -22,8 +22,9 @@ const deleteBossResolver = async (
     const logger = getLogger("deleteBossResolver");
     logger.error(
       { args },
-      `Erro at deleting boss: ${(error as Error).message}`
+      `Error at deleting boss: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

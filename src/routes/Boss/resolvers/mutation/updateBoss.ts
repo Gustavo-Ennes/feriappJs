@@ -25,8 +25,9 @@ const updateBossResolver = async (
     const logger = getLogger("updateBossResolver");
     logger.error(
       { args },
-      `Erro at updating boss: ${(error as Error).message}`
+      `Error at updating boss: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

@@ -38,7 +38,8 @@ const relationPdfResolver = async (
     if (err instanceof Error) message = err.message;
 
     const logger = getLogger("relationPdfResolver");
-    logger.error(`Error getting relation pdf: ${message}`);
+    logger.error(`Erro getting relation pdf: ${message}`);
+    throw err;
   }
 };
 

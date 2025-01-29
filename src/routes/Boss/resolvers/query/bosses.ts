@@ -9,24 +9,18 @@ const bossesResolver = async (
   context: { token?: string }
 ): Promise<BossInterface[] | void> => {
   try {
-    try {
-      await verifyToken(context.token || "");
-      const { onlyDirectors } = args;
+    await verifyToken(context.token || "");
+    const { onlyDirectors } = args;
 
-      const bossInstances: BossInterface[] = await Boss.find({
-        ...(onlyDirectors !== undefined && { isDirector: onlyDirectors })
-      });
+    const bossInstances: BossInterface[] = await Boss.find({
+      ...(onlyDirectors !== undefined && { isDirector: onlyDirectors })
+    });
 
-      return bossInstances;
-    } catch (error) {
-      const logger = getLogger("bossesResolver");
-      logger.error(
-        { args },
-        `Erro getting bosses: ${(error as Error).message}`
-      );
-    }
+    return bossInstances;
   } catch (error) {
-    console.log("🚀 ~ error:", error);
+    const logger = getLogger("bossesResolver");
+    logger.error({ args }, `Error getting bosses: ${(error as Error).message}`);
+    throw error;
   }
 };
 

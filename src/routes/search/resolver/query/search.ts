@@ -48,6 +48,7 @@ const searchResolver = async (
       { args },
       `Erro returning search results: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

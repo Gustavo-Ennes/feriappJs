@@ -25,6 +25,7 @@ const deleteDepartmentResolver = async (
       { args },
       `Erro at deleting department: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

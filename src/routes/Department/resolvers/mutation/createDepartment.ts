@@ -21,6 +21,7 @@ const createDepartmentResolver = async (
       { args },
       `Erro at creating department: ${(error as Error).message}`
     );
+    throw error;
   }
 };
 

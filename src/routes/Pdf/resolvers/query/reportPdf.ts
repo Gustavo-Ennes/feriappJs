@@ -72,6 +72,7 @@ const reportPdfResolver = async (
 
     const logger = getLogger("reportPdfResolver");
     logger.error(`Error getting report pdf: ${message}`);
+    throw err;
   }
 };
 

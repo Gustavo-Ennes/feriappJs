@@ -32,6 +32,7 @@ const vacationPdfResolver = async (
 
     const logger = getLogger("vacationPdfResolver");
     logger.error(`Error vacation pdf: ${message}`);
+    throw err;
   }
 };
 

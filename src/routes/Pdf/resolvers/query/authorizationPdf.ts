@@ -37,6 +37,7 @@ const authorizationPdfResolver = async (
       { args: { reference, workerId } },
       `Error getting authorization pdf: ${message}`
     );
+    throw err;
   }
 };
 

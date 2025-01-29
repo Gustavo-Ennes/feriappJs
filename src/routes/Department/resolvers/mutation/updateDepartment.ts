@@ -24,7 +24,7 @@ const updateDepartmentResolver = async (
     const logger = getLogger("updateDepartmentResolver");
     logger.error(
       { args },
-      `Erro at updating department: ${(error as Error).message}`
+      `Error at updating department: ${(error as Error).message}`
     );
     throw error;
   }

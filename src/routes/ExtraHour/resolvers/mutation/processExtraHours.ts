@@ -43,7 +43,7 @@ const processExtraHoursResolver = async (
     const logger = getLogger("processExtraHoursResolver");
     logger.error(
       { args },
-      `Erro at processing extra hours: ${(error as Error).message}`
+      `Error at processing extra hours: ${(error as Error).message}`
     );
     throw error;
   }

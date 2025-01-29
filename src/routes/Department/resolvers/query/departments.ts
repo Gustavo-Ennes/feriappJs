@@ -15,7 +15,7 @@ const departmentsResolver = async (
     return departmentInstances;
   } catch (error) {
     const logger = getLogger("departmentsResolver");
-    logger.error({}, `Erro getting departments: ${(error as Error).message}`);
+    logger.error({}, `Error getting departments: ${(error as Error).message}`);
     throw error;
   }
 };

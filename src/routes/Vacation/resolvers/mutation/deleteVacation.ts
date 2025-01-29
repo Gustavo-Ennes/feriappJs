@@ -26,7 +26,7 @@ const deleteVacationResolver = async (
     const logger = getLogger("deleteVacationResolver");
     logger.error(
       { args },
-      `Erro at deleting vacation: ${(error as Error).message}`
+      `Error at deleting vacation: ${(error as Error).message}`
     );
     throw error;
   }

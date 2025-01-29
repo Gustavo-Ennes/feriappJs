@@ -1,4 +1,5 @@
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { Department } from "../../../Department";
 import { DepartmentInterface } from "../../../Department/types/department";
 import { WorkerInterface } from "../../types/worker";
@@ -10,19 +11,29 @@ const createWorkerResolver = async (
   args: { workerInput: WorkerInterface },
   context: { token?: string }
 ): Promise<WorkerInterface> => {
-  await verifyToken(context.token || "");
+  try {
+    await verifyToken(context.token || "");
 
-  const { workerInput } = args;
-  const departmentInstance: DepartmentInterface | null =
-    await Department.findById(workerInput.department);
-  if (!departmentInstance) throw new Error("not found: departmentId not found");
+    const { workerInput } = args;
+    const departmentInstance: DepartmentInterface | null =
+      await Department.findById(workerInput.department);
+    if (!departmentInstance)
+      throw new Error("not found: departmentId not found");
 
-  const { error, success } = await validateMatriculationNumbers(workerInput);
+    const { error, success } = await validateMatriculationNumbers(workerInput);
 
-  if (!success) throw new Error(`validation error: ${error}`);
+    if (!success) throw new Error(`validation error: ${error}`);
 
-  const workerInstance: WorkerInterface = await Worker.create(workerInput);
-  return workerInstance;
+    const workerInstance: WorkerInterface = await Worker.create(workerInput);
+    return workerInstance;
+  } catch (error) {
+    const logger = getLogger("createWorkerResolver");
+    logger.error(
+      { args },
+      `Error at creating worker: ${(error as Error).message}`
+    );
+    throw error;
+  }
 };
 
 export { createWorkerResolver };

@@ -23,7 +23,7 @@ const deleteDepartmentResolver = async (
     const logger = getLogger("deleteDepartmentResolver");
     logger.error(
       { args },
-      `Erro at deleting department: ${(error as Error).message}`
+      `Error at deleting department: ${(error as Error).message}`
     );
     throw error;
   }

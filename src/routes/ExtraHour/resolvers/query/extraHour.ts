@@ -19,7 +19,7 @@ const extraHourResolver = async (
     const logger = getLogger("extraHourResolver");
     logger.error(
       { args },
-      `Erro getting extra hour: ${(error as Error).message}`
+      `Error getting extra hour: ${(error as Error).message}`
     );
     throw error;
   }

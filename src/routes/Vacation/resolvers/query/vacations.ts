@@ -62,7 +62,7 @@ const vacationsResolver = async (
     const logger = getLogger("vacationsResolver");
     logger.error(
       { args },
-      `Erro getting vacations: ${(error as Error).message}`
+      `Error getting vacations: ${(error as Error).message}`
     );
     throw error;
   }

@@ -19,7 +19,7 @@ const createDepartmentResolver = async (
     const logger = getLogger("createDepartmentResolver");
     logger.error(
       { args },
-      `Erro at creating department: ${(error as Error).message}`
+      `Error at creating department: ${(error as Error).message}`
     );
     throw error;
   }

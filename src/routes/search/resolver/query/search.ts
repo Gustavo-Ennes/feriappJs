@@ -46,7 +46,7 @@ const searchResolver = async (
     const logger = getLogger("searchResolver");
     logger.error(
       { args },
-      `Erro returning search results: ${(error as Error).message}`
+      `Error returning search results: ${(error as Error).message}`
     );
     throw error;
   }

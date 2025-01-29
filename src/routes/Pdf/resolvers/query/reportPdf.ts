@@ -2,6 +2,7 @@ import { getDaysInMonth, set } from "date-fns";
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { render as reportRender } from "../../../../pdf/report/render";
 import { Department } from "../../../Department";
 import { DepartmentInterface } from "../../../Department/types/department";
@@ -14,9 +15,9 @@ const reportPdfResolver = async (
   { departmentId, reference }: PdfResolverArgsInterface,
   context: { token?: string }
 ): Promise<string | void> => {
-  await verifyToken(context.token || "");
-
   try {
+    await verifyToken(context.token || "");
+
     const pdfDoc = await PDFDocument.create();
     const referenceDate = new Date(reference as string);
     const firstReferenceMonthDay = set(referenceDate, {
@@ -66,9 +67,11 @@ const reportPdfResolver = async (
     return Buffer.from(pdfBytes).toString("base64");
   } catch (err: unknown) {
     let message = "Unknown Error";
+
     if (err instanceof Error) message = err.message;
-    console.log("Error in authorization pdf making: ", message);
-    console.log("Error in report pdf making: ", message);
+
+    const logger = getLogger("reportPdfResolver");
+    logger.error(`Error getting report pdf: ${message}`);
   }
 };
 

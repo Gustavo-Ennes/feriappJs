@@ -1,6 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { render as vehicleUsageReportRender } from "../../../../pdf/vehicleUsageReport/render";
 
 const vehicleUsageReportResolver = async (
@@ -8,9 +9,9 @@ const vehicleUsageReportResolver = async (
   __: unknown,
   context: { token?: string }
 ): Promise<string | void> => {
-  await verifyToken(context.token || "");
-
   try {
+    await verifyToken(context.token || "");
+
     const pdfDoc = await PDFDocument.create();
 
     await vehicleUsageReportRender({ document: pdfDoc });
@@ -20,7 +21,9 @@ const vehicleUsageReportResolver = async (
   } catch (err: unknown) {
     let message = "Unknown Error";
     if (err instanceof Error) message = err.message;
-    console.log("Error in vehicle usage report pdf making: ", message);
+
+    const logger = getLogger("vehicleUsageReportResolver");
+    logger.error(`Error vehicle usage pdf: ${message}`);
   }
 };
 

@@ -1,6 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { render as materialRequisitionRender } from "../../../../pdf/materialRequisition/render";
 
 const materialRequisitionResolver = async (
@@ -8,9 +9,9 @@ const materialRequisitionResolver = async (
   __: unknown,
   context: { token?: string }
 ): Promise<string | void> => {
-  await verifyToken(context.token || "");
-
   try {
+    await verifyToken(context.token || "");
+
     const pdfDoc = await PDFDocument.create();
 
     await materialRequisitionRender({ document: pdfDoc });
@@ -19,8 +20,13 @@ const materialRequisitionResolver = async (
     return Buffer.from(pdfBytes).toString("base64");
   } catch (err: unknown) {
     let message = "Unknown Error";
+
     if (err instanceof Error) message = err.message;
-    console.log("Error in material requisition pdf making: ", message);
+
+    const logger = getLogger(
+      "justificatmaterialRequisitionResolverionPdfResolver"
+    );
+    logger.error(`Error getting material requisition pdf: ${message}`);
   }
 };
 

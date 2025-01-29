@@ -1,6 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { render as vacationRender } from "../../../../pdf/vacation/render";
 import { Vacation } from "../../../Vacation/vacation.model";
 import { PdfResolverArgsInterface } from "../../types";
@@ -10,9 +11,9 @@ const vacationPdfResolver = async (
   { vacationId }: PdfResolverArgsInterface,
   context: { token?: string }
 ): Promise<string | void> => {
-  await verifyToken(context.token || "");
-
   try {
+    await verifyToken(context.token || "");
+
     const pdfDoc = await PDFDocument.create();
     const instance = await Vacation.findById(vacationId)
       .populate("worker")
@@ -26,9 +27,11 @@ const vacationPdfResolver = async (
     return Buffer.from(pdfBytes).toString("base64");
   } catch (err: unknown) {
     let message = "Unknown Error";
+
     if (err instanceof Error) message = err.message;
-    console.log("Error in authorization pdf making: ", message);
-    console.log("Error in vacation pdf making: ", message);
+
+    const logger = getLogger("vacationPdfResolver");
+    logger.error(`Error vacation pdf: ${message}`);
   }
 };
 

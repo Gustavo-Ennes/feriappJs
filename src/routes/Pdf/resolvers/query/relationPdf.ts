@@ -1,6 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 
 import { verifyToken } from "../../../../firebase/firebase";
+import { getLogger } from "../../../../logger/logger";
 import { render as relationRender } from "../../../../pdf/relation/render";
 import { Vacation } from "../../../Vacation";
 import { buildOptions } from "../../../Vacation/resolvers/query/utils";
@@ -11,14 +12,14 @@ const relationPdfResolver = async (
   { period, type }: PdfResolverArgsInterface,
   context: { token?: string }
 ): Promise<string | void> => {
-  await verifyToken(context.token || "");
-
-  const options = buildOptions({
-    period,
-    type
-  });
-
   try {
+    await verifyToken(context.token || "");
+
+    const options = buildOptions({
+      period,
+      type
+    });
+
     const pdfDoc = await PDFDocument.create();
     const instances = await Vacation.find(options)
       .populate("worker")
@@ -35,7 +36,9 @@ const relationPdfResolver = async (
     let message = "Unknown Error";
 
     if (err instanceof Error) message = err.message;
-    console.log(`Error in relation(${type}) pdf making: `, message);
+
+    const logger = getLogger("relationPdfResolver");
+    logger.error(`Error getting relation pdf: ${message}`);
   }
 };
 

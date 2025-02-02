@@ -22,29 +22,28 @@ const vacationsResolver = async (
       totalPages: 0,
       totalResults: 0
     };
+    await verifyToken(context.token || "");
 
-    try {
-      await verifyToken(context.token || "");
+    const options = buildOptions(args);
+    const ITEMS_PER_PAGE = 20;
+    const { page = 1 } = args;
 
-      const options = buildOptions(args);
-      const ITEMS_PER_PAGE = 20;
-      const { page = 1 } = args;
+    const vacationInstances: VacationInterface[] = await Vacation.find(options)
+      .populate("worker")
+      .populate("boss")
+      .exec();
 
-      const vacationInstances: VacationInterface[] = await Vacation.find(
-        options
-      )
-        .populate("worker")
-        .populate("boss")
-        .exec();
-      const sortedVacationInstances: VacationInterface[] =
-        vacationInstances.sort((a, b) => b.startDate - a.startDate);
+    const sortedVacationInstances: VacationInterface[] = vacationInstances.sort(
+      (a, b) => b.startDate - a.startDate
+    );
 
-      const totalPages = Math.ceil(
-        sortedVacationInstances.length / ITEMS_PER_PAGE
-      );
-      if (page > totalPages && totalPages > 0)
-        throw new Error("This page doesn't exists in this query results.");
+    const totalPages = Math.ceil(
+      sortedVacationInstances.length / ITEMS_PER_PAGE
+    );
+    if (page > totalPages && totalPages > 0)
+      response.error = "This page doesn't exists in this query results.";
 
+    if (!response.error) {
       response.totalResults = sortedVacationInstances.length;
       response.pageNumber = page;
       response.totalPages = totalPages || page; //to empty pages(totalPages === 0);
@@ -52,20 +51,14 @@ const vacationsResolver = async (
         page * ITEMS_PER_PAGE - ITEMS_PER_PAGE,
         page * ITEMS_PER_PAGE
       );
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Erro desconhecido";
-      console.log("🚀 ~ error.message:", message);
-      response.error = message;
     }
+
     return response;
-  } catch (error) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Erro desconhecido";
     const logger = getLogger("vacationsResolver");
-    logger.error(
-      { args },
-      `Error getting vacations: ${(error as Error).message}`
-    );
-    throw error;
+    logger.error({ args }, `Error getting vacations: ${message}`);
+    throw err;
   }
 };
-
 export { vacationsResolver };

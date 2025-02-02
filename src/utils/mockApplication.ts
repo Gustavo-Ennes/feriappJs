@@ -65,6 +65,12 @@ vi.doMock("../firebase/firebase", () => ({
   firebaseApp: vi.fn(),
   verifyToken: verifyTokenMock
 }));
+vi.doMock("../logger/logger", () => ({
+  getLogger: () => ({
+    error: vi.fn(),
+    info: vi.fn(),
+  })
+}));
 
 export {
   vacationMock,

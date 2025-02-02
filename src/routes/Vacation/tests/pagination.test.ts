@@ -27,6 +27,10 @@ describe("Vacation: pagination", async () => {
       query: vacationsQuery,
       variables: { page: 11 }
     });
+    console.log(
+      "🚀 ~ it ~ body.singleResult:",
+      JSON.stringify(body.singleResult, null, 2)
+    );
 
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 0);
     expect(body.singleResult?.data.vacations.items).to.be.empty;
@@ -88,7 +92,8 @@ describe("Vacation: pagination", async () => {
     });
 
     expect(body.singleResult?.data.vacations).toHaveProperty("totalPages", 10);
-    expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 10);vacationQuantity
+    expect(body.singleResult?.data.vacations).toHaveProperty("pageNumber", 10);
+    vacationQuantity;
     expect(body.singleResult?.data.vacations).toHaveProperty(
       "totalResults",
       vacationQuantity

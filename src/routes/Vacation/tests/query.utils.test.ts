@@ -1,7 +1,7 @@
+import { endOfToday, startOfToday } from "date-fns";
 import { describe, expect, it } from "vitest";
 
 import { buildOptions } from "../resolvers/query/utils";
-import { todayEndDate, todayStartDate } from "../vacation.utils";
 
 describe("Query utils tests", () => {
   it("should return a object with worker prop", () => {
@@ -19,20 +19,22 @@ describe("Query utils tests", () => {
   it("should return startDate less than today's start when period is 'past'", () => {
     const response = buildOptions({ period: "past" });
     expect(response).to.deep.equals({
-      startDate: { $lt: todayStartDate.toISOString() }
+      endDate: { $lt: startOfToday().toISOString() }
     });
   });
   it("should return startDate more than today's end when period is 'future'", () => {
     const response = buildOptions({ period: "future" });
     expect(response).to.deep.equals({
-      startDate: { $gt: todayEndDate.toISOString() }
+      startDate: { $gt: endOfToday().toISOString() }
     });
   });
   it("should return startDate(begin of today) and endDate(end of today) when period is present", () => {
     const response = buildOptions({ period: "present" });
     expect(response).to.deep.equals({
-      endDate: { $lte: todayEndDate.toISOString() },
-      startDate: { $gte: todayStartDate.toISOString() }
+      $and: [
+        { startDate: { $lte: endOfToday().toISOString() } },
+        { endDate: { $gte: startOfToday().toISOString() } }
+      ]
     });
   });
 });

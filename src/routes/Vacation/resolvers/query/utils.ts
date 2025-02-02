@@ -1,10 +1,10 @@
+import { endOfToday, startOfToday } from "date-fns";
 import { mergeAll } from "ramda";
 
 import {
   VacationsQueryOptionsInterface,
   VacationsResolverArgsInterface
 } from "../../types/vacation";
-import { todayEndDate, todayStartDate } from "../../vacation.utils";
 
 const buildOptions = ({
   deferred,
@@ -15,11 +15,13 @@ const buildOptions = ({
   const worker = fromWorker || undefined;
   const options: VacationsQueryOptionsInterface = {};
   const periods = {
-    future: { startDate: { $gt: `${todayEndDate.toISOString()}` } },
-    past: { startDate: { $lt: todayStartDate.toISOString() } },
+    future: { startDate: { $gt: endOfToday().toISOString() } },
+    past: { endDate: { $lt: startOfToday().toISOString() } },
     present: {
-      endDate: { $lte: todayEndDate.toISOString() },
-      startDate: { $gte: todayStartDate.toISOString() }
+      $and: [
+        { startDate: { $lte: endOfToday().toISOString() } },
+        { endDate: { $gte: startOfToday().toISOString() } }
+      ]
     }
   };
 

@@ -13,6 +13,7 @@ const bossesResolver = async (
     const { onlyDirectors } = args;
 
     const bossInstances: BossInterface[] = await Boss.find({
+      isActive: true,
       ...(onlyDirectors !== undefined && { isDirector: onlyDirectors })
     });
 

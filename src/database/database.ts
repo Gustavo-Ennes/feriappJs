@@ -6,11 +6,12 @@ async function initializeDatabase() {
   const logger = getLogger("database");
   try {
     await connect(
-      (process.env.NODE_ENV === "test"
+      (process.env.NODE_ENV === "dev"
         ? process.env.ATLAS_URL_TEST
         : process.env.ATLAS_URL) ?? ""
     );
 
+    logger.info(`NODE_ENV = ${process.env.NODE_ENV}`);
     logger.info("✅ Mongo connected");
 
     const collections = await connection.db.listCollections().toArray();

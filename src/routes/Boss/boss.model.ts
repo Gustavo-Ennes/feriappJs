@@ -4,6 +4,11 @@ import { BossInterface } from "./types/boss.interface";
 
 const BossSchema = new Schema<BossInterface>(
   {
+    isActive: {
+      default: true,
+      required: true,
+      type: Boolean
+    },
     isDirector: {
       default: false,
       type: Boolean
@@ -16,7 +21,7 @@ const BossSchema = new Schema<BossInterface>(
     role: {
       required: true,
       type: String
-    },
+    }
   },
   {
     timestamps: true

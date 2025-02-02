@@ -6,7 +6,7 @@ const mongoTarget: TransportTargetOptions = {
     capped: true,
     collection: "logs",
     uri:
-      (process.env.NODE_ENV === "test"
+      (process.env.NODE_ENV === "dev"
         ? process.env.ATLAS_URL_TEST
         : process.env.ATLAS_URL) ?? ""
   },

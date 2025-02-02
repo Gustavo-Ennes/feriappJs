@@ -5,6 +5,7 @@ export interface BossInterface {
   role: string;
   _id?: string | Types.ObjectId;
   isDirector?: boolean;
+  isActive?: boolean;
 }
 
 export type BossesResolverArgs = {

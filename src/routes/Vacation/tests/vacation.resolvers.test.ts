@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { add } from "date-fns";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import {
@@ -129,10 +130,13 @@ describe("Vacation: integration", async () => {
 
   it("shouldn't create a vacation if there's another worker's vacation in given period", async () => {
     const query = createVacationMutation({});
+    const startDate = new Date("2023-02-23T17:35:31.308Z");
     vacationMock.mockReturnValueOnce([
       {
         _id: "a9d9a7f8a0da9s0d90a09",
-        startDate: new Date("2023-02-23T17:35:31.308Z")
+        endDate: add(startDate, { days: 15 }),
+        startDate,
+        worker: workerExample
       }
     ]);
     workerMock.mockReturnValueOnce(workerExample);
@@ -141,9 +145,12 @@ describe("Vacation: integration", async () => {
       query
     });
     expect(body.singleResult?.data).toHaveProperty("createVacation");
-    expect(body.singleResult?.errors?.[0].message).toEqual(
-      "There are another vacation(s) within the given vacation payload period."
-    );
+    expect(body.singleResult?.errors?.[0].message)
+      .toEqual(`This worker have a vacation in the same period of the requested vacation: 
+id: a9d9a7f8a0da9s0d90a09
+worker: 6414697eb7d80144bcc86171 (Joseph Climber)
+startDate: 23/02/2023
+endDate: 10/03/2023`);
   });
 
   it("should update a vacation", async () => {
@@ -206,21 +213,38 @@ describe("Vacation: integration", async () => {
   });
 
   it("shouldn't update a vacation if there's another vacation in the given time period", async () => {
+    const startDate = new Date("2023-02-25T17:35:31.308Z");
     workerMock.mockReturnValueOnce(workerExample);
-    vacationMock
-      .mockReturnValueOnce(vacationExample)
-      .mockReturnValueOnce([
-        { _id: 1, startDate: new Date("2023-02-25T17:35:31.308Z") }
-      ]);
+    vacationMock.mockReturnValueOnce(vacationExample).mockReturnValueOnce([
+      {
+        _id: 1,
+        endDate: add(startDate, { days: 15 }),
+        startDate,
+        worker: workerExample
+      },
+      {
+        _id: 2,
+        endDate: add(startDate, { days: 15 }),
+        startDate,
+        worker: workerExample
+      }
+    ]);
     bossMock.mockResolvedValueOnce(bossFixture);
     const query = updateVacationMutation({ ...vacationExample, daysQtd: 15 });
     const { body }: any = await server.executeOperation({
       query
     });
     expect(body.singleResult?.data).toHaveProperty("updateVacation");
-    expect(body.singleResult?.errors?.[0].message).toEqual(
-      "There are another vacation(s) within the given vacation payload period."
-    );
+    expect(body.singleResult?.errors?.[0].message)
+      .toEqual(`This worker have vacations in the same period of the requested vacation: 
+id: 1
+worker: 6414697eb7d80144bcc86171 (Joseph Climber)
+startDate: 25/02/2023
+endDate: 12/03/2023
+id: 2
+worker: 6414697eb7d80144bcc86171 (Joseph Climber)
+startDate: 25/02/2023
+endDate: 12/03/2023`);
   });
 
   it("should delete a vacation", async () => {

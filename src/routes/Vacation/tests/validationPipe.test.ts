@@ -1,3 +1,4 @@
+import { add } from "date-fns";
 import { clone } from "ramda";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
@@ -232,18 +233,28 @@ describe("Vacation: Validation pipe", () => {
   });
 
   it("shouldn't allow if there's another vacation in given time period", async () => {
+    const startDate = new Date("2023-02-25T17:35:31.308Z");
     vacationMock.mockResolvedValueOnce([
-      { _id: 666, startDate: new Date("2023-02-25T17:35:31.308Z") }
+      {
+        _id: 666,
+        endDate: add(startDate, { days: 15 }),
+        startDate,
+        worker: workerExample
+      }
     ]);
     workerMock.mockResolvedValueOnce(workerExample);
     bossMock.mockResolvedValueOnce(bossFixture);
+
     const { errorMessage, payload } = await validationPipe(
       vacationExamplePayload
     );
 
     expect(payload).not.to.be.empty;
-    expect(errorMessage).to.be.equals(
-      "There are another vacation(s) within the given vacation payload period."
-    ); // verificar esse!
+    expect(errorMessage).to.be
+      .equals(`This worker have a vacation in the same period of the requested vacation: 
+id: 666
+worker: 6414697eb7d80144bcc86171 (Joseph Climber)
+startDate: 25/02/2023
+endDate: 12/03/2023`);
   });
 });

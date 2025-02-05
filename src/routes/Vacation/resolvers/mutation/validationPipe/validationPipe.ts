@@ -1,4 +1,4 @@
-import { add, startOfDay } from "date-fns";
+import { add, format, startOfDay } from "date-fns";
 import { andThen, pipe } from "ramda";
 
 import { Boss } from "../../../../Boss";
@@ -79,8 +79,20 @@ const validateNoConflict = async (
     });
 
     if (conflictVacations.length) {
-      pipePayload.errorMessage =
-        "There are another vacation(s) within the given vacation payload period.";
+      let errorMessage =
+        "This worker have " +
+        `${conflictVacations.length == 1 ? "a vacation" : "vacations"} ` +
+        "in the same period of the requested vacation: ";
+
+      conflictVacations.forEach((vacation) => {
+        errorMessage = errorMessage.concat(
+          `\nid: ${vacation._id}\n` +
+            `worker: ${(vacation.worker as WorkerInterface)?._id} (${(vacation.worker as WorkerInterface)?.name})\n` +
+            `startDate: ${format(vacation.startDate, "dd/MM/yyyy")}\n` +
+            `endDate: ${format(vacation.endDate, "dd/MM/yyyy")}`
+        );
+      });
+      pipePayload.errorMessage = errorMessage;
     }
   }
   return pipePayload;

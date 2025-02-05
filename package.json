@@ -14,7 +14,6 @@
   "author": "Gustavo Ennes",
   "dependencies": {
     "@apollo/server": "^4.3.2",
-    "@types/cors": "^2.8.13",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
@@ -31,16 +30,16 @@
     "ramda": "^0.28.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",
-    "@types/pino": "^7.0.5",
     "@types/ramda": "^0.28.25",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "concurrently": "^7.6.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-perfectionist": "^2.5.0",
+    "eslint": "^9.19.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-perfectionist": "^4.8",
     "nodemon": "^2.0.20",
     "prettier": "^3.2.5",
     "typescript": "^4.9.5",
@@ -57,6 +56,6 @@
   "homepage": "https://github.com/Gustavo-Ennes/feriappJs#readme",
   "description": "",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   }
 }

@@ -23,18 +23,18 @@ const createHeader = async (
   y?: number
 ): Promise<void> => {
   const header =
-    "https://storage.googleapis.com/feriappjs/feriapp-pdf-header.png";
+    "https://storage.googleapis.com/feriappjs/novo-header-pref.png";
   const headerBuffer = await fetch(header).then((res) => res.arrayBuffer());
   const pngHeaderImage = await document.embedPng(headerBuffer);
-  const pngHeaderDims = pngHeaderImage.scale(0.75);
+  const pngHeaderDims = pngHeaderImage.scale(0.70);
   const page = document.getPage(document.getPageCount() - 1);
 
   page.drawImage(pngHeaderImage, {
     height: pngHeaderDims.height,
     opacity: 1,
     width: pngHeaderDims.width,
-    x: 20,
-    y: y ?? page.getHeight() - 55
+    x: 60,
+    y: y ?? page.getHeight() - 60
   });
 };
 
@@ -42,7 +42,7 @@ const createPageHeaderHorizontal = async (
   document: PDFDocument
 ): Promise<void> => {
   const header =
-    "https://storage.googleapis.com/feriappjs/feriapp-pdf-header.png";
+    "https://storage.googleapis.com/feriappjs/novo-header-pref.png";
   const headerBuffer = await fetch(header).then((res) => res.arrayBuffer());
   const pngHeaderImage = await document.embedPng(headerBuffer);
   const pngHeaderDims = pngHeaderImage.scale(0.65);
@@ -59,18 +59,18 @@ const createPageHeaderHorizontal = async (
 
 const createFooter = async (document: PDFDocument): Promise<void> => {
   const footer =
-    "https://storage.googleapis.com/feriappjs/feriapp-pdf-footer.png";
+    "https://storage.googleapis.com/feriappjs/novo-footer-pref.png";
   const footerBuffer = await fetch(footer).then((res) => res.arrayBuffer());
   const pngFooterImage = await document.embedPng(footerBuffer);
-  const pngFooterDims = pngFooterImage.scale(0.75);
+  const pngFooterDims = pngFooterImage.scale(0.70);
   const page = document.getPage(document.getPageCount() - 1);
 
   page.drawImage(pngFooterImage, {
     height: pngFooterDims.height,
     opacity: 1,
     width: pngFooterDims.width,
-    x: 20,
-    y: 15
+    x: 70,
+    y: 10
   });
 };
 

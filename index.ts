@@ -16,10 +16,30 @@ try {
     const httpServer = http.createServer(app);
     const logger = getLogger("index");
     await server.start();
+    const allowedOrigins = [
+      "https://feriapp.ennes.dev",
+      "https://dev.feriapp.ennes.dev",
+      "http://localhost:5173"
+    ];
+
+    const corsOptions: cors.CorsOptions = {
+      origin: (
+        origin: string | undefined,
+        callback: (err: Error | null, allow?: boolean) => void
+      ) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`Not allowed by CORS: ${origin}`));
+        }
+      },
+      methods: ["GET", "POST", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization", "token"]
+    };
 
     app.use(
       "/graphql",
-      cors<cors.CorsRequest>(),
+      cors<cors.CorsRequest>(corsOptions),
       bodyParser.json(),
       expressMiddleware(server, {
         context: async ({ req }) => ({ token: req.headers.token })

@@ -91,6 +91,8 @@ out
 .nuxt
 dist
 dist/
+api
+api/
 
 # Gatsby files
 .cache/
@@ -132,3 +134,4 @@ dist/
 
 service-account-file.json
 app.yaml
+.vercel

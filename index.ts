@@ -19,7 +19,9 @@ try {
     const allowedOrigins = [
       "https://feriapp.ennes.dev",
       "https://dev.feriapp.ennes.dev",
-      "http://localhost:5173"
+      "https://api.feriapp.ennes.dev",
+      "http://localhost:5173",
+      "http://localhost:8080"
     ];
 
     const corsOptions: cors.CorsOptions = {

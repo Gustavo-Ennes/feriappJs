@@ -19,6 +19,7 @@ try {
     const allowedOrigins = [
       "https://feriapp.ennes.dev",
       "https://dev.feriapp.ennes.dev",
+      "https://old.feriapp.ennes.dev",
       "https://api.feriapp.ennes.dev",
       "http://localhost:5173",
       "http://localhost:8080"

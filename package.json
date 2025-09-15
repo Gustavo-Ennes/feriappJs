@@ -18,7 +18,7 @@
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "firebase-admin": "^11.5.0",
+    "firebase-admin": "^13.5.0",
     "graphql": "^16.6.0",
     "mongoose": "^7.0.0",
     "pdf-lib": "^1.17.1",
@@ -40,10 +40,10 @@
     "eslint": "^9.19.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-perfectionist": "^4.8",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.1.10",
     "prettier": "^3.2.5",
     "typescript": "^4.9.5",
-    "vitest": "^0.29.3"
+    "vitest": "^3.2.4"
   },
   "repository": {
     "type": "git",
@@ -56,6 +56,6 @@
   "homepage": "https://github.com/Gustavo-Ennes/feriappJs#readme",
   "description": "",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   }
 }
